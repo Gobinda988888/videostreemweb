@@ -1,0 +1,134 @@
+const Video = require('../models/Video');
+const { uploadStream, getSignedUrl, deleteObject } = require('../utils/r2');
+const { saveFile, getFileUrl, deleteFile } = require('../utils/localStorage');
+
+// Check if R2 is configured (not placeholder values)
+const isR2Configured = () => {
+  const accountId = process.env.R2_ACCOUNT_ID;
+  const accessKey = process.env.R2_ACCESS_KEY;
+  const secretKey = process.env.R2_SECRET_KEY;
+  const bucket = process.env.R2_BUCKET;
+  
+  // Check if all values exist and are not placeholder values
+  const hasPlaceholder = 
+    !accountId || 
+    !accessKey || 
+    !secretKey || 
+    !bucket ||
+    accountId.includes('your_') ||
+    accessKey.includes('your_') ||
+    secretKey.includes('your_') ||
+    bucket.includes('your_');
+  
+  return !hasPlaceholder;
+};
+
+const uploadVideo = async (req, res) => {
+  try {
+    // only admins can upload
+    if (!req.user || !req.user.isAdmin) return res.status(403).json({ message: 'Forbidden' });
+
+    const { title, description } = req.body;
+    const videoFile = req.files && req.files.video && req.files.video[0];
+    const thumbFile = req.files && req.files.thumbnail && req.files.thumbnail[0];
+
+    if (!videoFile) return res.status(400).json({ message: 'Missing video file' });
+
+    const videoKey = `videos/${Date.now()}_${videoFile.originalname}`;
+    let thumbKey = '';
+
+    // Use R2 if configured, otherwise use local storage
+    if (isR2Configured()) {
+      try {
+        await uploadStream(videoKey, videoFile.buffer, videoFile.mimetype);
+        if (thumbFile) {
+          thumbKey = `thumbnails/${Date.now()}_${thumbFile.originalname}`;
+          await uploadStream(thumbKey, thumbFile.buffer, thumbFile.mimetype);
+        }
+      } catch (r2Error) {
+        // If R2 fails, fall back to local storage
+        console.log('R2 upload failed, falling back to local storage:', r2Error.message);
+        await saveFile(videoKey, videoFile.buffer);
+        if (thumbFile) {
+          thumbKey = `thumbnails/${Date.now()}_${thumbFile.originalname}`;
+          await saveFile(thumbKey, thumbFile.buffer);
+        }
+      }
+    } else {
+      // Use local file storage
+      await saveFile(videoKey, videoFile.buffer);
+      if (thumbFile) {
+        thumbKey = `thumbnails/${Date.now()}_${thumbFile.originalname}`;
+        await saveFile(thumbKey, thumbFile.buffer);
+      }
+    }
+
+    const video = new Video({ title, description, filename: videoKey, thumbnail: thumbKey });
+    await video.save();
+
+    res.json({ video });
+  } catch (err) {
+    console.error('Upload error:', err);
+    const errorMessage = err.message || 'Upload failed';
+    res.status(500).json({ message: `Upload failed: ${errorMessage}` });
+  }
+};
+
+const listVideos = async (req, res) => {
+  try {
+    const allVideos = await Video.find();
+    // Sort by createdAt descending
+    const videos = allVideos.sort((a, b) => b.createdAt - a.createdAt);
+    res.json({ videos });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to list videos' });
+  }
+};
+
+const watchVideo = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const video = await Video.findById(id);
+    if (!video) return res.status(404).json({ message: 'Not found' });
+
+    // Use R2 if configured, otherwise use local storage
+    if (isR2Configured()) {
+      const signedUrl = await getSignedUrl(video.filename, 60 * 30); // 30 minutes
+      res.json({ url: signedUrl });
+    } else {
+      const fileUrl = getFileUrl(video.filename);
+      res.json({ url: fileUrl });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to get signed url' });
+  }
+};
+
+const deleteVideo = async (req, res) => {
+  try {
+    if (!req.user || !req.user.isAdmin) return res.status(403).json({ message: 'Forbidden' });
+
+    const id = req.params.id;
+    const video = await Video.findById(id);
+    if (!video) return res.status(404).json({ message: 'Not found' });
+
+    // Use R2 if configured, otherwise use local storage
+    if (isR2Configured()) {
+      await deleteObject(video.filename);
+      if (video.thumbnail) await deleteObject(video.thumbnail);
+    } else {
+      await deleteFile(video.filename);
+      if (video.thumbnail) await deleteFile(video.thumbnail);
+    }
+    await video.deleteOne();
+
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Delete failed' });
+  }
+};
+
+module.exports = { uploadVideo, listVideos, watchVideo, deleteVideo };

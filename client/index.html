@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>🔥 Adult Video Site</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .gradient-bg {
+        background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
+      .glow-red {
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+      }
+      .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(239, 68, 68, 0.4);
+      }
+    </style>
+  </head>
+  <body class="gradient-bg text-white min-h-screen">
+    <nav class="bg-black bg-opacity-60 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-red-900">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent hover:scale-110 transition-transform">
+          🔥 AV SITE
+        </a>
+        <div class="space-x-4 flex items-center">
+          <a href="/login.html" id="loginLink" class="hover:text-red-400 transition">Login</a>
+          <a href="/register.html" id="regLink" class="hover:text-red-400 transition">Register</a>
+          <a href="/upload.html" id="uploadLink" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">📤 Upload</a>
+          <button id="logoutBtn" class="hidden hover:text-red-400 transition">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="p-6 max-w-7xl mx-auto">
+      <div class="mb-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-red-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
+          Latest Videos
+        </h1>
+        <p class="text-gray-400">Watch premium content from around the world 🌍</p>
+      </div>
+      <div id="videos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>

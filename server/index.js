@@ -1,0 +1,43 @@
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+const authRoutes = require('./routes/auth');
+const videoRoutes = require('./routes/videos');
+
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// static client
+app.use('/', express.static(path.join(__dirname, '..', 'client')));
+
+app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoRoutes);
+
+const PORT = process.env.PORT || 4000;
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+    console.log(`✅ R2 Endpoint: ${process.env.R2_ENDPOINT || 'Using account ID'}`);
+    console.log(`✅ R2 Bucket: ${process.env.R2_BUCKET}`);
+    app.listen(PORT, () => {
+      console.log(`\n🚀 Server running on port ${PORT}`);
+      console.log(`🌐 Open: http://localhost:${PORT}`);
+      console.log(`\n📝 Admin email: ${process.env.ADMIN_EMAIL || 'admin@example.com'}`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ MongoDB connection error:', err.message);
+    process.exit(1);
+  });
