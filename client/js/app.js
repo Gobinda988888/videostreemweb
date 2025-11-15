@@ -86,18 +86,28 @@ async function apiCall(method, path, body = null, isFormData = false) {
 // Login form
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
+  console.log('✅ Login form found, attaching event listener...');
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    console.log('🔐 Login form submitted');
     const email = loginForm.email.value;
     const password = loginForm.password.value;
+    console.log('📧 Email:', email);
+    console.log('🔑 Password length:', password.length);
     try {
+      console.log('📡 Calling login API...');
       const data = await apiCall('POST', '/auth/login', { email, password });
+      console.log('✅ Login successful!');
       setToken(data.token);
       window.location.href = '/';
     } catch (err) {
-      alert(err.message);
+      console.error('❌ Login error:', err);
+      alert('Login failed: ' + err.message);
     }
   });
+  console.log('✅ Login event listener attached successfully');
+} else {
+  console.error('❌ Login form not found on page');
 }
 
 // Register form
