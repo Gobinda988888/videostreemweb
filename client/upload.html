@@ -148,29 +148,21 @@
 
     <script src="/js/app.js"></script>
     <script>
-      // Admin check on page load
+      // Admin check on page load - STRICT SECURITY
       document.addEventListener('DOMContentLoaded', () => {
         const token = localStorage.getItem('token');
         const adminCheckDiv = document.getElementById('adminCheck');
         
         if (!token) {
-          adminCheckDiv.innerHTML = `
-            <div class="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded">
-              <strong>Access Denied:</strong> Please <a href="/login.html" class="underline">login</a> as admin to access this page.
-            </div>
-          `;
-          document.getElementById('uploadForm').style.display = 'none';
+          alert('⚠️ Access Denied: Admin login required to upload videos.');
+          window.location.href = '/login.html';
           return;
         }
 
         const decoded = parseJWT(token);
         if (!decoded || !decoded.isAdmin) {
-          adminCheckDiv.innerHTML = `
-            <div class="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded">
-              <strong>Access Denied:</strong> Admin privileges required. You are not an admin.
-            </div>
-          `;
-          document.getElementById('uploadForm').style.display = 'none';
+          alert('⚠️ Access Denied: You are not an admin. Only admins can upload videos.');
+          window.location.href = '/';
           return;
         }
 
