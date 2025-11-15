@@ -1,9 +1,26 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>🔥 Adult Video Site</title>
+    <title>Free Indian Adult Videos - Bhabhi, Devar, Step Family XXX</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Watch free Indian adult videos featuring bhabhi, devar, step sister, step mom, and family roleplay. HD quality desi porn videos updated daily." />
+    <meta name="keywords" content="indian sex videos, bhabhi sex, devar bhabhi, step sister porn, step mom xxx, desi adult videos, hindi sex, family roleplay, free porn videos, hd xxx videos" />
+    <meta name="author" content="Adult Video Platform" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Free Indian Adult Videos - Bhabhi, Devar, Step Family XXX" />
+    <meta property="og:description" content="Watch free Indian adult videos featuring bhabhi, devar, step sister, and family roleplay in HD quality." />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Free Indian Adult Videos - XXX Content" />
+    <meta name="twitter:description" content="Watch free HD adult videos featuring Indian scenarios and roleplay." />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @keyframes gradient {
@@ -37,6 +54,7 @@
         <div class="space-x-4 flex items-center">
           <a href="/login.html" id="loginLink" class="hover:text-red-400 transition">Login</a>
           <a href="/register.html" id="regLink" class="hover:text-red-400 transition">Register</a>
+          <a href="/admin.html" id="adminLink" class="hidden hover:text-red-400 transition">🎯 Admin</a>
           <a href="/upload.html" id="uploadLink" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">📤 Upload</a>
           <button id="logoutBtn" class="hidden hover:text-red-400 transition">Logout</button>
         </div>
@@ -54,5 +72,15 @@
     </main>
 
     <script src="/js/app.js"></script>
+    <script>
+      // Track visitor on page load
+      (async () => {
+        try {
+          await fetch('/api/analytics/track-visit', { method: 'POST' });
+        } catch (err) {
+          console.log('Analytics tracking failed');
+        }
+      })();
+    </script>
   </body>
 </html>

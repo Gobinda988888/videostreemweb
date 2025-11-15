@@ -34,6 +34,7 @@ function updateNav() {
   const loginLink = document.getElementById('loginLink');
   const regLink = document.getElementById('regLink');
   const uploadLink = document.getElementById('uploadLink');
+  const adminLink = document.getElementById('adminLink');
   const logoutBtn = document.getElementById('logoutBtn');
 
   if (token) {
@@ -46,11 +47,15 @@ function updateNav() {
         window.location.href = '/';
       });
     }
-    if (isAdmin() && uploadLink) uploadLink.classList.remove('hidden');
+    if (isAdmin()) {
+      if (uploadLink) uploadLink.classList.remove('hidden');
+      if (adminLink) adminLink.classList.remove('hidden');
+    }
   } else {
     if (loginLink) loginLink.classList.remove('hidden');
     if (regLink) regLink.classList.remove('hidden');
     if (uploadLink) uploadLink.classList.add('hidden');
+    if (adminLink) adminLink.classList.add('hidden');
     if (logoutBtn) logoutBtn.classList.add('hidden');
   }
 }
@@ -200,9 +205,15 @@ if (videosDiv) {
             <div class="p-4">
               <h3 class="text-lg font-bold mb-2 line-clamp-2 group-hover:text-red-400 transition">${v.title}</h3>
               <p class="text-sm text-gray-400 line-clamp-2">${v.description || 'No description'}</p>
-              <div class="mt-3 flex items-center text-xs text-gray-500">
-                <span>🔥 Premium</span>
-                <span class="mx-2">•</span>
+              <div class="mt-3 flex items-center justify-between text-xs text-gray-500">
+                <div class="flex items-center gap-3">
+                  <span class="flex items-center gap-1">
+                    �️ ${(v.views || 0).toLocaleString()}
+                  </span>
+                  <span class="flex items-center gap-1">
+                    ❤️ ${(v.likes || 0).toLocaleString()}
+                  </span>
+                </div>
                 <span>${new Date(v.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
@@ -316,11 +327,61 @@ if (videoContainer) {
         <div class="video-info">
           <h1 class="text-2xl font-bold mb-2">${currentVideo.title}</h1>
           <p class="text-gray-300 mb-4">${currentVideo.description || 'No description'}</p>
+          
+          <!-- Engagement Stats -->
+          <div class="flex gap-4 mb-4">
+            <div class="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+              <span id="viewCount">${currentVideo.views || 0}</span> views
+            </div>
+            
+            <button onclick="likeVideo('${id}')" class="flex items-center gap-2 bg-gray-800 hover:bg-red-600 px-4 py-2 rounded-lg transition">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+              </svg>
+              <span id="likeCount">${currentVideo.likes || 0}</span>
+            </button>
+            
+            <div class="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+              </svg>
+              <span id="commentCount">${currentVideo.comments?.length || 0}</span>
+            </div>
+          </div>
+          
+          <!-- Comments Section -->
+          <div class="bg-gray-800 rounded-lg p-4">
+            <h3 class="font-bold mb-3">Comments</h3>
+            <div class="mb-3">
+              <input type="text" id="commentUsername" placeholder="Your name" 
+                class="w-full bg-gray-700 rounded px-3 py-2 mb-2 text-white">
+              <textarea id="commentText" placeholder="Write a comment..." 
+                class="w-full bg-gray-700 rounded px-3 py-2 mb-2 text-white" rows="2"></textarea>
+              <button onclick="addComment('${id}')" 
+                class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold">
+                Post Comment
+              </button>
+            </div>
+            <div id="commentsList" class="space-y-2">
+              ${(currentVideo.comments || []).map(c => `
+                <div class="bg-gray-700 rounded p-3">
+                  <div class="font-bold text-sm text-red-400">${c.username}</div>
+                  <div class="text-sm">${c.text}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
         </div>
       `;
       
       // Initialize video player controls
       initializeVideoPlayer();
+      
+      // Track video view
+      trackVideoView(id);
       
       // Show related videos below
       showRelatedVideos(videoList.videos, id);
@@ -459,9 +520,64 @@ function formatTime(seconds) {
 }
 
 function showRelatedVideos(allVideos, currentId) {
-  // Filter out current video and shuffle
+  // Get current video
+  const currentVideo = allVideos.find(v => v._id === currentId);
+  
+  // Filter out current video
   const otherVideos = allVideos.filter(v => v._id !== currentId);
-  const shuffled = otherVideos.sort(() => Math.random() - 0.5);
+  
+  // Score videos based on similarity
+  const scoredVideos = otherVideos.map(video => {
+    let score = 0;
+    
+    // Match tags/keywords in title
+    const currentTitle = currentVideo.title.toLowerCase();
+    const videoTitle = video.title.toLowerCase();
+    const keywords = ['bhabhi', 'devar', 'step', 'sister', 'mom', 'brother', 'aunty', 'desi', 'indian', 'hindi', 'family'];
+    
+    keywords.forEach(keyword => {
+      if (currentTitle.includes(keyword) && videoTitle.includes(keyword)) {
+        score += 10;
+      }
+    });
+    
+    // Match words in title
+    const currentWords = currentTitle.split(' ').filter(w => w.length > 3);
+    const videoWords = videoTitle.split(' ').filter(w => w.length > 3);
+    
+    currentWords.forEach(word => {
+      if (videoWords.includes(word)) {
+        score += 5;
+      }
+    });
+    
+    // Match category if exists
+    if (currentVideo.category && video.category && currentVideo.category === video.category) {
+      score += 15;
+    }
+    
+    // Match tags if exists
+    if (currentVideo.tags && video.tags) {
+      const matchingTags = currentVideo.tags.filter(tag => video.tags.includes(tag));
+      score += matchingTags.length * 8;
+    }
+    
+    // Add some randomness
+    score += Math.random() * 3;
+    
+    return { video, score };
+  });
+  
+  // Sort by score (highest first) and take top results
+  const sortedVideos = scoredVideos
+    .sort((a, b) => b.score - a.score)
+    .map(item => item.video);
+  
+  // Mix: Show top related (70%) + random (30%)
+  const relatedCount = Math.ceil(sortedVideos.length * 0.7);
+  const topRelated = sortedVideos.slice(0, relatedCount);
+  const randomOthers = sortedVideos.slice(relatedCount).sort(() => Math.random() - 0.5);
+  const shuffled = [...topRelated, ...randomOthers];
   
   // Create related videos section
   const relatedSection = document.createElement('div');
@@ -502,10 +618,18 @@ function showRelatedVideos(allVideos, currentId) {
               <h3 class="font-semibold text-white group-hover:text-red-400 transition-colors line-clamp-2 mb-2">
                 ${video.title}
               </h3>
-              <p class="text-sm text-gray-400 line-clamp-2">
+              <p class="text-sm text-gray-400 line-clamp-2 mb-3">
                 ${video.description || 'No description'}
               </p>
-              <div class="mt-3 flex items-center justify-between text-xs text-gray-500">
+              <div class="flex items-center gap-3 text-xs text-gray-500 mb-2">
+                <span class="flex items-center gap-1">
+                  👁️ ${(video.views || 0).toLocaleString()}
+                </span>
+                <span class="flex items-center gap-1">
+                  ❤️ ${(video.likes || 0).toLocaleString()}
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500">
                 <span>Click to watch</span>
                 <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -519,6 +643,60 @@ function showRelatedVideos(allVideos, currentId) {
   `;
   
   videoContainer.appendChild(relatedSection);
+}
+
+// Track video view
+async function trackVideoView(videoId) {
+  try {
+    const data = await apiCall('POST', `/analytics/video/${videoId}/view`);
+    document.getElementById('viewCount').textContent = data.views;
+  } catch (err) {
+    console.error('Failed to track view:', err);
+  }
+}
+
+// Like video
+async function likeVideo(videoId) {
+  try {
+    const data = await apiCall('POST', `/analytics/video/${videoId}/like`);
+    document.getElementById('likeCount').textContent = data.likes;
+  } catch (err) {
+    alert('Failed to like: ' + err.message);
+  }
+}
+
+// Add comment
+async function addComment(videoId) {
+  const username = document.getElementById('commentUsername').value.trim();
+  const text = document.getElementById('commentText').value.trim();
+  
+  if (!username || !text) {
+    alert('Please enter your name and comment');
+    return;
+  }
+  
+  try {
+    const data = await apiCall('POST', `/analytics/video/${videoId}/comment`, { username, text });
+    
+    // Update comments list
+    const commentsList = document.getElementById('commentsList');
+    commentsList.innerHTML = data.comments.map(c => `
+      <div class="bg-gray-700 rounded p-3">
+        <div class="font-bold text-sm text-red-400">${c.username}</div>
+        <div class="text-sm">${c.text}</div>
+      </div>
+    `).join('');
+    
+    // Update count
+    document.getElementById('commentCount').textContent = data.comments.length;
+    
+    // Clear form
+    document.getElementById('commentUsername').value = '';
+    document.getElementById('commentText').value = '';
+    
+  } catch (err) {
+    alert('Failed to add comment: ' + err.message);
+  }
 }
 
 updateNav();

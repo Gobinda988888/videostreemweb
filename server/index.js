@@ -7,6 +7,8 @@ const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const videoRoutes = require('./routes/videos');
+const analyticsRoutes = require('./routes/analytics');
+const seoRoutes = require('./routes/seo');
 
 const app = express();
 
@@ -14,11 +16,15 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// SEO routes (before static to handle /sitemap.xml and /robots.txt)
+app.use('/', seoRoutes);
+
 // static client
 app.use('/', express.static(path.join(__dirname, '..', 'client')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/videos', videoRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 const PORT = process.env.PORT || 4000;
 
