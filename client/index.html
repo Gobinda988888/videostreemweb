@@ -255,41 +255,11 @@
         });
       }
       
-      // Install prompt for PWA
+      // Install prompt for PWA (silent - no banner, use browser default)
       let deferredPrompt;
       window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
+        // Don't prevent default - let browser show its own install prompt
         deferredPrompt = e;
-        
-        // Show install banner
-        const installBanner = document.createElement('div');
-        installBanner.className = 'fixed bottom-4 left-4 right-4 bg-gradient-to-r from-red-600 to-pink-600 text-white p-4 rounded-lg shadow-2xl z-50 flex items-center justify-between';
-        installBanner.innerHTML = `
-          <div>
-            <p class="font-bold">📱 Install desiixvideo App</p>
-            <p class="text-sm">Add to home screen for better experience!</p>
-          </div>
-          <div class="flex gap-2">
-            <button id="installBtn" class="bg-white text-red-600 px-4 py-2 rounded font-semibold hover:bg-gray-100">Install</button>
-            <button id="dismissBtn" class="bg-red-700 px-4 py-2 rounded font-semibold hover:bg-red-800">Later</button>
-          </div>
-        `;
-        document.body.appendChild(installBanner);
-        
-        document.getElementById('installBtn').addEventListener('click', () => {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User accepted the install prompt');
-            }
-            deferredPrompt = null;
-            installBanner.remove();
-          });
-        });
-        
-        document.getElementById('dismissBtn').addEventListener('click', () => {
-          installBanner.remove();
-        });
       });
     </script>
   </body>
