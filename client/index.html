@@ -21,6 +21,15 @@
     <meta name="twitter:title" content="Free Indian Adult Videos - XXX Content" />
     <meta name="twitter:description" content="Watch free HD adult videos featuring Indian scenarios and roleplay." />
     
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ef4444" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="desiixvideo" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @keyframes gradient {
@@ -232,6 +241,56 @@
           console.log('Analytics tracking failed');
         }
       })();
+      
+      // Register Service Worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('✅ Service Worker registered:', registration.scope);
+            })
+            .catch(error => {
+              console.log('❌ Service Worker registration failed:', error);
+            });
+        });
+      }
+      
+      // Install prompt for PWA
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install banner
+        const installBanner = document.createElement('div');
+        installBanner.className = 'fixed bottom-4 left-4 right-4 bg-gradient-to-r from-red-600 to-pink-600 text-white p-4 rounded-lg shadow-2xl z-50 flex items-center justify-between';
+        installBanner.innerHTML = `
+          <div>
+            <p class="font-bold">📱 Install desiixvideo App</p>
+            <p class="text-sm">Add to home screen for better experience!</p>
+          </div>
+          <div class="flex gap-2">
+            <button id="installBtn" class="bg-white text-red-600 px-4 py-2 rounded font-semibold hover:bg-gray-100">Install</button>
+            <button id="dismissBtn" class="bg-red-700 px-4 py-2 rounded font-semibold hover:bg-red-800">Later</button>
+          </div>
+        `;
+        document.body.appendChild(installBanner);
+        
+        document.getElementById('installBtn').addEventListener('click', () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            installBanner.remove();
+          });
+        });
+        
+        document.getElementById('dismissBtn').addEventListener('click', () => {
+          installBanner.remove();
+        });
+      });
     </script>
   </body>
 </html>
