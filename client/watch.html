@@ -164,15 +164,84 @@
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
+      
+      /* Light Mode */
+      body.light-mode {
+        background: linear-gradient(-45deg, #f5f5f5, #fce7e7, #f5f5f5, #fce7e7);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        color: #1a1a1a;
+      }
+      
+      body.light-mode nav {
+        background: rgba(255, 255, 255, 0.8);
+        border-bottom-color: #fca5a5;
+      }
+      
+      body.light-mode .bg-gray-900,
+      body.light-mode .bg-gray-800 {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: #fca5a5;
+      }
+      
+      body.light-mode .bg-gray-700 {
+        background: #f3f4f6;
+      }
+      
+      body.light-mode .text-white {
+        color: #1a1a1a;
+      }
+      
+      body.light-mode .text-gray-400,
+      body.light-mode .text-gray-300 {
+        color: #6b7280;
+      }
+      
+      body.light-mode .text-red-400 {
+        color: #dc2626;
+      }
+      
+      body.light-mode .border-red-900,
+      body.light-mode .border-gray-700 {
+        border-color: #fca5a5;
+      }
+      
+      body.light-mode #themeToggle {
+        background: #e5e7eb;
+      }
     </style>
   </head>
   <body class="gradient-bg text-white min-h-screen">
     <nav class="bg-black bg-opacity-60 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-red-900">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <a href="/" class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent hover:scale-110 transition-transform">
-          🔥 AV SITE
+        <a href="/" class="flex items-center gap-2 hover:scale-105 transition-transform group">
+          <div class="relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 blur-lg opacity-50 group-hover:opacity-75 transition"></div>
+            <svg width="35" height="35" viewBox="0 0 40 40" class="relative">
+              <defs>
+                <linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="20" cy="20" r="18" fill="url(#logoGradient2)" opacity="0.2"/>
+              <path d="M15 12 L15 28 L28 20 Z" fill="url(#logoGradient2)"/>
+              <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient2)" stroke-width="2"/>
+            </svg>
+          </div>
+          <span class="text-xl font-black bg-gradient-to-r from-red-500 via-pink-500 to-red-500 bg-clip-text text-transparent tracking-tight">
+            desiixvideo
+          </span>
         </a>
-        <div class="space-x-4">
+        <div class="space-x-4 flex items-center">
+          <button id="themeToggle" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Toggle theme">
+            <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+              <path d="M12 17.5C9.5 17.5 7.5 15.5 7.5 13S9.5 8.5 12 8.5 16.5 10.5 16.5 13 14.5 17.5 12 17.5zM12 7C11.4 7 11 6.6 11 6V3c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1zm0 14c-.6 0-1-.4-1-1v-3c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1zM6 13c0-.6-.4-1-1-1H2c-.6 0-1 .4-1 1s.4 1 1 1h3c.6 0 1-.4 1-1zm17-1h-3c-.6 0-1 .4-1 1s.4 1 1 1h3c.6 0 1-.4 1-1s-.4-1-1-1zM7.05 18.36c-.4-.4-.4-1 0-1.41l2.12-2.12c.4-.4 1-.4 1.41 0 .4.4.4 1 0 1.41l-2.12 2.12c-.39.4-1.02.4-1.41 0zm8.49-8.49c-.4-.4-.4-1 0-1.41l2.12-2.12c.4-.4 1-.4 1.41 0 .4.4.4 1 0 1.41l-2.12 2.12c-.4.4-1.02.4-1.41 0zM8.46 7.05c.4-.4 1-.4 1.41 0 .4.4.4 1 0 1.41L7.76 10.6c-.4.4-1 .4-1.41 0-.4-.4-.4-1 0-1.41l2.11-2.14zm8.49 8.49c.4-.4 1-.4 1.41 0l2.12 2.12c.4.4.4 1 0 1.41-.4.4-1 .4-1.41 0l-2.12-2.12c-.4-.39-.4-1.02 0-1.41z"/>
+            </svg>
+            <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.06 7 9.54 0 4.48-2.94 8.27-7 9.54.95.3 1.95.46 3 .46 5.52 0 10-4.48 10-10S14.52 2 9 2z"/>
+            </svg>
+          </button>
           <a href="/" class="hover:text-red-400 transition">🏠 Home</a>
           <button id="logoutBtn" class="hover:text-red-400 transition">Logout</button>
         </div>

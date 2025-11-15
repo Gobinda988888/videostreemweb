@@ -167,17 +167,108 @@ if (uploadForm) {
   });
 }
 
-// Video list (index) - Public access, no login required
+// Video list (index) - XVideos style with search/filter
 const videosDiv = document.getElementById('videos');
 if (videosDiv) {
+  let allVideos = [];
+  let filteredVideos = [];
+  
   (async () => {
     try {
       const data = await apiCall('GET', '/videos/list');
-      if (!data.videos || data.videos.length === 0) {
-        videosDiv.innerHTML = '<p class="text-center">No videos yet.</p>';
+      allVideos = data.videos || [];
+      filteredVideos = [...allVideos];
+      
+      if (allVideos.length === 0) {
+        videosDiv.innerHTML = '<p class="col-span-full text-center text-gray-400">No videos yet.</p>';
         return;
       }
-      videosDiv.innerHTML = data.videos
+      
+      displayVideos(filteredVideos);
+      updateVideoCount(filteredVideos.length);
+      
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          filterVideos();
+        });
+      }
+      
+      // Category filter
+      const categoryFilter = document.getElementById('categoryFilter');
+      if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+          filterVideos();
+        });
+      }
+      
+      // Sort filter
+      const sortFilter = document.getElementById('sortFilter');
+      if (sortFilter) {
+        sortFilter.addEventListener('change', () => {
+          filterVideos();
+        });
+      }
+      
+      // Tag buttons
+      document.querySelectorAll('.tag-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tag = btn.getAttribute('data-tag');
+          searchInput.value = tag;
+          filterVideos();
+        });
+      });
+      
+    } catch (err) {
+      videosDiv.innerHTML = '<p class="col-span-full text-center text-red-400">Failed to load videos</p>';
+    }
+  })();
+  
+  function filterVideos() {
+    const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    const category = document.getElementById('categoryFilter')?.value || '';
+    const sortBy = document.getElementById('sortFilter')?.value || 'date';
+    
+    // Filter by search and category
+    filteredVideos = allVideos.filter(video => {
+      const matchesSearch = !searchTerm || 
+        video.title.toLowerCase().includes(searchTerm) ||
+        video.description?.toLowerCase().includes(searchTerm) ||
+        video.tags?.some(tag => tag.toLowerCase().includes(searchTerm));
+      
+      const matchesCategory = !category || video.category === category;
+      
+      return matchesSearch && matchesCategory;
+    });
+    
+    // Sort
+    if (sortBy === 'views') {
+      filteredVideos.sort((a, b) => (b.views || 0) - (a.views || 0));
+    } else if (sortBy === 'likes') {
+      filteredVideos.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+    } else {
+      filteredVideos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    
+    displayVideos(filteredVideos);
+    updateVideoCount(filteredVideos.length);
+  }
+  
+  function updateVideoCount(count) {
+    const countEl = document.getElementById('videoCount');
+    if (countEl) {
+      countEl.textContent = `(${count})`;
+    }
+  }
+  
+  function displayVideos(videos) {
+    if (videos.length === 0) {
+      videosDiv.innerHTML = '<p class="col-span-full text-center text-gray-400">No videos found</p>';
+      return;
+    }
+    
+    videosDiv.innerHTML = videos
         .map(
           (v) => `
         <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden border border-red-900 hover-lift backdrop-blur-sm">

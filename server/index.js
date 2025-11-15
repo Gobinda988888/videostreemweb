@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const videoRoutes = require('./routes/videos');
 const analyticsRoutes = require('./routes/analytics');
 const seoRoutes = require('./routes/seo');
+const categoryRoutes = require('./routes/categories');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/', express.static(path.join(__dirname, '..', 'client')));
 app.use('/api/auth', authRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/categories', categoryRoutes);
 
 const PORT = process.env.PORT || 4000;
 

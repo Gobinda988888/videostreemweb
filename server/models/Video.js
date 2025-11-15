@@ -41,6 +41,14 @@ const videoSchema = new mongoose.Schema({
     type: String,
     default: 'general'
   },
+  duration: {
+    type: String,
+    default: '0:00'
+  },
+  featured: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
