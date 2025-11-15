@@ -62,5 +62,47 @@
     </div>
 
     <script src="/js/app.js"></script>
+    <script>
+      // Inline login handler as backup
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('loginForm');
+        if (form) {
+          console.log('✅ Inline login handler loaded');
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('🔐 Form submitted via inline handler');
+            
+            const email = form.email.value;
+            const password = form.password.value;
+            
+            if (!email || !password) {
+              alert('Please enter email and password');
+              return;
+            }
+            
+            try {
+              const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+              });
+              
+              const data = await response.json();
+              
+              if (!response.ok) {
+                throw new Error(data.message || 'Login failed');
+              }
+              
+              console.log('✅ Login successful!');
+              localStorage.setItem('token', data.token);
+              window.location.href = '/';
+            } catch (err) {
+              console.error('❌ Login error:', err);
+              alert('Login failed: ' + err.message);
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
