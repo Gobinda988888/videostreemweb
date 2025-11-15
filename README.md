@@ -2,6 +2,12 @@
 
 Complete full-stack video streaming platform with JWT authentication, Cloudflare R2 storage, and MongoDB Atlas.
 
+## 📱 Mobile App Available!
+
+**Download Android APK**: [desiixvideo.apk](https://desiixvideo.me/desiixvideo.apk)
+
+Visit: [https://desiixvideo.me/download-app.html](https://desiixvideo.me/download-app.html)
+
 ## 🌟 Features
 
 - ✅ **User Authentication** - JWT-based secure login/register system
@@ -13,6 +19,11 @@ Complete full-stack video streaming platform with JWT authentication, Cloudflare
 - ✅ **Responsive Design** - Mobile-first UI with Tailwind CSS
 - ✅ **Secure Video Streaming** - Pre-signed URLs with expiration
 - ✅ **Thumbnail Support** - Video thumbnails with fallback icons
+- ✅ **Android Mobile App** - Native APK available for download
+- ✅ **SEO Optimized** - Adult content keywords for search visibility
+- ✅ **Analytics Dashboard** - Track visitors, views, likes, comments
+- ✅ **Forgot Password** - Password reset functionality
+- ✅ **Watch History** - User watch history tracking
 
 ## 🚀 Deploy to Render
 
