@@ -10,6 +10,7 @@ const videoRoutes = require('./routes/videos');
 const analyticsRoutes = require('./routes/analytics');
 const seoRoutes = require('./routes/seo');
 const categoryRoutes = require('./routes/categories');
+const setupAdminUser = require('./utils/setupAdmin');
 
 const app = express();
 
@@ -35,10 +36,14 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
+  .then(async () => {
     console.log('✅ Connected to MongoDB Atlas');
     console.log(`✅ R2 Endpoint: ${process.env.R2_ENDPOINT || 'Using account ID'}`);
     console.log(`✅ R2 Bucket: ${process.env.R2_BUCKET}`);
+    
+    // Setup admin user automatically
+    await setupAdminUser();
+    
     app.listen(PORT, () => {
       console.log(`\n🚀 Server running on port ${PORT}`);
       console.log(`🌐 Open: http://localhost:${PORT}`);
