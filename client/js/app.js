@@ -99,7 +99,20 @@ if (loginForm) {
       const data = await apiCall('POST', '/auth/login', { email, password });
       console.log('✅ Login successful!');
       setToken(data.token);
-      window.location.href = '/';
+      
+      // Check if admin and redirect accordingly
+      try {
+        const payload = JSON.parse(atob(data.token.split('.')[1]));
+        if (payload.isAdmin) {
+          console.log('👑 Admin login, redirecting to dashboard...');
+          window.location.href = '/admin.html';
+        } else {
+          console.log('👤 User login, redirecting to home...');
+          window.location.href = '/';
+        }
+      } catch (err) {
+        window.location.href = '/';
+      }
     } catch (err) {
       console.error('❌ Login error:', err);
       alert('Login failed: ' + err.message);

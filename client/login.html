@@ -95,7 +95,21 @@
               
               console.log('✅ Login successful!');
               localStorage.setItem('token', data.token);
-              window.location.href = '/';
+              
+              // Decode token to check if admin
+              try {
+                const payload = JSON.parse(atob(data.token.split('.')[1]));
+                if (payload.isAdmin) {
+                  console.log('👑 Admin detected, redirecting to dashboard...');
+                  window.location.href = '/admin.html';
+                } else {
+                  console.log('👤 Regular user, redirecting to home...');
+                  window.location.href = '/';
+                }
+              } catch (err) {
+                console.error('Error decoding token:', err);
+                window.location.href = '/';
+              }
             } catch (err) {
               console.error('❌ Login error:', err);
               alert('Login failed: ' + err.message);
