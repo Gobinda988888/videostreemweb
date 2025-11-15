@@ -59,4 +59,29 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+      return res.status(400).json({ message: 'Email and new password are required' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    console.log(`✅ Password reset for user: ${email}`);
+    res.json({ message: 'Password reset successfully' });
+  } catch (err) {
+    console.error('❌ Forgot password error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { register, login, forgotPassword };

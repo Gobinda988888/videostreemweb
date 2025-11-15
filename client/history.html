@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My History - desiixvideo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <nav class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
+      <a href="/" class="flex items-center gap-2 hover:scale-105 transition-transform">
+        <svg width="30" height="30" viewBox="0 0 40 40">
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" opacity="0.2"/>
+          <path d="M15 12 L15 28 L28 20 Z" fill="url(#logoGradient)"/>
+          <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient)" stroke-width="2"/>
+        </svg>
+        <span class="font-black bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">desiixvideo</span>
+      </a>
+      <div class="space-x-4">
+        <a href="/" class="hover:text-red-400">Home</a>
+        <a href="/history.html" class="text-red-400 font-semibold">History</a>
+        <button id="logoutBtn" class="hover:text-red-400">Logout</button>
+      </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+      <div class="flex items-center gap-3 mb-8">
+        <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h1 class="text-3xl font-bold">Watch History</h1>
+      </div>
+
+      <div id="loginRequired" class="hidden mb-8 p-4 bg-yellow-900 border border-yellow-700 rounded-lg">
+        <p class="text-yellow-200">
+          🔒 Please <a href="/login.html" class="underline font-semibold">login</a> to view your watch history.
+        </p>
+      </div>
+
+      <div id="clearHistory" class="hidden mb-4 text-right">
+        <button onclick="clearHistory()" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded font-semibold">
+          🗑️ Clear History
+        </button>
+      </div>
+
+      <div id="historyList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <p class="col-span-full text-center text-gray-400">Loading...</p>
+      </div>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script>
+      const historyList = document.getElementById('historyList');
+      const loginRequired = document.getElementById('loginRequired');
+      const clearHistoryBtn = document.getElementById('clearHistory');
+
+      function loadHistory() {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          loginRequired.classList.remove('hidden');
+          historyList.innerHTML = '<p class="col-span-full text-center text-gray-400">Please login to view history</p>';
+          return;
+        }
+
+        // Get watch history from localStorage
+        const history = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+        
+        if (history.length === 0) {
+          historyList.innerHTML = '<p class="col-span-full text-center text-gray-400">No videos in your history yet</p>';
+          return;
+        }
+
+        clearHistoryBtn.classList.remove('hidden');
+        
+        // Fetch video details for history items
+        Promise.all(
+          history.map(item => 
+            fetch(`/api/videos/list`)
+              .then(res => res.json())
+              .then(data => data.videos.find(v => v._id === item.videoId))
+          )
+        ).then(videos => {
+          const validVideos = videos.filter(v => v);
+          
+          if (validVideos.length === 0) {
+            historyList.innerHTML = '<p class="col-span-full text-center text-gray-400">No videos found</p>';
+            return;
+          }
+
+          historyList.innerHTML = validVideos.map(video => `
+            <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-red-500 transition">
+              <a href="/watch.html?id=${video._id}">
+                <div class="relative aspect-video bg-black">
+                  ${video.thumbnail ? 
+                    `<img src="/api/videos/thumbnail/${video._id}" class="w-full h-full object-cover" alt="${video.title}">` :
+                    `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-900 to-gray-900">
+                      <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                      </svg>
+                    </div>`
+                  }
+                </div>
+                <div class="p-4">
+                  <h3 class="font-bold text-lg mb-2 line-clamp-2">${video.title}</h3>
+                  <p class="text-sm text-gray-400 line-clamp-2">${video.description || 'No description'}</p>
+                  <div class="mt-3 flex items-center justify-between text-xs text-gray-500">
+                    <span>👁️ ${(video.views || 0).toLocaleString()}</span>
+                    <span>❤️ ${(video.likes || 0).toLocaleString()}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          `).join('');
+        });
+      }
+
+      function clearHistory() {
+        if (confirm('Are you sure you want to clear your watch history?')) {
+          localStorage.removeItem('watchHistory');
+          loadHistory();
+        }
+      }
+
+      loadHistory();
+    </script>
+</body>
+</html>

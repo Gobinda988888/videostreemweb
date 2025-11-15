@@ -260,5 +260,29 @@
     </main>
 
     <script src="/js/app.js"></script>
+    <script>
+      // Track watch history
+      const params = new URLSearchParams(window.location.search);
+      const videoId = params.get('id');
+      
+      if (videoId) {
+        // Save to watch history
+        const history = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+        
+        // Remove if already exists (to update timestamp)
+        const filtered = history.filter(item => item.videoId !== videoId);
+        
+        // Add to beginning of array with timestamp
+        filtered.unshift({
+          videoId: videoId,
+          watchedAt: new Date().toISOString()
+        });
+        
+        // Keep only last 50 videos
+        const limited = filtered.slice(0, 50);
+        
+        localStorage.setItem('watchHistory', JSON.stringify(limited));
+      }
+    </script>
   </body>
 </html>
