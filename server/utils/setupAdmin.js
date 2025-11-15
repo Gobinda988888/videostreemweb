@@ -7,10 +7,20 @@ async function setupAdminUser() {
     const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
 
     // Check if admin already exists
-    const existingAdmin = await User.findOne({ email: adminEmail });
+    let existingAdmin = await User.findOne({ email: adminEmail });
     
     if (existingAdmin) {
-      console.log(`✅ Admin user already exists: ${adminEmail}`);
+      console.log(`✅ Admin user found: ${adminEmail}`);
+      
+      // ALWAYS update password to ensure it matches
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
+      existingAdmin.password = hashedPassword;
+      existingAdmin.isAdmin = true; // Ensure admin flag is set
+      await existingAdmin.save();
+      
+      console.log(`✅ Admin password synchronized!`);
+      console.log(`   Email: ${adminEmail}`);
+      console.log(`   Password: ${adminPassword}`);
       return;
     }
 
@@ -28,7 +38,7 @@ async function setupAdminUser() {
     console.log(`   Password: ${adminPassword}`);
     console.log(`   🔑 Please change the password after first login!`);
   } catch (error) {
-    console.error('❌ Error creating admin user:', error.message);
+    console.error('❌ Error setting up admin user:', error.message);
   }
 }
 
