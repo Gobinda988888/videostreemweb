@@ -172,6 +172,96 @@
           </div>
         `;
       });
+
+      // Upload form handler
+      const uploadForm = document.getElementById('uploadForm');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const uploadStatus = document.getElementById('uploadStatus');
+      const uploadProgress = document.getElementById('uploadProgress');
+      const progressBar = document.getElementById('progressBar');
+      const progressPercent = document.getElementById('progressPercent');
+
+      uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('Please login first');
+          window.location.href = '/login.html';
+          return;
+        }
+
+        const formData = new FormData(uploadForm);
+        
+        // Show progress
+        uploadProgress.classList.remove('hidden');
+        uploadStatus.classList.add('hidden');
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = 'Uploading...';
+
+        try {
+          const xhr = new XMLHttpRequest();
+          
+          // Progress tracking
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              const percent = Math.round((e.loaded / e.total) * 100);
+              progressBar.style.width = percent + '%';
+              progressPercent.textContent = percent + '%';
+            }
+          });
+
+          // Response handling
+          xhr.addEventListener('load', () => {
+            uploadProgress.classList.add('hidden');
+            uploadBtn.disabled = false;
+            uploadBtn.textContent = 'Upload Video';
+            
+            if (xhr.status === 200) {
+              uploadStatus.className = 'mt-4 p-4 rounded bg-green-900 border border-green-700 text-green-200';
+              uploadStatus.textContent = '✅ Video uploaded successfully!';
+              uploadStatus.classList.remove('hidden');
+              uploadForm.reset();
+              
+              setTimeout(() => {
+                window.location.href = '/admin.html';
+              }, 2000);
+            } else {
+              const error = JSON.parse(xhr.responseText);
+              uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
+              uploadStatus.textContent = '❌ Upload failed: ' + (error.message || 'Unknown error');
+              uploadStatus.classList.remove('hidden');
+            }
+          });
+
+          xhr.addEventListener('error', () => {
+            uploadProgress.classList.add('hidden');
+            uploadBtn.disabled = false;
+            uploadBtn.textContent = 'Upload Video';
+            uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
+            uploadStatus.textContent = '❌ Network error occurred';
+            uploadStatus.classList.remove('hidden');
+          });
+
+          xhr.open('POST', '/api/videos/upload');
+          xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+          xhr.send(formData);
+          
+        } catch (err) {
+          uploadProgress.classList.add('hidden');
+          uploadBtn.disabled = false;
+          uploadBtn.textContent = 'Upload Video';
+          uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
+          uploadStatus.textContent = '❌ Error: ' + err.message;
+          uploadStatus.classList.remove('hidden');
+        }
+      });
+
+      // Logout handler
+      document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      });
     </script>
   </body>
 </html>
