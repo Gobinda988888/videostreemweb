@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../utils/jwtMiddleware');
+const { auth, adminAuth } = require('../utils/jwtMiddleware');
 const Category = require('../models/Category');
 const Video = require('../models/Video');
 
@@ -16,11 +16,8 @@ router.get('/list', async (req, res) => {
 });
 
 // Create category (admin only)
-router.post('/create', auth, async (req, res) => {
+router.post('/create', adminAuth, async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Admin access required' });
-    }
 
     const { name, description, icon } = req.body;
     
@@ -51,11 +48,8 @@ router.post('/create', auth, async (req, res) => {
 });
 
 // Update category (admin only)
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', adminAuth, async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Admin access required' });
-    }
 
     const { name, description, icon } = req.body;
     const category = await Category.findById(req.params.id);
@@ -81,11 +75,8 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // Delete category (admin only)
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', adminAuth, async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Admin access required' });
-    }
 
     const category = await Category.findById(req.params.id);
     

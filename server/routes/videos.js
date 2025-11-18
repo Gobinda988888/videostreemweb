@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const auth = require('../utils/jwtMiddleware');
+const { auth, adminAuth } = require('../utils/jwtMiddleware');
 const {
   uploadVideo,
   listVideos,
@@ -13,10 +13,13 @@ const {
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-router.post('/upload', auth, upload.fields([{ name: 'video' }, { name: 'thumbnail' }]), uploadVideo);
-router.get('/list', listVideos); // No auth required - public access
-router.get('/watch/:id', watchVideo); // No auth required - public access
-router.get('/thumbnail/:id', getThumbnail); // Get thumbnail signed URL
-router.delete('/:id', auth, deleteVideo);
+// Admin-only routes - require admin privileges
+router.post('/upload', adminAuth, upload.fields([{ name: 'video' }, { name: 'thumbnail' }]), uploadVideo);
+router.delete('/:id', adminAuth, deleteVideo);
+
+// Public routes - no authentication required
+router.get('/list', listVideos);
+router.get('/watch/:id', watchVideo);
+router.get('/thumbnail/:id', getThumbnail);
 
 module.exports = router;

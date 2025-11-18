@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../utils/jwtMiddleware');
+const { auth, adminAuth } = require('../utils/jwtMiddleware');
 const Video = require('../models/Video');
 const Analytics = require('../models/Analytics');
 
 // Get analytics data (admin only)
-router.get('/stats', auth, async (req, res) => {
+router.get('/stats', adminAuth, async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Admin access required' });
-    }
 
     let analytics = await Analytics.findOne();
     if (!analytics) {
@@ -44,11 +41,8 @@ router.get('/stats', auth, async (req, res) => {
 });
 
 // Update video stats manually (admin only)
-router.post('/video/:id/update-stats', auth, async (req, res) => {
+router.post('/video/:id/update-stats', adminAuth, async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Admin access required' });
-    }
 
     const { views, likes } = req.body;
     const video = await Video.findById(req.params.id);
