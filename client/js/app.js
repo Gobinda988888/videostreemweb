@@ -38,9 +38,18 @@ function updateNav() {
   const dashboardLink = document.getElementById('dashboardLink');
   const historyLink = document.getElementById('historyLink');
   const logoutBtn = document.getElementById('logoutBtn');
+  
+  // Mobile menu links
+  const mobileLoginLink = document.getElementById('mobileLoginLink');
+  const mobileRegLink = document.getElementById('mobileRegLink');
+  const mobileUploadLink = document.getElementById('mobileUploadLink');
+  const mobileAdminLink = document.getElementById('mobileAdminLink');
+  const mobileDashboardLink = document.getElementById('mobileDashboardLink');
+  const mobileHistoryLink = document.getElementById('mobileHistoryLink');
+  const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
 
   if (token) {
-    // Hide login/register
+    // Hide login/register (desktop)
     if (loginLink) {
       loginLink.style.display = 'none';
       loginLink.classList.add('hidden');
@@ -49,8 +58,17 @@ function updateNav() {
       regLink.style.display = 'none';
       regLink.classList.add('hidden');
     }
+    // Hide login/register (mobile)
+    if (mobileLoginLink) {
+      mobileLoginLink.style.display = 'none';
+      mobileLoginLink.classList.add('hidden');
+    }
+    if (mobileRegLink) {
+      mobileRegLink.style.display = 'none';
+      mobileRegLink.classList.add('hidden');
+    }
     
-    // Show user links
+    // Show user links (desktop)
     if (dashboardLink) {
       dashboardLink.style.display = '';
       dashboardLink.classList.remove('hidden');
@@ -62,8 +80,24 @@ function updateNav() {
     if (logoutBtn) {
       logoutBtn.style.display = '';
       logoutBtn.classList.remove('hidden');
-      // Remove old listener and add new one
       logoutBtn.onclick = () => {
+        clearToken();
+        window.location.href = '/';
+      };
+    }
+    // Show user links (mobile)
+    if (mobileDashboardLink) {
+      mobileDashboardLink.style.display = '';
+      mobileDashboardLink.classList.remove('hidden');
+    }
+    if (mobileHistoryLink) {
+      mobileHistoryLink.style.display = '';
+      mobileHistoryLink.classList.remove('hidden');
+    }
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.style.display = '';
+      mobileLogoutBtn.classList.remove('hidden');
+      mobileLogoutBtn.onclick = () => {
         clearToken();
         window.location.href = '/';
       };
@@ -79,6 +113,14 @@ function updateNav() {
         adminLink.style.display = '';
         adminLink.classList.remove('hidden');
       }
+      if (mobileUploadLink) {
+        mobileUploadLink.style.display = '';
+        mobileUploadLink.classList.remove('hidden');
+      }
+      if (mobileAdminLink) {
+        mobileAdminLink.style.display = '';
+        mobileAdminLink.classList.remove('hidden');
+      }
     } else {
       if (uploadLink) {
         uploadLink.style.display = 'none';
@@ -88,9 +130,17 @@ function updateNav() {
         adminLink.style.display = 'none';
         adminLink.classList.add('hidden');
       }
+      if (mobileUploadLink) {
+        mobileUploadLink.style.display = 'none';
+        mobileUploadLink.classList.add('hidden');
+      }
+      if (mobileAdminLink) {
+        mobileAdminLink.style.display = 'none';
+        mobileAdminLink.classList.add('hidden');
+      }
     }
   } else {
-    // Show login/register
+    // Show login/register (desktop)
     if (loginLink) {
       loginLink.style.display = '';
       loginLink.classList.remove('hidden');
@@ -99,8 +149,17 @@ function updateNav() {
       regLink.style.display = '';
       regLink.classList.remove('hidden');
     }
+    // Show login/register (mobile)
+    if (mobileLoginLink) {
+      mobileLoginLink.style.display = '';
+      mobileLoginLink.classList.remove('hidden');
+    }
+    if (mobileRegLink) {
+      mobileRegLink.style.display = '';
+      mobileRegLink.classList.remove('hidden');
+    }
     
-    // Hide user links
+    // Hide user links (desktop)
     if (uploadLink) {
       uploadLink.style.display = 'none';
       uploadLink.classList.add('hidden');
@@ -120,6 +179,27 @@ function updateNav() {
     if (logoutBtn) {
       logoutBtn.style.display = 'none';
       logoutBtn.classList.add('hidden');
+    }
+    // Hide user links (mobile)
+    if (mobileUploadLink) {
+      mobileUploadLink.style.display = 'none';
+      mobileUploadLink.classList.add('hidden');
+    }
+    if (mobileAdminLink) {
+      mobileAdminLink.style.display = 'none';
+      mobileAdminLink.classList.add('hidden');
+    }
+    if (mobileDashboardLink) {
+      mobileDashboardLink.style.display = 'none';
+      mobileDashboardLink.classList.add('hidden');
+    }
+    if (mobileHistoryLink) {
+      mobileHistoryLink.style.display = 'none';
+      mobileHistoryLink.classList.add('hidden');
+    }
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.style.display = 'none';
+      mobileLogoutBtn.classList.add('hidden');
     }
   }
 }
@@ -274,11 +354,15 @@ if (videosDiv) {
       displayVideos(filteredVideos);
       updateVideoCount(filteredVideos.length);
       
-      // Search functionality
+      // Search functionality with debounce
       const searchInput = document.getElementById('searchInput');
+      let searchTimeout;
       if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-          filterVideos();
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            filterVideos();
+          }, 300); // 300ms debounce
         });
       }
       
@@ -361,7 +445,7 @@ if (videosDiv) {
         <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden border border-red-900 hover-lift backdrop-blur-sm">
           <a href="/watch.html?id=${v._id}" class="block group">
             <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
-              ${v.thumbnail ? `<img src="/api/videos/thumbnail/${v._id}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${v.title}">` : `
+              ${v.thumbnail ? `<img src="/api/videos/thumbnail/${v._id}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${v.title}">` : `
               <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-900 to-gray-900">
                 <svg class="w-20 h-20 text-red-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>

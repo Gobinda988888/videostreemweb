@@ -24,6 +24,13 @@
         background: linear-gradient(to right, #ef4444, #dc2626);
         color: white;
       }
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        .gradient-bg {
+          animation: none;
+          background: #1a1a1a;
+        }
+      }
     </style>
 </head>
 <body class="gradient-bg text-white min-h-screen">
@@ -34,10 +41,40 @@
                     desiixvideo
                 </span>
             </a>
-            <div class="space-x-4 flex items-center">
+            <div class="flex items-center gap-3">
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                    </svg>
+                </button>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-4 items-center">
                 <a href="/" class="hover:text-red-400 transition">Home</a>
                 <a href="/dashboard.html" class="text-red-400">Dashboard</a>
                 <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Slide-out -->
+        <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-90 backdrop-blur-md z-50 transform translate-x-full transition-transform duration-300 md:hidden">
+            <div class="flex flex-col h-full p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Menu</span>
+                    <button id="closeMobileMenu" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="flex flex-col space-y-4 text-lg">
+                    <a href="/" class="p-3 hover:text-red-400 transition">Home</a>
+                    <a href="/dashboard.html" class="p-3 text-red-400">Dashboard</a>
+                    <button id="mobileLogoutBtn" class="p-3 text-left bg-red-600 hover:bg-red-700 rounded-lg transition">Logout</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -419,6 +456,35 @@
 
         // Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        });
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        
+        mobileMenuBtn?.addEventListener('click', () => {
+            mobileMenu.style.transform = 'translateX(0)';
+        });
+        
+        closeMobileMenu?.addEventListener('click', () => {
+            mobileMenu.style.transform = 'translateX(100%)';
+        });
+        
+        // Close menu on link click
+        mobileMenu?.querySelectorAll('a, button').forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.id !== 'closeMobileMenu') {
+                    mobileMenu.style.transform = 'translateX(100%)';
+                }
+            });
+        });
+        
+        // Mobile logout
+        mobileLogoutBtn?.addEventListener('click', () => {
             localStorage.removeItem('token');
             window.location.href = '/login.html';
         });

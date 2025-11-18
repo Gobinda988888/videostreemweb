@@ -28,25 +28,78 @@
     
     <script src="https://cdn.tailwindcss.com?v=3.4.1"></script>
     <style>
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Performance optimizations */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      body {
+        overflow-x: hidden;
+        overscroll-behavior: none;
+      }
+      
+      /* Animations */
       @keyframes gradient {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
+      
       .gradient-bg {
         background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
+        will-change: background-position;
       }
+      
       .glow-red {
         box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
       }
+      
       .hover-lift {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      .hover-lift:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 24px rgba(239, 68, 68, 0.4);
+      
+      @media (hover: hover) and (pointer: fine) {
+        .hover-lift:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 24px rgba(239, 68, 68, 0.4);
+        }
+      }
+      
+      /* Mobile touch feedback */
+      .hover-lift:active {
+        transform: scale(0.98);
+      }
+      
+      /* Smooth transitions */
+      button, a, input, select {
+        transition: all 0.2s ease;
+      }
+      
+      /* Image loading optimization */
+      img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+      }
+      
+      /* Mobile improvements */
+      @media (max-width: 768px) {
+        .gradient-bg {
+          animation: none; /* Disable animation on mobile for performance */
+          background: #1a1a1a;
+        }
+        
+        .hover-lift:hover {
+          transform: none;
+        }
       }
       
       /* Light Mode Styles */
@@ -125,7 +178,17 @@
             <span class="text-xs text-gray-400 -mt-1">HD Content</span>
           </div>
         </a>
-        <div class="space-x-4 flex items-center">
+        
+        <div class="flex items-center gap-3">
+          <!-- Mobile Menu Button -->
+          <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+          
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex space-x-4 items-center">
           <!-- Theme Toggle -->
           <button id="themeToggle" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Toggle theme">
             <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="hidden">
@@ -146,6 +209,37 @@
           <a href="/admin.html" id="adminLink" class="hidden hover:text-red-400 transition">🎯 Admin</a>
           <a href="/upload.html" id="uploadLink" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">📤 Upload</a>
           <button id="logoutBtn" class="hidden hover:text-red-400 transition">Logout</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu Slide-out -->
+      <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-90 backdrop-blur-md z-50 transform translate-x-full transition-transform duration-300 md:hidden">
+        <div class="flex flex-col h-full p-6">
+          <div class="flex justify-between items-center mb-8">
+            <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Menu</span>
+            <button id="closeMobileMenu" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="flex flex-col space-y-4 text-lg">
+            <button id="mobileThemeToggle" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+              <span>🌙</span> Toggle Theme
+            </button>
+            <a href="/desiixvideo.apk" download class="flex items-center gap-3 p-3 rounded-lg bg-green-600 hover:bg-green-700 transition">
+              📱 Download App
+            </a>
+            <a href="/login.html" id="mobileLoginLink" class="p-3 hover:text-red-400 transition">Login</a>
+            <a href="/register.html" id="mobileRegLink" class="p-3 hover:text-red-400 transition">Register</a>
+            <a href="/dashboard.html" id="mobileDashboardLink" class="hidden p-3 hover:text-red-400 transition">📊 Dashboard</a>
+            <a href="/history.html" id="mobileHistoryLink" class="hidden p-3 hover:text-red-400 transition">📜 History</a>
+            <a href="/admin.html" id="mobileAdminLink" class="hidden p-3 hover:text-red-400 transition">🎯 Admin</a>
+            <a href="/upload.html" id="mobileUploadLink" class="hidden p-3 bg-red-600 hover:bg-red-700 rounded-lg transition">📤 Upload</a>
+            <button id="mobileLogoutBtn" class="hidden p-3 text-left hover:text-red-400 transition">Logout</button>
+          </div>
         </div>
       </div>
     </nav>
@@ -198,7 +292,7 @@
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-2xl font-bold">Videos <span id="videoCount" class="text-gray-400 text-lg"></span></h2>
         </div>
-        <div id="videos" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+        <div id="videos" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"></div>
       </div>
     </main>
 
@@ -231,6 +325,34 @@
           moonIcon.classList.remove('hidden');
           localStorage.setItem('theme', 'dark');
         }
+      });
+      
+      // Mobile menu functionality
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeMobileMenu = document.getElementById('closeMobileMenu');
+      const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+      
+      mobileMenuBtn?.addEventListener('click', () => {
+        mobileMenu.style.transform = 'translateX(0)';
+      });
+      
+      closeMobileMenu?.addEventListener('click', () => {
+        mobileMenu.style.transform = 'translateX(100%)';
+      });
+      
+      // Close menu on link click
+      mobileMenu?.querySelectorAll('a, button').forEach(item => {
+        item.addEventListener('click', () => {
+          if (item.id !== 'closeMobileMenu' && item.id !== 'mobileThemeToggle') {
+            mobileMenu.style.transform = 'translateX(100%)';
+          }
+        });
+      });
+      
+      // Mobile theme toggle
+      mobileThemeToggle?.addEventListener('click', () => {
+        themeToggle.click();
       });
       
       // Track visitor on page load
