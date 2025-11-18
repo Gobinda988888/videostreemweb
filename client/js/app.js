@@ -40,29 +40,87 @@ function updateNav() {
   const logoutBtn = document.getElementById('logoutBtn');
 
   if (token) {
-    if (loginLink) loginLink.classList.add('hidden');
-    if (regLink) regLink.classList.add('hidden');
-    if (dashboardLink) dashboardLink.classList.remove('hidden');
-    if (historyLink) historyLink.classList.remove('hidden');
+    // Hide login/register
+    if (loginLink) {
+      loginLink.style.display = 'none';
+      loginLink.classList.add('hidden');
+    }
+    if (regLink) {
+      regLink.style.display = 'none';
+      regLink.classList.add('hidden');
+    }
+    
+    // Show user links
+    if (dashboardLink) {
+      dashboardLink.style.display = '';
+      dashboardLink.classList.remove('hidden');
+    }
+    if (historyLink) {
+      historyLink.style.display = '';
+      historyLink.classList.remove('hidden');
+    }
     if (logoutBtn) {
+      logoutBtn.style.display = '';
       logoutBtn.classList.remove('hidden');
-      logoutBtn.addEventListener('click', () => {
+      // Remove old listener and add new one
+      logoutBtn.onclick = () => {
         clearToken();
         window.location.href = '/';
-      });
+      };
     }
+    
+    // Admin links
     if (isAdmin()) {
-      if (uploadLink) uploadLink.classList.remove('hidden');
-      if (adminLink) adminLink.classList.remove('hidden');
+      if (uploadLink) {
+        uploadLink.style.display = '';
+        uploadLink.classList.remove('hidden');
+      }
+      if (adminLink) {
+        adminLink.style.display = '';
+        adminLink.classList.remove('hidden');
+      }
+    } else {
+      if (uploadLink) {
+        uploadLink.style.display = 'none';
+        uploadLink.classList.add('hidden');
+      }
+      if (adminLink) {
+        adminLink.style.display = 'none';
+        adminLink.classList.add('hidden');
+      }
     }
   } else {
-    if (loginLink) loginLink.classList.remove('hidden');
-    if (regLink) regLink.classList.remove('hidden');
-    if (uploadLink) uploadLink.classList.add('hidden');
-    if (adminLink) adminLink.classList.add('hidden');
-    if (dashboardLink) dashboardLink.classList.add('hidden');
-    if (historyLink) historyLink.classList.add('hidden');
-    if (logoutBtn) logoutBtn.classList.add('hidden');
+    // Show login/register
+    if (loginLink) {
+      loginLink.style.display = '';
+      loginLink.classList.remove('hidden');
+    }
+    if (regLink) {
+      regLink.style.display = '';
+      regLink.classList.remove('hidden');
+    }
+    
+    // Hide user links
+    if (uploadLink) {
+      uploadLink.style.display = 'none';
+      uploadLink.classList.add('hidden');
+    }
+    if (adminLink) {
+      adminLink.style.display = 'none';
+      adminLink.classList.add('hidden');
+    }
+    if (dashboardLink) {
+      dashboardLink.style.display = 'none';
+      dashboardLink.classList.add('hidden');
+    }
+    if (historyLink) {
+      historyLink.style.display = 'none';
+      historyLink.classList.add('hidden');
+    }
+    if (logoutBtn) {
+      logoutBtn.style.display = 'none';
+      logoutBtn.classList.add('hidden');
+    }
   }
 }
 
