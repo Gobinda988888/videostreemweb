@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - desiixvideo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .gradient-bg {
+        background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
+      .glow-red {
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+      }
+      .tab-active {
+        background: linear-gradient(to right, #ef4444, #dc2626);
+        color: white;
+      }
+    </style>
+</head>
+<body class="gradient-bg text-white min-h-screen">
+    <nav class="bg-black bg-opacity-60 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-red-900">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2">
+                <span class="text-2xl font-black bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+                    desiixvideo
+                </span>
+            </a>
+            <div class="space-x-4 flex items-center">
+                <a href="/" class="hover:text-red-400 transition">Home</a>
+                <a href="/dashboard.html" class="text-red-400">Dashboard</a>
+                <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- User Profile Header -->
+        <div class="bg-gray-900 bg-opacity-80 backdrop-blur-lg rounded-xl p-6 mb-8 border border-red-900 glow-red">
+            <div class="flex items-center gap-6">
+                <div class="w-24 h-24 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-4xl font-bold">
+                    <span id="userAvatar"></span>
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold mb-2">Welcome back, <span id="userName"></span>!</h1>
+                    <p class="text-gray-400" id="userEmail"></p>
+                    <div class="flex gap-4 mt-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-400">Member since:</span>
+                            <span class="text-sm font-bold" id="memberSince"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400">Videos Watched</span>
+                    <span class="text-2xl">🎬</span>
+                </div>
+                <div class="text-3xl font-bold" id="watchCount">0</div>
+            </div>
+            
+            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400">Favorites</span>
+                    <span class="text-2xl">❤️</span>
+                </div>
+                <div class="text-3xl font-bold" id="favoriteCount">0</div>
+            </div>
+            
+            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400">Watch Time</span>
+                    <span class="text-2xl">⏱️</span>
+                </div>
+                <div class="text-3xl font-bold" id="watchTime">0h</div>
+            </div>
+            
+            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400">Last Active</span>
+                    <span class="text-2xl">📅</span>
+                </div>
+                <div class="text-lg font-bold" id="lastActive">Today</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-gray-900 bg-opacity-60 rounded-xl border border-gray-700 mb-6 overflow-hidden">
+            <div class="flex border-b border-gray-700">
+                <button class="tab-btn tab-active flex-1 py-4 px-6 font-bold transition" data-tab="history">
+                    📜 Watch History
+                </button>
+                <button class="tab-btn flex-1 py-4 px-6 font-bold transition hover:bg-gray-800" data-tab="favorites">
+                    ❤️ Favorites
+                </button>
+                <button class="tab-btn flex-1 py-4 px-6 font-bold transition hover:bg-gray-800" data-tab="activity">
+                    📊 Activity
+                </button>
+                <button class="tab-btn flex-1 py-4 px-6 font-bold transition hover:bg-gray-800" data-tab="settings">
+                    ⚙️ Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="tabContent">
+            <!-- Watch History Tab -->
+            <div class="tab-content" id="history-content">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">Watch History</h2>
+                    <button id="clearHistoryBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition text-sm">
+                        Clear All History
+                    </button>
+                </div>
+                <div id="historyList" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+                <div id="noHistory" class="text-center py-12 text-gray-400 hidden">
+                    <div class="text-6xl mb-4">📭</div>
+                    <p class="text-xl">No watch history yet</p>
+                    <a href="/" class="inline-block mt-4 bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg transition">
+                        Browse Videos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Favorites Tab -->
+            <div class="tab-content hidden" id="favorites-content">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">My Favorites</h2>
+                    <button id="clearFavoritesBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition text-sm">
+                        Clear All Favorites
+                    </button>
+                </div>
+                <div id="favoritesList" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+                <div id="noFavorites" class="text-center py-12 text-gray-400 hidden">
+                    <div class="text-6xl mb-4">💔</div>
+                    <p class="text-xl">No favorites yet</p>
+                    <p class="text-sm mt-2">Click the ❤️ button on videos to save them here</p>
+                </div>
+            </div>
+
+            <!-- Activity Tab -->
+            <div class="tab-content hidden" id="activity-content">
+                <h2 class="text-2xl font-bold mb-6">Your Activity</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4">Watch Time by Day</h3>
+                        <canvas id="watchTimeChart"></canvas>
+                    </div>
+                    <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4">Top Categories</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-6 bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4">Recent Activity</h3>
+                    <div id="recentActivity" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content hidden" id="settings-content">
+                <h2 class="text-2xl font-bold mb-6">Account Settings</h2>
+                <div class="max-w-2xl space-y-6">
+                    <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4">Profile Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Email</label>
+                                <input type="email" id="settingsEmail" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4">Change Password</h3>
+                        <form id="changePasswordForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Current Password</label>
+                                <input type="password" id="currentPassword" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">New Password</label>
+                                <input type="password" id="newPassword" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white" required>
+                            </div>
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg transition">
+                                Update Password
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4">Preferences</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold">Auto-play next video</div>
+                                    <div class="text-sm text-gray-400">Automatically play the next video after current ends</div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="autoplay" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold">Save watch history</div>
+                                    <div class="text-sm text-gray-400">Keep track of videos you've watched</div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="saveHistory" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-900 bg-opacity-20 p-6 rounded-xl border border-red-800">
+                        <h3 class="text-xl font-bold mb-4 text-red-400">Danger Zone</h3>
+                        <div class="space-y-4">
+                            <button id="deleteAccountBtn" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg transition">
+                                Delete Account
+                            </button>
+                            <p class="text-sm text-gray-400">Once you delete your account, there is no going back.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        // Decode JWT to get user info
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        const userData = parseJwt(token);
+        if (!userData) {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        }
+
+        // Display user info
+        document.getElementById('userName').textContent = userData.email.split('@')[0];
+        document.getElementById('userEmail').textContent = userData.email;
+        document.getElementById('settingsEmail').value = userData.email;
+        document.getElementById('userAvatar').textContent = userData.email[0].toUpperCase();
+        
+        // Member since
+        const memberDate = new Date(userData.iat * 1000);
+        document.getElementById('memberSince').textContent = memberDate.toLocaleDateString();
+
+        // Load watch history
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+            const historyList = document.getElementById('historyList');
+            const noHistory = document.getElementById('noHistory');
+
+            document.getElementById('watchCount').textContent = history.length;
+
+            if (history.length === 0) {
+                historyList.classList.add('hidden');
+                noHistory.classList.remove('hidden');
+                return;
+            }
+
+            historyList.classList.remove('hidden');
+            noHistory.classList.add('hidden');
+
+            historyList.innerHTML = history.slice(0, 20).map(video => `
+                <a href="/watch.html?id=${video.id}" class="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-red-500 transition group">
+                    <div class="aspect-video bg-gray-700 relative overflow-hidden">
+                        ${video.thumbnail ? 
+                            `<img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition">` :
+                            `<div class="w-full h-full flex items-center justify-center text-4xl">🎬</div>`
+                        }
+                        <div class="absolute bottom-2 right-2 bg-black bg-opacity-80 px-2 py-1 rounded text-xs">
+                            ${new Date(video.watchedAt).toLocaleDateString()}
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-bold text-sm line-clamp-2">${video.title}</h3>
+                        <p class="text-xs text-gray-400 mt-1">${video.views || 0} views</p>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Load favorites
+        function loadFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const favoritesList = document.getElementById('favoritesList');
+            const noFavorites = document.getElementById('noFavorites');
+
+            document.getElementById('favoriteCount').textContent = favorites.length;
+
+            if (favorites.length === 0) {
+                favoritesList.classList.add('hidden');
+                noFavorites.classList.remove('hidden');
+                return;
+            }
+
+            favoritesList.classList.remove('hidden');
+            noFavorites.classList.add('hidden');
+
+            favoritesList.innerHTML = favorites.map(video => `
+                <div class="bg-gray-800 rounded-lg overflow-hidden hover:ring-2 hover:ring-red-500 transition group relative">
+                    <a href="/watch.html?id=${video.id}">
+                        <div class="aspect-video bg-gray-700 relative overflow-hidden">
+                            ${video.thumbnail ? 
+                                `<img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition">` :
+                                `<div class="w-full h-full flex items-center justify-center text-4xl">🎬</div>`
+                            }
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-bold text-sm line-clamp-2">${video.title}</h3>
+                            <p class="text-xs text-gray-400 mt-1">${video.views || 0} views</p>
+                        </div>
+                    </a>
+                    <button onclick="removeFavorite('${video.id}')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 p-2 rounded-full">
+                        ❌
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Remove favorite
+        window.removeFavorite = function(videoId) {
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            favorites = favorites.filter(v => v.id !== videoId);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            loadFavorites();
+        };
+
+        // Calculate watch time
+        function calculateWatchTime() {
+            const history = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+            const avgVideoLength = 15; // minutes
+            const totalMinutes = history.length * avgVideoLength;
+            const hours = Math.floor(totalMinutes / 60);
+            document.getElementById('watchTime').textContent = hours + 'h';
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                
+                // Update buttons
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('hover:bg-gray-800');
+                });
+                btn.classList.add('tab-active');
+                btn.classList.remove('hover:bg-gray-800');
+
+                // Update content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(tab + '-content').classList.remove('hidden');
+
+                // Load data for specific tabs
+                if (tab === 'activity') {
+                    loadActivityCharts();
+                }
+            });
+        });
+
+        // Clear history
+        document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all watch history?')) {
+                localStorage.removeItem('watchHistory');
+                loadHistory();
+                calculateWatchTime();
+            }
+        });
+
+        // Clear favorites
+        document.getElementById('clearFavoritesBtn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all favorites?')) {
+                localStorage.removeItem('favorites');
+                loadFavorites();
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        });
+
+        // Change password
+        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match!');
+                return;
+            }
+
+            alert('Password change feature coming soon!');
+        });
+
+        // Activity charts
+        function loadActivityCharts() {
+            const history = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+            
+            // Watch time chart
+            const ctx1 = document.getElementById('watchTimeChart');
+            if (ctx1 && !ctx1.chart) {
+                const last7Days = [...Array(7)].map((_, i) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    return d.toLocaleDateString('en', { weekday: 'short' });
+                }).reverse();
+
+                ctx1.chart = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: last7Days,
+                        datasets: [{
+                            label: 'Videos Watched',
+                            data: [3, 5, 2, 8, 4, 6, history.length > 0 ? Math.min(10, history.length) : 0],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#374151' } },
+                            x: { grid: { color: '#374151' } }
+                        }
+                    }
+                });
+            }
+
+            // Category chart
+            const ctx2 = document.getElementById('categoryChart');
+            if (ctx2 && !ctx2.chart) {
+                ctx2.chart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Bhabhi', 'Devar', 'Step', 'Desi', 'Other'],
+                        datasets: [{
+                            data: [30, 25, 20, 15, 10],
+                            backgroundColor: [
+                                '#ef4444',
+                                '#ec4899',
+                                '#f59e0b',
+                                '#10b981',
+                                '#6b7280'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+
+            // Recent activity
+            const recentActivity = document.getElementById('recentActivity');
+            recentActivity.innerHTML = history.slice(0, 5).map(video => `
+                <div class="flex items-center gap-3 p-3 bg-gray-800 rounded-lg">
+                    <div class="text-2xl">🎬</div>
+                    <div class="flex-1">
+                        <div class="font-bold">${video.title}</div>
+                        <div class="text-sm text-gray-400">${new Date(video.watchedAt).toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-gray-400 text-center py-4">No recent activity</p>';
+        }
+
+        // Preferences
+        document.getElementById('autoplay').addEventListener('change', (e) => {
+            localStorage.setItem('autoplay', e.target.checked);
+        });
+
+        document.getElementById('saveHistory').addEventListener('change', (e) => {
+            localStorage.setItem('saveHistory', e.target.checked);
+        });
+
+        // Load preferences
+        document.getElementById('autoplay').checked = localStorage.getItem('autoplay') !== 'false';
+        document.getElementById('saveHistory').checked = localStorage.getItem('saveHistory') !== 'false';
+
+        // Delete account
+        document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+            if (confirm('Are you ABSOLUTELY sure? This action cannot be undone!')) {
+                if (confirm('Last warning: Your account and all data will be permanently deleted!')) {
+                    alert('Account deletion feature coming soon!');
+                }
+            }
+        });
+
+        // Initialize
+        loadHistory();
+        loadFavorites();
+        calculateWatchTime();
+        document.getElementById('lastActive').textContent = 'Today';
+    </script>
+</body>
+</html>

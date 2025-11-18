@@ -35,12 +35,14 @@ function updateNav() {
   const regLink = document.getElementById('regLink');
   const uploadLink = document.getElementById('uploadLink');
   const adminLink = document.getElementById('adminLink');
+  const dashboardLink = document.getElementById('dashboardLink');
   const historyLink = document.getElementById('historyLink');
   const logoutBtn = document.getElementById('logoutBtn');
 
   if (token) {
     if (loginLink) loginLink.classList.add('hidden');
     if (regLink) regLink.classList.add('hidden');
+    if (dashboardLink) dashboardLink.classList.remove('hidden');
     if (historyLink) historyLink.classList.remove('hidden');
     if (logoutBtn) {
       logoutBtn.classList.remove('hidden');
@@ -58,6 +60,7 @@ function updateNav() {
     if (regLink) regLink.classList.remove('hidden');
     if (uploadLink) uploadLink.classList.add('hidden');
     if (adminLink) adminLink.classList.add('hidden');
+    if (dashboardLink) dashboardLink.classList.add('hidden');
     if (historyLink) historyLink.classList.add('hidden');
     if (logoutBtn) logoutBtn.classList.add('hidden');
   }
