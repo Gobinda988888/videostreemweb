@@ -208,6 +208,20 @@
           <a href="/history.html" id="historyLink" class="hidden hover:text-red-400 transition">📜 History</a>
           <a href="/admin.html" id="adminLink" class="hidden hover:text-red-400 transition">🎯 Admin</a>
           <a href="/upload.html" id="uploadLink" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">📤 Upload</a>
+          
+          <!-- Desktop User Avatar -->
+          <div id="desktopUserAvatar" class="hidden relative cursor-pointer group">
+            <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-xl font-bold hover:scale-110 transition-transform" id="desktopAvatarIcon">
+              👤
+            </div>
+            <!-- Dropdown Menu -->
+            <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-gray-900 border border-red-900 rounded-lg shadow-lg overflow-hidden z-50">
+              <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 transition">📊 Dashboard</a>
+              <button id="desktopChangeAvatar" class="block w-full text-left px-4 py-2 hover:bg-gray-800 transition">🎨 Change Avatar</button>
+              <button id="desktopLogout" class="block w-full text-left px-4 py-2 hover:bg-red-600 transition">🚪 Logout</button>
+            </div>
+          </div>
+          
           <button id="logoutBtn" class="hidden hover:text-red-400 transition">Logout</button>
           </div>
         </div>
@@ -216,7 +230,8 @@
       <!-- Mobile Menu Slide-out -->
       <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-90 backdrop-blur-md z-50 transform translate-x-full transition-transform duration-300 md:hidden">
         <div class="flex flex-col h-full p-6">
-          <div class="flex justify-between items-center mb-8">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-6">
             <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Menu</span>
             <button id="closeMobileMenu" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -225,24 +240,77 @@
             </button>
           </div>
           
-          <div class="flex flex-col space-y-4 text-lg">
+          <!-- User Profile Section (shown when logged in) -->
+          <div id="mobileUserProfile" class="hidden mb-6 p-4 bg-gray-800 rounded-xl">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-3xl font-bold cursor-pointer" id="mobileUserAvatar">
+                👤
+              </div>
+              <div class="flex-1">
+                <div class="text-lg font-bold" id="mobileUserEmail">User</div>
+                <div class="text-sm text-gray-400">Tap avatar to change</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Navigation Links -->
+          <div class="flex flex-col space-y-3 text-lg overflow-y-auto flex-1">
             <button id="mobileThemeToggle" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-              <span>🌙</span> Toggle Theme
+              <span id="mobileThemeIcon">🌙</span> Toggle Theme
             </button>
             <a href="/desiixvideo.apk" download class="flex items-center gap-3 p-3 rounded-lg bg-green-600 hover:bg-green-700 transition">
               📱 Download App
             </a>
-            <a href="/login.html" id="mobileLoginLink" class="p-3 hover:text-red-400 transition">Login</a>
-            <a href="/register.html" id="mobileRegLink" class="p-3 hover:text-red-400 transition">Register</a>
-            <a href="/dashboard.html" id="mobileDashboardLink" class="hidden p-3 hover:text-red-400 transition">📊 Dashboard</a>
-            <a href="/history.html" id="mobileHistoryLink" class="hidden p-3 hover:text-red-400 transition">📜 History</a>
-            <a href="/admin.html" id="mobileAdminLink" class="hidden p-3 hover:text-red-400 transition">🎯 Admin</a>
-            <a href="/upload.html" id="mobileUploadLink" class="hidden p-3 bg-red-600 hover:bg-red-700 rounded-lg transition">📤 Upload</a>
-            <button id="mobileLogoutBtn" class="hidden p-3 text-left hover:text-red-400 transition">Logout</button>
+            
+            <!-- Guest Links -->
+            <a href="/login.html" id="mobileLoginLink" class="flex items-center gap-3 p-3 hover:text-red-400 transition">
+              🔐 Login
+            </a>
+            <a href="/register.html" id="mobileRegLink" class="flex items-center gap-3 p-3 hover:text-red-400 transition">
+              ✨ Register
+            </a>
+            
+            <!-- User Links -->
+            <a href="/dashboard.html" id="mobileDashboardLink" class="hidden flex items-center gap-3 p-3 hover:text-red-400 transition">
+              📊 Dashboard
+            </a>
+            <a href="/history.html" id="mobileHistoryLink" class="hidden flex items-center gap-3 p-3 hover:text-red-400 transition">
+              📜 History
+            </a>
+            
+            <!-- Admin Links -->
+            <a href="/admin.html" id="mobileAdminLink" class="hidden flex items-center gap-3 p-3 hover:text-red-400 transition">
+              🎯 Admin Panel
+            </a>
+            <a href="/upload.html" id="mobileUploadLink" class="hidden flex items-center gap-3 p-3 bg-red-600 hover:bg-red-700 rounded-lg transition">
+              📤 Upload Video
+            </a>
+            
+            <!-- Logout -->
+            <button id="mobileLogoutBtn" class="hidden flex items-center gap-3 p-3 text-left bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+              🚪 Logout
+            </button>
           </div>
         </div>
       </div>
     </nav>
+    
+    <!-- Avatar Selection Modal -->
+    <div id="avatarModal" class="hidden fixed inset-0 bg-black bg-opacity-90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-red-900">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Choose Avatar</h3>
+          <button id="closeAvatarModal" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="grid grid-cols-4 gap-4" id="avatarGrid">
+          <!-- Avatars will be populated here -->
+        </div>
+      </div>
+    </div>
 
     <main class="max-w-7xl mx-auto">
       <!-- Search and Filters Section -->
@@ -353,7 +421,103 @@
       // Mobile theme toggle
       mobileThemeToggle?.addEventListener('click', () => {
         themeToggle.click();
+        const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+        if (body.classList.contains('light-mode')) {
+          mobileThemeIcon.textContent = '☀️';
+        } else {
+          mobileThemeIcon.textContent = '🌙';
+        }
       });
+      
+      // Avatar functionality
+      const avatars = ['👤', '😊', '😎', '🤓', '😇', '🥳', '🤩', '😈', '👨', '👩', '🧔', '👱', '👨‍💼', '👩‍💼', '🦸', '🦹'];
+      const avatarModal = document.getElementById('avatarModal');
+      const avatarGrid = document.getElementById('avatarGrid');
+      const closeAvatarModal = document.getElementById('closeAvatarModal');
+      const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+      
+      // Populate avatar grid
+      avatars.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.className = 'w-16 h-16 text-3xl bg-gray-800 hover:bg-gray-700 rounded-lg transition transform hover:scale-110';
+        btn.textContent = emoji;
+        btn.onclick = () => {
+          localStorage.setItem('userAvatar', emoji);
+          updateUserAvatar();
+          avatarModal.classList.add('hidden');
+        };
+        avatarGrid.appendChild(btn);
+      });
+      
+      // Open avatar modal
+      mobileUserAvatar?.addEventListener('click', () => {
+        avatarModal.classList.remove('hidden');
+      });
+      
+      // Close avatar modal
+      closeAvatarModal?.addEventListener('click', () => {
+        avatarModal.classList.add('hidden');
+      });
+      
+      // Update user avatar
+      function updateUserAvatar() {
+        const avatar = localStorage.getItem('userAvatar') || '👤';
+        if (mobileUserAvatar) {
+          mobileUserAvatar.textContent = avatar;
+        }
+        const desktopAvatarIcon = document.getElementById('desktopAvatarIcon');
+        if (desktopAvatarIcon) {
+          desktopAvatarIcon.textContent = avatar;
+        }
+      }
+      
+      // Desktop avatar handlers
+      const desktopChangeAvatar = document.getElementById('desktopChangeAvatar');
+      const desktopLogout = document.getElementById('desktopLogout');
+      const desktopUserAvatar = document.getElementById('desktopUserAvatar');
+      
+      desktopChangeAvatar?.addEventListener('click', () => {
+        avatarModal.classList.remove('hidden');
+      });
+      
+      desktopLogout?.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      });
+      
+      // Update mobile user profile
+      function updateMobileProfile() {
+        const token = localStorage.getItem('token');
+        const mobileUserProfile = document.getElementById('mobileUserProfile');
+        const mobileUserEmail = document.getElementById('mobileUserEmail');
+        
+        if (token) {
+          const decoded = parseJWT(token);
+          if (decoded && decoded.email) {
+            mobileUserProfile?.classList.remove('hidden');
+            if (mobileUserEmail) {
+              mobileUserEmail.textContent = decoded.email.split('@')[0];
+            }
+            updateUserAvatar();
+          }
+        } else {
+          mobileUserProfile?.classList.add('hidden');
+        }
+      }
+      
+      // Parse JWT token
+      function parseJWT(token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          return JSON.parse(atob(base64));
+        } catch {
+          return null;
+        }
+      }
+      
+      // Update mobile profile on load
+      updateMobileProfile();
       
       // Track visitor on page load
       (async () => {

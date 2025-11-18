@@ -38,6 +38,7 @@ function updateNav() {
   const dashboardLink = document.getElementById('dashboardLink');
   const historyLink = document.getElementById('historyLink');
   const logoutBtn = document.getElementById('logoutBtn');
+  const desktopUserAvatar = document.getElementById('desktopUserAvatar');
   
   // Mobile menu links
   const mobileLoginLink = document.getElementById('mobileLoginLink');
@@ -77,13 +78,14 @@ function updateNav() {
       historyLink.style.display = '';
       historyLink.classList.remove('hidden');
     }
+    // Show desktop avatar instead of logout button
+    if (desktopUserAvatar) {
+      desktopUserAvatar.style.display = '';
+      desktopUserAvatar.classList.remove('hidden');
+    }
     if (logoutBtn) {
-      logoutBtn.style.display = '';
-      logoutBtn.classList.remove('hidden');
-      logoutBtn.onclick = () => {
-        clearToken();
-        window.location.href = '/';
-      };
+      logoutBtn.style.display = 'none';
+      logoutBtn.classList.add('hidden');
     }
     // Show user links (mobile)
     if (mobileDashboardLink) {
@@ -176,6 +178,10 @@ function updateNav() {
       historyLink.style.display = 'none';
       historyLink.classList.add('hidden');
     }
+    if (desktopUserAvatar) {
+      desktopUserAvatar.style.display = 'none';
+      desktopUserAvatar.classList.add('hidden');
+    }
     if (logoutBtn) {
       logoutBtn.style.display = 'none';
       logoutBtn.classList.add('hidden');
@@ -201,6 +207,11 @@ function updateNav() {
       mobileLogoutBtn.style.display = 'none';
       mobileLogoutBtn.classList.add('hidden');
     }
+  }
+  
+  // Update mobile profile if function exists
+  if (typeof updateMobileProfile === 'function') {
+    updateMobileProfile();
   }
 }
 
