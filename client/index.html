@@ -209,17 +209,19 @@
           <a href="/admin.html" id="adminLink" class="hidden hover:text-red-400 transition">🎯 Admin</a>
           <a href="/upload.html" id="uploadLink" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">📤 Upload</a>
           
-          <!-- Desktop User Avatar -->
-          <div id="desktopUserAvatar" class="hidden relative cursor-pointer group">
-            <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-xl font-bold hover:scale-110 transition-transform" id="desktopAvatarIcon">
-              👤
+          <!-- Desktop User Avatar with Logout -->
+          <div id="desktopUserAvatar" class="hidden flex items-center gap-3">
+            <div class="relative cursor-pointer group">
+              <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-xl font-bold hover:scale-110 transition-transform" id="desktopAvatarIcon">
+                👤
+              </div>
+              <!-- Dropdown Menu -->
+              <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-gray-900 border border-red-900 rounded-lg shadow-lg overflow-hidden z-50">
+                <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 transition">📊 Dashboard</a>
+                <button id="desktopChangeAvatar" class="block w-full text-left px-4 py-2 hover:bg-gray-800 transition">🎨 Change Avatar</button>
+              </div>
             </div>
-            <!-- Dropdown Menu -->
-            <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-gray-900 border border-red-900 rounded-lg shadow-lg overflow-hidden z-50">
-              <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 transition">📊 Dashboard</a>
-              <button id="desktopChangeAvatar" class="block w-full text-left px-4 py-2 hover:bg-gray-800 transition">🎨 Change Avatar</button>
-              <button id="desktopLogout" class="block w-full text-left px-4 py-2 hover:bg-red-600 transition">🚪 Logout</button>
-            </div>
+            <button id="desktopLogout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</button>
           </div>
           
           <button id="logoutBtn" class="hidden hover:text-red-400 transition">Logout</button>
