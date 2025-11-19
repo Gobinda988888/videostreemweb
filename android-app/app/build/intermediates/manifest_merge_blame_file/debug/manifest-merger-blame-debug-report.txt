@@ -1,0 +1,116 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.desiixvideo.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:5:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:6:5-79
+12-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:6:22-76
+13    <uses-permission
+13-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:7:5-9:40
+14        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+14-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:7:22-78
+15        android:maxSdkVersion="32" />
+15-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:8:9-35
+16    <uses-permission
+16-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:10:5-11:38
+17        android:name="android.permission.READ_EXTERNAL_STORAGE"
+17-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:10:22-77
+18        android:maxSdkVersion="32" />
+18-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:11:9-35
+19
+20    <permission
+20-->[androidx.core:core:1.9.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\543740e42155bb89dcbd6bdda0f43b68\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+21        android:name="com.desiixvideo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+21-->[androidx.core:core:1.9.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\543740e42155bb89dcbd6bdda0f43b68\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+22        android:protectionLevel="signature" />
+22-->[androidx.core:core:1.9.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\543740e42155bb89dcbd6bdda0f43b68\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+23
+24    <uses-permission android:name="com.desiixvideo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+24-->[androidx.core:core:1.9.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\543740e42155bb89dcbd6bdda0f43b68\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+24-->[androidx.core:core:1.9.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\543740e42155bb89dcbd6bdda0f43b68\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+25
+26    <application
+26-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:13:5-38:19
+27        android:allowBackup="true"
+27-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:14:9-35
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.9.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\543740e42155bb89dcbd6bdda0f43b68\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+29        android:debuggable="true"
+30        android:extractNativeLibs="true"
+31        android:hardwareAccelerated="true"
+31-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:21:9-43
+32        android:icon="@android:drawable/ic_menu_view"
+32-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:15:9-54
+33        android:label="@string/app_name"
+33-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:16:9-41
+34        android:roundIcon="@android:drawable/ic_menu_view"
+34-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:17:9-59
+35        android:supportsRtl="true"
+35-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:18:9-35
+36        android:theme="@style/Theme.DesiixVideo"
+36-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:19:9-49
+37        android:usesCleartextTraffic="false" >
+37-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:20:9-45
+38        <activity
+38-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:23:9-31:20
+39            android:name="com.desiixvideo.app.SplashActivity"
+39-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:24:13-43
+40            android:exported="true"
+40-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:25:13-36
+41            android:theme="@style/Theme.DesiixVideo.Splash" >
+41-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:26:13-60
+42            <intent-filter>
+42-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:27:13-30:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:28:17-69
+43-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:28:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:29:17-77
+45-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:29:27-74
+46            </intent-filter>
+47        </activity>
+48        <activity
+48-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:33:9-37:58
+49            android:name="com.desiixvideo.app.MainActivity"
+49-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:34:13-41
+50            android:configChanges="orientation|screenSize|keyboardHidden"
+50-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:36:13-74
+51            android:exported="false"
+51-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:35:13-37
+52            android:windowSoftInputMode="adjustResize" />
+52-->C:\Users\GOBINDA\Desktop\porn\android-app\app\src\main\AndroidManifest.xml:37:13-55
+53
+54        <provider
+54-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+55            android:name="androidx.startup.InitializationProvider"
+55-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+56            android:authorities="com.desiixvideo.app.androidx-startup"
+56-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+57            android:exported="false" >
+57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+58            <meta-data
+58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+59                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+59-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+60                android:value="androidx.startup" />
+60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\GOBINDA\.gradle\caches\transforms-3\78e0f475248ccf690a14f03fa1cc16c2\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+61            <meta-data
+61-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\GOBINDA\.gradle\caches\transforms-3\a08e537b82c7c1ecb0346f490fbd9592\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+62                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+62-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\GOBINDA\.gradle\caches\transforms-3\a08e537b82c7c1ecb0346f490fbd9592\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+63                android:value="androidx.startup" />
+63-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\GOBINDA\.gradle\caches\transforms-3\a08e537b82c7c1ecb0346f490fbd9592\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+64        </provider>
+65    </application>
+66
+67</manifest>

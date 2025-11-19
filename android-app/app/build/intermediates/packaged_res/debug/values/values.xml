@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gray_dark">#9ca3af</color>
+    <color name="ic_launcher_background">#1a1a1a</color>
+    <color name="primary_pink">#ec4899</color>
+    <color name="primary_red">#ef4444</color>
+    <color name="splash_background">#1a1a1a</color>
+    <string name="app_name">desiixvideo</string>
+    <style name="Theme.DesiixVideo" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#ef4444</item>
+        <item name="colorPrimaryDark">#1a1a1a</item>
+        <item name="colorAccent">#ec4899</item>
+        <item name="android:statusBarColor">#1a1a1a</item>
+        <item name="android:navigationBarColor">#1a1a1a</item>
+    </style>
+    <style name="Theme.DesiixVideo.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:statusBarColor">#1a1a1a</item>
+        <item name="android:navigationBarColor">#1a1a1a</item>
+    </style>
+</resources>

@@ -769,6 +769,44 @@ function initializeVideoPlayer() {
     loadingOverlay.style.display = 'none';
   });
   
+  video.addEventListener('canplaythrough', () => {
+    loadingOverlay.style.display = 'none';
+  });
+  
+  // Error handling
+  video.addEventListener('error', (e) => {
+    console.error('Video error:', e);
+    loadingOverlay.style.display = 'none';
+    videoContainer.innerHTML = `
+      <div class="p-8 text-center bg-gray-800 rounded-lg">
+        <p class="text-red-400 mb-4">⚠️ Failed to load video</p>
+        <p class="text-gray-400 mb-4">The video file may be corrupted or the link has expired.</p>
+        <button onclick="window.location.reload()" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg">
+          Retry
+        </button>
+      </div>
+    `;
+  });
+  
+  // If stuck loading for too long
+  let loadingTimeout;
+  video.addEventListener('loadstart', () => {
+    loadingOverlay.style.display = 'block';
+    clearTimeout(loadingTimeout);
+    loadingTimeout = setTimeout(() => {
+      if (video.readyState < 3) {
+        console.warn('Video loading timeout - attempting reload');
+        const currentTime = video.currentTime;
+        video.load();
+        video.currentTime = currentTime;
+      }
+    }, 10000); // 10 second timeout
+  });
+  
+  video.addEventListener('loadeddata', () => {
+    clearTimeout(loadingTimeout);
+  });
+  
   // Keyboard controls
   document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {

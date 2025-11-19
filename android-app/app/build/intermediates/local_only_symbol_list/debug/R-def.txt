@@ -1,0 +1,16 @@
+R_DEF: Internal format may change without notice
+local
+color gray_dark
+color ic_launcher_background
+color primary_pink
+color primary_red
+color splash_background
+id webView
+layout activity_main
+layout activity_splash
+mipmap ic_launcher
+mipmap ic_launcher_foreground
+mipmap ic_launcher_round
+string app_name
+style Theme.DesiixVideo
+style Theme.DesiixVideo.Splash

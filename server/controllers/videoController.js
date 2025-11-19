@@ -51,7 +51,7 @@ const watchVideo = async (req, res) => {
     if (!video) return res.status(404).json({ message: 'Not found' });
     
     console.log('🔗 Generating signed URL for:', video.filename);
-    const signedUrl = await getSignedUrl(video.filename, 60 * 30);
+    const signedUrl = await getSignedUrl(video.filename, 60 * 60 * 2); // 2 hours
     console.log('✅ Signed URL generated');
     res.json({ url: signedUrl });
   } catch (err) {
