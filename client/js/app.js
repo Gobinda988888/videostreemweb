@@ -500,10 +500,7 @@ if (videosDiv) {
       `
         )
         .join('');
-    } catch (err) {
-      videosDiv.innerHTML = `<p class="text-red-400">${err.message}</p>`;
-    }
-  })();
+  }
 }
 
 // Delete video
