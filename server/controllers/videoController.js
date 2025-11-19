@@ -50,13 +50,24 @@ const watchVideo = async (req, res) => {
     const video = await Video.findById(id);
     if (!video) return res.status(404).json({ message: 'Not found' });
     
-    console.log('🔗 Generating signed URL for:', video.filename);
-    const signedUrl = await getSignedUrl(video.filename, 60 * 60 * 2); // 2 hours
-    console.log('✅ Signed URL generated');
-    res.json({ url: signedUrl });
+    // Check if R2_PUBLIC_URL is configured (custom domain with CORS enabled)
+    const publicUrl = process.env.R2_PUBLIC_URL;
+    
+    if (publicUrl) {
+      // Use public URL (no CORS issues)
+      const directUrl = `${publicUrl}/${video.filename}`;
+      console.log('🔗 Using public URL:', directUrl);
+      res.json({ url: directUrl });
+    } else {
+      // Fallback to signed URL (requires CORS configuration)
+      console.log('🔗 Generating signed URL for:', video.filename);
+      const signedUrl = await getSignedUrl(video.filename, 60 * 60 * 2); // 2 hours
+      console.log('✅ Signed URL generated');
+      res.json({ url: signedUrl });
+    }
   } catch (err) {
-    console.error('❌ Failed to get signed url:', err);
-    res.status(500).json({ message: 'Failed to get signed url: ' + err.message });
+    console.error('❌ Failed to get video URL:', err);
+    res.status(500).json({ message: 'Failed to get video URL: ' + err.message });
   }
 };
 
@@ -70,8 +81,16 @@ const getThumbnail = async (req, res) => {
       return res.status(404).json({ message: 'No thumbnail' });
     }
     
-    const signedUrl = await getSignedUrl(video.thumbnail, 60 * 60);
-    res.redirect(signedUrl);
+    // Check if R2_PUBLIC_URL is configured
+    const publicUrl = process.env.R2_PUBLIC_URL;
+    
+    if (publicUrl) {
+      const directUrl = `${publicUrl}/${video.thumbnail}`;
+      res.redirect(directUrl);
+    } else {
+      const signedUrl = await getSignedUrl(video.thumbnail, 60 * 60);
+      res.redirect(signedUrl);
+    }
   } catch (err) {
     console.error('Failed to get thumbnail:', err);
     res.status(500).json({ message: 'Failed to get thumbnail' });
