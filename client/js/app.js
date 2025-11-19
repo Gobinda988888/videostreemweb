@@ -545,8 +545,11 @@ if (videoContainer) {
             id="mainVideo" 
             class="w-full"
             preload="auto"
+            crossorigin="anonymous"
           >
             <source src="${data.url}" type="video/mp4" />
+            <source src="${data.url}" type="video/webm" />
+            <source src="${data.url}" type="video/ogg" />
             Your browser does not support video playback.
           </video>
           
@@ -762,25 +765,45 @@ function initializeVideoPlayer() {
   
   // Loading indicator
   video.addEventListener('waiting', () => {
+    console.log('Video waiting to load...');
     loadingOverlay.style.display = 'block';
   });
   
   video.addEventListener('canplay', () => {
+    console.log('Video can play');
     loadingOverlay.style.display = 'none';
   });
   
   video.addEventListener('canplaythrough', () => {
+    console.log('Video can play through without buffering');
     loadingOverlay.style.display = 'none';
+  });
+  
+  video.addEventListener('loadedmetadata', () => {
+    console.log('Video metadata loaded - Duration:', video.duration);
+  });
+  
+  video.addEventListener('progress', () => {
+    if (video.buffered.length > 0) {
+      console.log('Video buffering progress:', Math.round((video.buffered.end(0) / video.duration) * 100) + '%');
+    }
   });
   
   // Error handling
   video.addEventListener('error', (e) => {
     console.error('Video error:', e);
+    console.error('Video error code:', video.error ? video.error.code : 'unknown');
+    console.error('Video error message:', video.error ? video.error.message : 'unknown');
+    console.error('Video network state:', video.networkState);
+    console.error('Video ready state:', video.readyState);
+    console.error('Video source:', video.src);
+    
     loadingOverlay.style.display = 'none';
     videoContainer.innerHTML = `
       <div class="p-8 text-center bg-gray-800 rounded-lg">
         <p class="text-red-400 mb-4">⚠️ Failed to load video</p>
-        <p class="text-gray-400 mb-4">The video file may be corrupted or the link has expired.</p>
+        <p class="text-gray-400 mb-4">The video file may be corrupted, incompatible, or the link has expired.</p>
+        <p class="text-gray-500 text-sm mb-4">Error code: ${video.error ? video.error.code : 'unknown'}</p>
         <button onclick="window.location.reload()" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg">
           Retry
         </button>
@@ -804,7 +827,21 @@ function initializeVideoPlayer() {
   });
   
   video.addEventListener('loadeddata', () => {
+    console.log('Video data loaded');
     clearTimeout(loadingTimeout);
+  });
+  
+  // Check if browser supports the video format
+  const canPlayMp4 = video.canPlayType('video/mp4');
+  console.log('Browser can play MP4:', canPlayMp4);
+  
+  // If video doesn't start playing after data is loaded
+  video.addEventListener('suspend', (e) => {
+    console.log('Video loading suspended:', e);
+  });
+  
+  video.addEventListener('stalled', (e) => {
+    console.log('Video loading stalled:', e);
   });
   
   // Keyboard controls
