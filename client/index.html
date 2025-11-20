@@ -62,6 +62,18 @@
       .glow-red {
         box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
       }
+
+      /* Skeleton styles for loading state */
+      .skeleton {
+        background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s linear infinite;
+      }
+
+      @keyframes skeleton-loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
       
       .hover-lift {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);

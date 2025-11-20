@@ -22,6 +22,35 @@ function parseJWT(token) {
   }
 }
 
+// HTML escape helper (simple)
+function escapeHtml(text) {
+  if (!text) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Render skeleton placeholders for the videos grid
+function renderSkeletons(count) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += `
+      <div class="rounded-xl overflow-hidden border border-gray-700 bg-gray-800 p-0">
+        <div class="aspect-video w-full skeleton"></div>
+        <div class="p-4">
+          <div class="h-4 w-3/4 skeleton mb-3 rounded"></div>
+          <div class="h-3 w-full skeleton mb-2 rounded"></div>
+          <div class="h-3 w-1/2 skeleton rounded"></div>
+        </div>
+      </div>
+    `;
+  }
+  return html;
+}
+
 function isAdmin() {
   const token = getToken();
   if (!token) return false;
@@ -353,6 +382,8 @@ if (videosDiv) {
   
   (async () => {
     try {
+      // Render skeleton placeholders while we fetch
+      videosDiv.innerHTML = renderSkeletons(8);
       const data = await apiCall('GET', '/videos/list');
       allVideos = data.videos || [];
       filteredVideos = [...allVideos];
@@ -453,10 +484,10 @@ if (videosDiv) {
     videosDiv.innerHTML = videos
         .map(
           (v) => `
-        <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden border border-red-900 hover-lift backdrop-blur-sm">
+        <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden border border-red-900 hover-lift backdrop-blur-sm" role="article" aria-label="${escapeHtml(v.title)}">
           <a href="/watch.html?id=${v._id}" class="block group">
-            <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
-              ${v.thumbnail ? `<img src="/api/videos/thumbnail/${v._id}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${v.title}">` : `
+            <a href="/watch.html?id=${v._id}" class="block group">
+              ${v.thumbnail ? `<img src="/api/videos/thumbnail/${v._id}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${escapeHtml(v.title)}">` : `
               <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-900 to-gray-900">
                 <svg class="w-20 h-20 text-red-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
@@ -473,6 +504,7 @@ if (videosDiv) {
                   </div>
                 </div>
               </div>
+              <div class="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${v.duration || ''}</div>
               <div class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">HD</div>
             </div>
             <div class="p-4">
@@ -480,8 +512,8 @@ if (videosDiv) {
               <p class="text-sm text-gray-400 line-clamp-2">${v.description || 'No description'}</p>
               <div class="mt-3 flex items-center justify-between text-xs text-gray-500">
                 <div class="flex items-center gap-3">
-                  <span class="flex items-center gap-1">
-                    �️ ${(v.views || 0).toLocaleString()}
+                  <span class="flex items-center gap-1" aria-hidden="true">
+                    👁️ ${(v.views || 0).toLocaleString()}
                   </span>
                   <span class="flex items-center gap-1">
                     ❤️ ${(v.likes || 0).toLocaleString()}
@@ -540,7 +572,9 @@ if (videoContainer) {
       
       // Build custom video player
       videoContainer.innerHTML = `
-        <div class="video-wrapper">
+        <div class="flex flex-col md:flex-row gap-6">
+          <div class="video-col md:w-2/3">
+            <div class="video-wrapper">
           <video 
             id="mainVideo" 
             class="w-full"
@@ -552,7 +586,14 @@ if (videoContainer) {
             <source src="${data.url}" type="video/ogg" />
             Your browser does not support video playback.
           </video>
-          
+              <div class="big-play-btn" id="bigPlayBtn" style="display:none; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:12;">
+                <button id="bigPlayButton" class="bg-red-600 hover:bg-red-700 rounded-full p-4 shadow-2xl transition-transform transform hover:scale-105 text-white">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
+              </div>
+
           <div class="loading-overlay" id="loadingOverlay" style="display: none;">
             <div class="spinner"></div>
           </div>
@@ -590,10 +631,35 @@ if (videoContainer) {
                 </svg>
               </button>
               
+              <button class="control-btn" id="pipBtn" title="Picture-in-Picture">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 7H5c-1.1 0-2 .9-2 2v6h2V9h14V7zM21 11v6c0 1.1-.9 2-2 2H9v-2h10v-6h2z"></path></svg>
+              </button>
+
+              <select id="speedSelect" class="bg-gray-800 text-white px-2 py-1 rounded ml-2">
+                <option value="0.5">0.5x</option>
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+              </select>
+
+              <a id="downloadBtn" class="control-btn" download target="_blank" title="Download Video" href="${data.url}" style="text-decoration:none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.67v4h6V9h3.67L12 2z"/></svg>
+              </a>
+              
               <div class="time-display">
                 <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
               </div>
             </div>
+            <div class="md:w-1/3">
+              <div class="video-info">
+                <h1 class="text-2xl font-bold mb-2">${currentVideo.title}</h1>
+                <p class="text-gray-300 mb-4">${currentVideo.description || 'No description'}</p>
+                <div id="relatedVideos" class="space-y-3"></div>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
         
@@ -667,6 +733,8 @@ if (videoContainer) {
 
 function initializeVideoPlayer() {
   const video = document.getElementById('mainVideo');
+  const bigPlayBtn = document.getElementById('bigPlayBtn');
+  const bigPlayButton = document.getElementById('bigPlayButton');
   const playPauseBtn = document.getElementById('playPauseBtn');
   const playIcon = document.getElementById('playIcon');
   const pauseIcon = document.getElementById('pauseIcon');
@@ -680,11 +748,22 @@ function initializeVideoPlayer() {
   const volumeSlider = document.getElementById('volumeSlider');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
   const loadingOverlay = document.getElementById('loadingOverlay');
+  const pipBtn = document.getElementById('pipBtn');
+  const speedSelect = document.getElementById('speedSelect');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const relatedContainer = document.getElementById('relatedVideos');
   
   if (!video) return;
   
   // Auto play
   video.play().catch(() => {});
+
+  // Ensure big play overlay shows if not playing (autoplay blocked or paused)
+  if (video.paused) {
+    if (bigPlayBtn) bigPlayBtn.style.display = 'flex';
+  } else {
+    if (bigPlayBtn) bigPlayBtn.style.display = 'none';
+  }
   
   // Play/Pause
   playPauseBtn.addEventListener('click', () => {
@@ -713,6 +792,20 @@ function initializeVideoPlayer() {
       video.pause();
     }
   });
+
+  // Big play overlay
+  function showBigPlay() {
+    if (bigPlayBtn) bigPlayBtn.style.display = 'flex';
+  }
+  function hideBigPlay() {
+    if (bigPlayBtn) bigPlayBtn.style.display = 'none';
+  }
+
+  // Set overlay state
+  video.addEventListener('play', hideBigPlay);
+  video.addEventListener('pause', showBigPlay);
+  video.addEventListener('ended', showBigPlay);
+  if (bigPlayButton) bigPlayButton.addEventListener('click', () => video.play());
   
   // Progress bar
   video.addEventListener('timeupdate', () => {
@@ -762,6 +855,34 @@ function initializeVideoPlayer() {
       document.exitFullscreen();
     }
   });
+
+  // Picture-in-Picture
+  if (pipBtn) {
+    pipBtn.addEventListener('click', async () => {
+      try {
+        if (document.pictureInPictureElement) {
+          await document.exitPictureInPicture();
+        } else if (video.requestPictureInPicture) {
+          await video.requestPictureInPicture();
+        }
+      } catch (err) {
+        console.error('PIP error', err);
+      }
+    });
+  }
+
+  // Speed control
+  if (speedSelect) {
+    speedSelect.addEventListener('change', (e) => {
+      const rate = parseFloat(e.target.value);
+      video.playbackRate = rate;
+    });
+  }
+
+  // Download button
+  if (downloadBtn) {
+    downloadBtn.setAttribute('href', video.currentSrc || video.src);
+  }
   
   // Loading indicator
   video.addEventListener('waiting', () => {
@@ -925,6 +1046,7 @@ function showRelatedVideos(allVideos, currentId) {
   const shuffled = [...topRelated, ...randomOthers];
   
   // Create related videos section
+  const relatedContainer = document.getElementById('relatedVideos');
   const relatedSection = document.createElement('div');
   relatedSection.className = 'p-6';
   relatedSection.innerHTML = `
@@ -987,7 +1109,11 @@ function showRelatedVideos(allVideos, currentId) {
     </div>
   `;
   
-  videoContainer.appendChild(relatedSection);
+  if (relatedContainer) {
+    relatedContainer.innerHTML = relatedSection.innerHTML;
+  } else {
+    videoContainer.appendChild(relatedSection);
+  }
 }
 
 // Track video view
