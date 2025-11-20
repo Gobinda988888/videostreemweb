@@ -644,9 +644,7 @@ if (videoContainer) {
                 <option value="2">2x</option>
               </select>
 
-              <a id="downloadBtn" class="control-btn" download target="_blank" title="Download Video" href="${data.url}" style="text-decoration:none;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.67v4h6V9h3.67L12 2z"/></svg>
-              </a>
+              <!-- Download button removed to prevent direct video downloads -->
               
               <div class="time-display">
                 <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
@@ -750,7 +748,6 @@ function initializeVideoPlayer() {
   const loadingOverlay = document.getElementById('loadingOverlay');
   const pipBtn = document.getElementById('pipBtn');
   const speedSelect = document.getElementById('speedSelect');
-  const downloadBtn = document.getElementById('downloadBtn');
   const relatedContainer = document.getElementById('relatedVideos');
   
   if (!video) return;
@@ -879,10 +876,7 @@ function initializeVideoPlayer() {
     });
   }
 
-  // Download button
-  if (downloadBtn) {
-    downloadBtn.setAttribute('href', video.currentSrc || video.src);
-  }
+  // Download: removed (video downloads are disabled by design)
   
   // Loading indicator
   video.addEventListener('waiting', () => {
