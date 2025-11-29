@@ -103,6 +103,7 @@
       }
       
       /* Mobile improvements */
+      /* Mobile Responsive Improvements */
       @media (max-width: 768px) {
         .gradient-bg {
           animation: none; /* Disable animation on mobile for performance */
@@ -111,6 +112,49 @@
         
         .hover-lift:hover {
           transform: none;
+        }
+        
+        /* Better touch targets */
+        button, a {
+          min-height: 44px;
+          min-width: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* Prevent zoom on input focus */
+        input, select, textarea {
+          font-size: 16px !important;
+        }
+        
+        /* Optimize video grid for mobile */
+        #videos {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 8px !important;
+        }
+        
+        /* Reduce padding on mobile */
+        main {
+          padding: 12px !important;
+        }
+        
+        /* Make navigation sticky and compact */
+        nav {
+          padding: 8px 12px !important;
+        }
+        
+        /* Smaller text on mobile */
+        h1, h2 {
+          font-size: 1.25rem !important;
+        }
+      }
+      
+      /* Very small screens */
+      @media (max-width: 480px) {
+        #videos {
+          grid-template-columns: repeat(1, 1fr) !important;
+          gap: 12px !important;
         }
       }
       

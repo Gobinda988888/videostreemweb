@@ -652,75 +652,66 @@ if (videoContainer) {
               </div>
             </div>
           </div>
-          
-          <!-- Video Info Below Player -->
-          <div class="bg-gray-800 bg-opacity-60 rounded-xl p-6 mt-4 backdrop-blur-sm border border-red-900">
-          <h1 class="text-2xl font-bold mb-2">${currentVideo.title}</h1>
-          <p class="text-gray-300 mb-4">${currentVideo.description || 'No description'}</p>
-          
-          <!-- Engagement Stats -->
-          <div class="flex flex-wrap gap-4 mb-4">
-            <div class="flex items-center gap-2 bg-gray-700 px-4 py-2 rounded-lg">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-              </svg>
-              <span id="viewCount">${currentVideo.views || 0}</span> views
-            </div>
-            
-            <button onclick="likeVideo('${id}')" class="flex items-center gap-2 bg-gray-700 hover:bg-red-600 px-4 py-2 rounded-lg transition">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
-              </svg>
-              <span id="likeCount">${currentVideo.likes || 0}</span>
-            </button>
-            
-            <div class="flex items-center gap-2 bg-gray-700 px-4 py-2 rounded-lg">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
-              </svg>
-              <span id="commentCount">${currentVideo.comments?.length || 0}</span>
-            </div>
-          </div>
-          
-          <!-- Comments Section -->
-          <div class="bg-gray-700 rounded-lg p-4">
-            <h3 class="font-bold mb-3">💬 Comments</h3>
-            <div class="mb-3">
-              <input type="text" id="commentUsername" placeholder="Your name" 
-                class="w-full bg-gray-800 rounded px-3 py-2 mb-2 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
-              <textarea id="commentText" placeholder="Write a comment..." 
-                class="w-full bg-gray-800 rounded px-3 py-2 mb-2 text-white focus:outline-none focus:ring-2 focus:ring-red-500" rows="2"></textarea>
-              <button onclick="addComment('${id}')" 
-                class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold transition">
-                Post Comment
-              </button>
-            </div>
-            <div id="commentsList" class="space-y-2">
-              ${(currentVideo.comments || []).map(c => `
-                <div class="bg-gray-800 rounded p-3">
-                  <div class="font-bold text-sm text-red-400">${c.username}</div>
-                  <div class="text-sm">${c.text}</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
         </div>
-      `;
-      
-      // Initialize video player controls
-      initializeVideoPlayer();
-      
-      // Track video view
-              `).join('')}
+            
+            <!-- Video Info Below Player -->
+            <div class="bg-gray-800 bg-opacity-60 rounded-xl p-4 md:p-6 mt-4 backdrop-blur-sm border border-red-900">
+              <h1 class="text-xl md:text-2xl font-bold mb-2">${currentVideo.title}</h1>
+              <p class="text-sm md:text-base text-gray-300 mb-4">${currentVideo.description || 'No description'}</p>
+              
+              <!-- Engagement Stats -->
+              <div class="flex flex-wrap gap-2 md:gap-4 mb-4">
+                <div class="flex items-center gap-2 bg-gray-700 px-3 md:px-4 py-2 rounded-lg text-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                  </svg>
+                  <span id="viewCount">${currentVideo.views || 0}</span>
+                </div>
+                
+                <button onclick="likeVideo('${id}')" class="flex items-center gap-2 bg-gray-700 hover:bg-red-600 px-3 md:px-4 py-2 rounded-lg transition text-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                  </svg>
+                  <span id="likeCount">${currentVideo.likes || 0}</span>
+                </button>
+                
+                <div class="flex items-center gap-2 bg-gray-700 px-3 md:px-4 py-2 rounded-lg text-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                  </svg>
+                  <span id="commentCount">${currentVideo.comments?.length || 0}</span>
+                </div>
+              </div>
+              
+              <!-- Comments Section -->
+              <div class="bg-gray-700 rounded-lg p-3 md:p-4">
+                <h3 class="font-bold mb-3 text-sm md:text-base">💬 Comments</h3>
+                <div class="mb-3">
+                  <input type="text" id="commentUsername" placeholder="Your name" 
+                    class="w-full bg-gray-800 rounded px-3 py-2 mb-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                  <textarea id="commentText" placeholder="Write a comment..." 
+                    class="w-full bg-gray-800 rounded px-3 py-2 mb-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500" rows="2"></textarea>
+                  <button onclick="addComment('${id}')" 
+                    class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold transition text-sm w-full md:w-auto">
+                    Post Comment
+                  </button>
+                </div>
+                <div id="commentsList" class="space-y-2">
+                  ${(currentVideo.comments || []).map(c => `
+                    <div class="bg-gray-800 rounded p-3">
+                      <div class="font-bold text-xs md:text-sm text-red-400">${c.username}</div>
+                      <div class="text-xs md:text-sm">${c.text}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
             </div>
-          </div>
-          </div>
           </div>
           
           <!-- Related Videos Sidebar -->
-          <div class="lg:w-80 flex-shrink-0">
-            <div class="lg:sticky lg:top-24">
-              <h2 class="text-xl font-bold mb-4 px-2">Related Videos</h2>
+          <div class="lg:w-80 flex-shrink-0 mt-6 lg:mt-0">
+            <div class="lg:sticky lg:top-24 px-2 md:px-0">
+              <h2 class="text-lg md:text-xl font-bold mb-4">Related Videos</h2>
               <div id="relatedVideos" class="space-y-3"></div>
             </div>
           </div>
@@ -828,12 +819,30 @@ function initializeVideoPlayer() {
     durationEl.textContent = formatTime(video.duration);
   });
   
-  progressBar.addEventListener('click', (e) => {
+  // Progress bar - support both click and touch
+  const seekVideo = (e) => {
     e.stopPropagation();
     e.preventDefault();
     const rect = progressBar.getBoundingClientRect();
-    const percent = (e.clientX - rect.left) / rect.width;
-    video.currentTime = percent * video.duration;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const percent = (clientX - rect.left) / rect.width;
+    video.currentTime = Math.max(0, Math.min(1, percent)) * video.duration;
+  };
+  
+  progressBar.addEventListener('click', seekVideo);
+  progressBar.addEventListener('touchstart', seekVideo);
+  
+  // Touch drag on progress bar
+  let isSeeking = false;
+  progressBar.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      isSeeking = true;
+      seekVideo(e);
+    }
+  });
+  
+  progressBar.addEventListener('touchend', () => {
+    isSeeking = false;
   });
   
   // Volume
@@ -1074,14 +1083,14 @@ function showRelatedVideos(allVideos, currentId) {
       <div class="relative w-40 flex-shrink-0">
         <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden">
           ${video.thumbnail ? 
-            `<img src="/api/videos/thumbnail/${video._id}" alt="${video.title}" class="w-full h-full object-cover">` : 
+            `<img src="/api/videos/thumbnail/${video._id}" alt="${video.title}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900\\'><svg class=\\'w-8 h-8 text-gray-600\\' fill=\\'currentColor\\' viewBox=\\'0 0 20 20\\'><path d=\\'M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z\\'/></svg></div>'">` : 
             `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
               <svg class="w-8 h-8 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
               </svg>
             </div>`
           }
-          ${video.duration ? `<span class="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 rounded">${video.duration}</span>` : ''}
+          <span class="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 rounded">${video.duration || '0:00'}</span>
         </div>
       </div>
       <div class="flex-1 min-w-0">
