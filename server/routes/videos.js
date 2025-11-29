@@ -15,6 +15,7 @@ const upload = multer({ storage });
 
 // Admin-only routes - require admin privileges
 router.post('/upload', adminAuth, upload.fields([{ name: 'video' }, { name: 'thumbnail' }]), uploadVideo);
+router.put('/:id', adminAuth, upload.single('thumbnail'), require('../controllers/videoController').updateVideo);
 router.delete('/:id', adminAuth, deleteVideo);
 
 // Public routes - no authentication required

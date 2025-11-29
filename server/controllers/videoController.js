@@ -1,28 +1,81 @@
 ﻿const Video = require('../models/Video');
 const { uploadStream, getSignedUrl, deleteObject } = require('../utils/r2');
+const ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const path = require('path');
+const fs = require('fs');
+
+// Set ffmpeg path
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const uploadVideo = async (req, res) => {
   try {
     if (!req.user || !req.user.isAdmin) return res.status(403).json({ message: 'Forbidden' });
-    const { title, description } = req.body;
+    const { title, description, category, tags } = req.body;
+    
+    if (!title || title.trim() === '') {
+      return res.status(400).json({ message: 'Title is required' });
+    }
+    
     const videoFile = req.files && req.files.video && req.files.video[0];
     const thumbFile = req.files && req.files.thumbnail && req.files.thumbnail[0];
     if (!videoFile) return res.status(400).json({ message: 'Missing video file' });
     
     console.log('📤 Uploading video to R2:', videoFile.originalname);
+    console.log('📝 Title:', title);
     const videoKey = 'videos/' + Date.now() + '_' + videoFile.originalname;
     await uploadStream(videoKey, videoFile.buffer, videoFile.mimetype);
     console.log('✅ Video uploaded to R2:', videoKey);
     
+    // Generate thumbnail from video
     let thumbKey = '';
-    if (thumbFile) {
-      console.log('📤 Uploading thumbnail to R2:', thumbFile.originalname);
-      thumbKey = 'thumbnails/' + Date.now() + '_' + thumbFile.originalname;
-      await uploadStream(thumbKey, thumbFile.buffer, thumbFile.mimetype);
-      console.log('✅ Thumbnail uploaded to R2:', thumbKey);
+    try {
+      console.log('🎬 Generating thumbnail from video...');
+      const tempVideoPath = path.join(__dirname, '../uploads/temp_' + Date.now() + '.mp4');
+      const tempThumbPath = path.join(__dirname, '../uploads/thumb_' + Date.now() + '.jpg');
+      
+      // Write video buffer to temp file
+      fs.writeFileSync(tempVideoPath, videoFile.buffer);
+      
+      // Extract thumbnail at 2 seconds
+      await new Promise((resolve, reject) => {
+        ffmpeg(tempVideoPath)
+          .screenshots({
+            timestamps: ['2'],
+            filename: path.basename(tempThumbPath),
+            folder: path.dirname(tempThumbPath),
+            size: '1280x720'
+          })
+          .on('end', resolve)
+          .on('error', reject);
+      });
+      
+      // Upload thumbnail to R2
+      const thumbBuffer = fs.readFileSync(tempThumbPath);
+      thumbKey = 'thumbnails/' + Date.now() + '_thumb.jpg';
+      await uploadStream(thumbKey, thumbBuffer, 'image/jpeg');
+      console.log('✅ Thumbnail generated and uploaded:', thumbKey);
+      
+      // Clean up temp files
+      fs.unlinkSync(tempVideoPath);
+      fs.unlinkSync(tempThumbPath);
+      
+    } catch (thumbErr) {
+      console.error('⚠️ Thumbnail generation failed:', thumbErr.message);
+      // Continue without thumbnail
     }
     
-    const video = new Video({ title, description, filename: videoKey, thumbnail: thumbKey });
+    // Parse tags if it's a comma-separated string
+    const tagsArray = tags ? tags.split(',').map(t => t.trim()).filter(t => t.length > 0) : [];
+    
+    const video = new Video({ 
+      title: title.trim(), 
+      description: description || '', 
+      category: category || 'general',
+      tags: tagsArray,
+      filename: videoKey, 
+      thumbnail: thumbKey 
+    });
     await video.save();
     console.log('✅ Video saved to MongoDB:', video._id);
     
@@ -93,6 +146,55 @@ const getThumbnail = async (req, res) => {
   }
 };
 
+const updateVideo = async (req, res) => {
+  try {
+    if (!req.user || !req.user.isAdmin) return res.status(403).json({ message: 'Forbidden' });
+    const id = req.params.id;
+    const { title, description, category, tags } = req.body;
+    
+    const video = await Video.findById(id);
+    if (!video) return res.status(404).json({ message: 'Video not found' });
+    
+    console.log('📝 Updating video:', id);
+    
+    // Update basic fields
+    if (title) video.title = title.trim();
+    if (description !== undefined) video.description = description.trim();
+    if (category) video.category = category;
+    if (tags) {
+      video.tags = tags.split(',').map(t => t.trim()).filter(t => t.length > 0);
+    }
+    
+    // Update thumbnail if new one is uploaded
+    if (req.file) {
+      console.log('📸 Uploading new thumbnail');
+      
+      // Delete old thumbnail from R2
+      if (video.thumbnail) {
+        try {
+          await deleteObject(video.thumbnail);
+        } catch (err) {
+          console.warn('Could not delete old thumbnail:', err.message);
+        }
+      }
+      
+      // Upload new thumbnail
+      const thumbKey = 'thumbnails/' + Date.now() + '_thumb.jpg';
+      await uploadStream(thumbKey, req.file.buffer, req.file.mimetype);
+      video.thumbnail = thumbKey;
+      console.log('✅ New thumbnail uploaded:', thumbKey);
+    }
+    
+    await video.save();
+    console.log('✅ Video updated successfully');
+    
+    res.json({ message: 'Video updated', video });
+  } catch (err) {
+    console.error('❌ Update failed:', err);
+    res.status(500).json({ message: 'Update failed: ' + err.message });
+  }
+};
+
 const deleteVideo = async (req, res) => {
   try {
     if (!req.user || !req.user.isAdmin) return res.status(403).json({ message: 'Forbidden' });
@@ -113,4 +215,4 @@ const deleteVideo = async (req, res) => {
   }
 };
 
-module.exports = { uploadVideo, listVideos, watchVideo, deleteVideo, getThumbnail };
+module.exports = { uploadVideo, listVideos, watchVideo, deleteVideo, getThumbnail, updateVideo };

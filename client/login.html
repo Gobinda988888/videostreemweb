@@ -47,12 +47,15 @@
         </div>
 
         <form id="loginForm" class="space-y-4">
-          <div>
-            <input name="email" placeholder="Email" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-red-500 focus:outline-none transition" />
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">📧</span>
+            <input aria-label="email" name="email" type="email" placeholder="Email" class="w-full pl-10 p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-red-500 focus:outline-none transition" required />
           </div>
-          <div>
-            <input name="password" type="password" placeholder="Password" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-red-500 focus:outline-none transition" />
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">🔒</span>
+            <input aria-label="password" name="password" type="password" placeholder="Password" class="w-full pl-10 p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-red-500 focus:outline-none transition" />
           </div>
+          <div id="loginError" class="hidden text-red-400 text-sm"></div>
           <button type="submit" class="w-full p-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 rounded-lg font-semibold transform hover:scale-105 transition">
             🔐 Login
           </button>
@@ -79,7 +82,8 @@
             const password = form.password.value;
             
             if (!email || !password) {
-              alert('Please enter email and password');
+              document.getElementById('loginError').textContent = 'Please enter email and password';
+              document.getElementById('loginError').classList.remove('hidden');
               return;
             }
             
@@ -115,7 +119,9 @@
               }
             } catch (err) {
               console.error('❌ Login error:', err);
-              alert('Login failed: ' + err.message);
+              const errEl = document.getElementById('loginError');
+              errEl.textContent = 'Login failed: ' + err.message;
+              errEl.classList.remove('hidden');
             }
           });
         }

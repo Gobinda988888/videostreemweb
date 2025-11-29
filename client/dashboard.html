@@ -162,7 +162,7 @@
                         Clear All History
                     </button>
                 </div>
-                <div id="historyList" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+                    <div id="historyList" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
                 <div id="noHistory" class="text-center py-12 text-gray-400 hidden">
                     <div class="text-6xl mb-4">📭</div>
                     <p class="text-xl">No watch history yet</p>
@@ -326,6 +326,10 @@
             const historyList = document.getElementById('historyList');
             const noHistory = document.getElementById('noHistory');
 
+            // Show skeletons first to improve perceived performance
+            historyList.innerHTML = renderSkeletons(6);
+            noHistory.classList.add('hidden');
+
             document.getElementById('watchCount').textContent = history.length;
 
             if (history.length === 0) {
@@ -361,6 +365,10 @@
             const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
             const favoritesList = document.getElementById('favoritesList');
             const noFavorites = document.getElementById('noFavorites');
+
+            // Show skeletons while loading
+            favoritesList.innerHTML = renderSkeletons(6);
+            noFavorites.classList.add('hidden');
 
             document.getElementById('favoriteCount').textContent = favorites.length;
 

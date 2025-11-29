@@ -486,7 +486,7 @@ if (videosDiv) {
           (v) => `
         <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden border border-red-900 hover-lift backdrop-blur-sm" role="article" aria-label="${escapeHtml(v.title)}">
           <a href="/watch.html?id=${v._id}" class="block group">
-            <a href="/watch.html?id=${v._id}" class="block group">
+            <div class="relative aspect-video bg-gradient-to-br from-gray-900 to-black overflow-hidden">
               ${v.thumbnail ? `<img src="/api/videos/thumbnail/${v._id}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${escapeHtml(v.title)}">` : `
               <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-900 to-gray-900">
                 <svg class="w-20 h-20 text-red-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -504,28 +504,29 @@ if (videosDiv) {
                   </div>
                 </div>
               </div>
-              <div class="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${v.duration || ''}</div>
+              <div class="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">${v.duration || '0:00'}</div>
               <div class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">HD</div>
             </div>
-            <div class="p-4">
-              <h3 class="text-lg font-bold mb-2 line-clamp-2 group-hover:text-red-400 transition">${v.title}</h3>
-              <p class="text-sm text-gray-400 line-clamp-2">${v.description || 'No description'}</p>
-              <div class="mt-3 flex items-center justify-between text-xs text-gray-500">
+            <div class="p-3">
+              <h3 class="text-base font-semibold mb-1 line-clamp-2 group-hover:text-red-400 transition-colors">${escapeHtml(v.title)}</h3>
+              <div class="flex items-center justify-between text-xs text-gray-500 mt-2">
                 <div class="flex items-center gap-3">
-                  <span class="flex items-center gap-1" aria-hidden="true">
+                  <span class="flex items-center gap-1">
                     👁️ ${(v.views || 0).toLocaleString()}
                   </span>
                   <span class="flex items-center gap-1">
                     ❤️ ${(v.likes || 0).toLocaleString()}
                   </span>
                 </div>
-                <span>${new Date(v.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
           </a>
           ${
             isAdmin()
-              ? `<div class="px-4 pb-4 border-t border-red-900"><button class="text-red-400 hover:text-red-300 text-sm font-semibold mt-2 hover:underline" onclick="deleteVideo('${v._id}')">🗑️ Delete Video</button></div>`
+              ? `<div class="px-3 pb-3 border-t border-red-900 pt-2 flex gap-2">
+                  <a href="/edit-video.html?id=${v._id}" class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 rounded transition">✏️ Edit</a>
+                  <button onclick="deleteVideo('${v._id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2 rounded transition">🗑️ Delete</button>
+                </div>`
               : ''
           }
         </div>
@@ -570,35 +571,35 @@ if (videoContainer) {
       // Get signed URL
       const data = await apiCall('GET', `/videos/watch/${id}`);
       
-      // Build custom video player
+      // Build custom video player - YouTube style layout
       videoContainer.innerHTML = `
-        <div class="flex flex-col md:flex-row gap-6">
-          <div class="video-col md:w-2/3">
-            <div class="video-wrapper">
-          <video 
-            id="mainVideo" 
-            class="w-full"
-            preload="auto"
-            crossorigin="anonymous"
-          >
-            <source src="${data.url}" type="video/mp4" />
-            <source src="${data.url}" type="video/webm" />
-            <source src="${data.url}" type="video/ogg" />
-            Your browser does not support video playback.
-          </video>
-              <div class="big-play-btn" id="bigPlayBtn" style="display:none; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:12;">
-                <button id="bigPlayButton" class="bg-red-600 hover:bg-red-700 rounded-full p-4 shadow-2xl transition-transform transform hover:scale-105 text-white">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Main Video Player -->
+          <div class="flex-1 lg:max-w-5xl">
+            <div class="video-wrapper bg-black rounded-xl overflow-hidden relative">
+              <video 
+                id="mainVideo" 
+                class="w-full aspect-video"
+                preload="auto"
+                crossorigin="anonymous"
+              >
+                <source src="${data.url}" type="video/mp4" />
+                Your browser does not support video playback.
+              </video>
+              
+              <div class="big-play-btn" id="bigPlayBtn" style="display:flex; position:absolute; inset:0; align-items:center; justify-content:center; z-index:25; background: rgba(0,0,0,0.5);">
+                <button id="bigPlayButton" class="bg-red-600 hover:bg-red-700 rounded-full p-6 shadow-2xl transition-transform transform hover:scale-110 text-white">
+                  <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
                 </button>
               </div>
 
-          <div class="loading-overlay" id="loadingOverlay" style="display: none;">
-            <div class="spinner"></div>
-          </div>
-          
-          <div class="custom-controls" id="videoControls">
+              <div class="loading-overlay" id="loadingOverlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10;">
+                <div class="spinner" style="border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #EF4444; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+              </div>
+              
+              <div class="custom-controls" id="videoControls">
             <div class="progress-bar" id="progressBar">
               <div class="progress-filled" id="progressFilled" style="width: 0%"></div>
             </div>
@@ -650,38 +651,30 @@ if (videoContainer) {
                 <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
               </div>
             </div>
-            <div class="md:w-1/3">
-              <div class="video-info">
-                <h1 class="text-2xl font-bold mb-2">${currentVideo.title}</h1>
-                <p class="text-gray-300 mb-4">${currentVideo.description || 'No description'}</p>
-                <div id="relatedVideos" class="space-y-3"></div>
-              </div>
-            </div>
           </div>
-          </div>
-        </div>
-        
-        <div class="video-info">
+          
+          <!-- Video Info Below Player -->
+          <div class="bg-gray-800 bg-opacity-60 rounded-xl p-6 mt-4 backdrop-blur-sm border border-red-900">
           <h1 class="text-2xl font-bold mb-2">${currentVideo.title}</h1>
           <p class="text-gray-300 mb-4">${currentVideo.description || 'No description'}</p>
           
           <!-- Engagement Stats -->
-          <div class="flex gap-4 mb-4">
-            <div class="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg">
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center gap-2 bg-gray-700 px-4 py-2 rounded-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
               </svg>
               <span id="viewCount">${currentVideo.views || 0}</span> views
             </div>
             
-            <button onclick="likeVideo('${id}')" class="flex items-center gap-2 bg-gray-800 hover:bg-red-600 px-4 py-2 rounded-lg transition">
+            <button onclick="likeVideo('${id}')" class="flex items-center gap-2 bg-gray-700 hover:bg-red-600 px-4 py-2 rounded-lg transition">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
               </svg>
               <span id="likeCount">${currentVideo.likes || 0}</span>
             </button>
             
-            <div class="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg">
+            <div class="flex items-center gap-2 bg-gray-700 px-4 py-2 rounded-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
               </svg>
@@ -690,21 +683,21 @@ if (videoContainer) {
           </div>
           
           <!-- Comments Section -->
-          <div class="bg-gray-800 rounded-lg p-4">
-            <h3 class="font-bold mb-3">Comments</h3>
+          <div class="bg-gray-700 rounded-lg p-4">
+            <h3 class="font-bold mb-3">💬 Comments</h3>
             <div class="mb-3">
               <input type="text" id="commentUsername" placeholder="Your name" 
-                class="w-full bg-gray-700 rounded px-3 py-2 mb-2 text-white">
+                class="w-full bg-gray-800 rounded px-3 py-2 mb-2 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
               <textarea id="commentText" placeholder="Write a comment..." 
-                class="w-full bg-gray-700 rounded px-3 py-2 mb-2 text-white" rows="2"></textarea>
+                class="w-full bg-gray-800 rounded px-3 py-2 mb-2 text-white focus:outline-none focus:ring-2 focus:ring-red-500" rows="2"></textarea>
               <button onclick="addComment('${id}')" 
-                class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold">
+                class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold transition">
                 Post Comment
               </button>
             </div>
             <div id="commentsList" class="space-y-2">
               ${(currentVideo.comments || []).map(c => `
-                <div class="bg-gray-700 rounded p-3">
+                <div class="bg-gray-800 rounded p-3">
                   <div class="font-bold text-sm text-red-400">${c.username}</div>
                   <div class="text-sm">${c.text}</div>
                 </div>
@@ -718,9 +711,29 @@ if (videoContainer) {
       initializeVideoPlayer();
       
       // Track video view
+              `).join('')}
+            </div>
+          </div>
+          </div>
+          </div>
+          
+          <!-- Related Videos Sidebar -->
+          <div class="lg:w-80 flex-shrink-0">
+            <div class="lg:sticky lg:top-24">
+              <h2 class="text-xl font-bold mb-4 px-2">Related Videos</h2>
+              <div id="relatedVideos" class="space-y-3"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Initialize video player controls
+      initializeVideoPlayer();
+      
+      // Track video view
       trackVideoView(id);
       
-      // Show related videos below
+      // Show related videos
       showRelatedVideos(videoList.videos, id);
       
     } catch (err) {
@@ -753,44 +766,12 @@ function initializeVideoPlayer() {
   if (!video) return;
   
   // Auto play
-  video.play().catch(() => {});
-
-  // Ensure big play overlay shows if not playing (autoplay blocked or paused)
-  if (video.paused) {
+  video.play().catch(() => {
+    // Autoplay blocked - show big play button
     if (bigPlayBtn) bigPlayBtn.style.display = 'flex';
-  } else {
-    if (bigPlayBtn) bigPlayBtn.style.display = 'none';
-  }
-  
-  // Play/Pause
-  playPauseBtn.addEventListener('click', () => {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  });
-  
-  video.addEventListener('play', () => {
-    playIcon.style.display = 'none';
-    pauseIcon.style.display = 'block';
-  });
-  
-  video.addEventListener('pause', () => {
-    playIcon.style.display = 'block';
-    pauseIcon.style.display = 'none';
-  });
-  
-  // Click video to play/pause
-  video.addEventListener('click', () => {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
   });
 
-  // Big play overlay
+  // Big play overlay handlers
   function showBigPlay() {
     if (bigPlayBtn) bigPlayBtn.style.display = 'flex';
   }
@@ -799,10 +780,42 @@ function initializeVideoPlayer() {
   }
 
   // Set overlay state
-  video.addEventListener('play', hideBigPlay);
-  video.addEventListener('pause', showBigPlay);
+  video.addEventListener('play', () => {
+    hideBigPlay();
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+    video.closest('.video-wrapper')?.classList.add('playing');
+  });
+  
+  video.addEventListener('pause', () => {
+    showBigPlay();
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    video.closest('.video-wrapper')?.classList.remove('playing');
+  });
+  
   video.addEventListener('ended', showBigPlay);
-  if (bigPlayButton) bigPlayButton.addEventListener('click', () => video.play());
+  
+  // Big play button click
+  if (bigPlayButton) {
+    bigPlayButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      video.play();
+    });
+  }
+  
+  // Play/Pause button
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }
   
   // Progress bar
   video.addEventListener('timeupdate', () => {
@@ -816,46 +829,58 @@ function initializeVideoPlayer() {
   });
   
   progressBar.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     const rect = progressBar.getBoundingClientRect();
     const percent = (e.clientX - rect.left) / rect.width;
     video.currentTime = percent * video.duration;
   });
   
   // Volume
-  volumeSlider.addEventListener('input', (e) => {
-    video.volume = e.target.value / 100;
-    if (video.volume === 0) {
-      volumeIcon.style.display = 'none';
-      muteIcon.style.display = 'block';
-    } else {
-      volumeIcon.style.display = 'block';
-      muteIcon.style.display = 'none';
-    }
-  });
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      e.stopPropagation();
+      video.volume = e.target.value / 100;
+      if (video.volume === 0) {
+        volumeIcon.style.display = 'none';
+        muteIcon.style.display = 'block';
+      } else {
+        volumeIcon.style.display = 'block';
+        muteIcon.style.display = 'none';
+      }
+    });
+  }
   
-  muteBtn.addEventListener('click', () => {
-    video.muted = !video.muted;
-    if (video.muted) {
-      volumeIcon.style.display = 'none';
-      muteIcon.style.display = 'block';
-    } else {
-      volumeIcon.style.display = 'block';
-      muteIcon.style.display = 'none';
-    }
-  });
+  if (muteBtn) {
+    muteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      if (video.muted) {
+        volumeIcon.style.display = 'none';
+        muteIcon.style.display = 'block';
+      } else {
+        volumeIcon.style.display = 'block';
+        muteIcon.style.display = 'none';
+      }
+    });
+  }
   
   // Fullscreen
-  fullscreenBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      video.parentElement.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  });
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!document.fullscreenElement) {
+        video.parentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  }
 
   // Picture-in-Picture
   if (pipBtn) {
-    pipBtn.addEventListener('click', async () => {
+    pipBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
       try {
         if (document.pictureInPictureElement) {
           await document.exitPictureInPicture();
@@ -871,6 +896,7 @@ function initializeVideoPlayer() {
   // Speed control
   if (speedSelect) {
     speedSelect.addEventListener('change', (e) => {
+      e.stopPropagation();
       const rate = parseFloat(e.target.value);
       video.playbackRate = rate;
     });
@@ -1037,77 +1063,37 @@ function showRelatedVideos(allVideos, currentId) {
   const relatedCount = Math.ceil(sortedVideos.length * 0.7);
   const topRelated = sortedVideos.slice(0, relatedCount);
   const randomOthers = sortedVideos.slice(relatedCount).sort(() => Math.random() - 0.5);
-  const shuffled = [...topRelated, ...randomOthers];
+  const shuffled = [...topRelated, ...randomOthers].slice(0, 20); // Limit to 20 videos
   
-  // Create related videos section
+  // Create related videos section - YouTube style horizontal layout
   const relatedContainer = document.getElementById('relatedVideos');
-  const relatedSection = document.createElement('div');
-  relatedSection.className = 'p-6';
-  relatedSection.innerHTML = `
-    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-      </svg>
-      More Videos
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="relatedVideosGrid">
-      ${shuffled.map(video => `
-        <a href="/watch.html?id=${video._id}" class="block group">
-          <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden hover:border-red-500 transition-all hover:scale-105 hover:shadow-xl hover:shadow-red-500/20">
-            <div class="relative aspect-video bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-              ${video.thumbnail ? 
-                `<img src="/api/videos/thumbnail/${video._id}" alt="${video.title}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : 
-                `<svg class="w-16 h-16 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                </svg>`
-              }
-              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center">
-                <div class="opacity-0 group-hover:opacity-100 transition-all transform scale-75 group-hover:scale-100">
-                  <div class="bg-red-600 rounded-full p-4">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div class="absolute top-2 right-2 bg-black bg-opacity-70 px-2 py-1 rounded text-xs">
-                Video
-              </div>
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-white group-hover:text-red-400 transition-colors line-clamp-2 mb-2">
-                ${video.title}
-              </h3>
-              <p class="text-sm text-gray-400 line-clamp-2 mb-3">
-                ${video.description || 'No description'}
-              </p>
-              <div class="flex items-center gap-3 text-xs text-gray-500 mb-2">
-                <span class="flex items-center gap-1">
-                  👁️ ${(video.views || 0).toLocaleString()}
-                </span>
-                <span class="flex items-center gap-1">
-                  ❤️ ${(video.likes || 0).toLocaleString()}
-                </span>
-              </div>
-              <div class="flex items-center justify-between text-xs text-gray-500">
-                <span>Click to watch</span>
-                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </a>
-      `).join('')}
-    </div>
-  `;
+  if (!relatedContainer) return;
   
-  if (relatedContainer) {
-    relatedContainer.innerHTML = relatedSection.innerHTML;
-  } else {
-    videoContainer.appendChild(relatedSection);
-  }
+  relatedContainer.innerHTML = shuffled.map(video => `
+    <a href="/watch.html?id=${video._id}" class="flex gap-2 group hover:bg-gray-800 hover:bg-opacity-40 rounded-lg p-2 transition">
+      <div class="relative w-40 flex-shrink-0">
+        <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden">
+          ${video.thumbnail ? 
+            `<img src="/api/videos/thumbnail/${video._id}" alt="${video.title}" class="w-full h-full object-cover">` : 
+            `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
+              <svg class="w-8 h-8 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+              </svg>
+            </div>`
+          }
+          ${video.duration ? `<span class="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 rounded">${video.duration}</span>` : ''}
+        </div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h3 class="font-semibold text-sm line-clamp-2 group-hover:text-red-400 transition mb-1">${video.title}</h3>
+        <p class="text-xs text-gray-400 mb-1">${video.uploader || 'Unknown'}</p>
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+          <span>${video.views || 0} views</span>
+          ${video.uploadedAt ? `<span>• ${formatTimeAgo(new Date(video.uploadedAt))}</span>` : ''}
+        </div>
+      </div>
+    </a>
+  `).join('');
 }
 
 // Track video view

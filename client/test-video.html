@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Test</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    video {
+      width: 100%;
+      max-width: 800px;
+      display: block;
+      margin: 20px auto;
+    }
+    .info {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px;
+      background: #222;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">
+    <h1>Video Test Page</h1>
+    <p id="status">Loading video...</p>
+  </div>
+
+  <video id="testVideo" controls autoplay>
+    <source src="https://pub-3f3e96390c87412793dc8db548e237e2.r2.dev/videos/1763511274599_2023-05-27-23-33-23(7).mp4" type="video/mp4">
+    Your browser does not support video playback.
+  </video>
+
+  <div class="info">
+    <h2>Debug Info:</h2>
+    <pre id="debug"></pre>
+  </div>
+
+  <script>
+    const video = document.getElementById('testVideo');
+    const status = document.getElementById('status');
+    const debug = document.getElementById('debug');
+
+    let logs = [];
+    function log(msg) {
+      console.log(msg);
+      logs.push(msg);
+      debug.textContent = logs.join('\n');
+    }
+
+    video.addEventListener('loadstart', () => {
+      log('⏳ Video loading started...');
+      status.textContent = 'Loading video...';
+    });
+
+    video.addEventListener('loadedmetadata', () => {
+      log('✅ Metadata loaded! Duration: ' + video.duration + ' seconds');
+      status.textContent = 'Video ready!';
+    });
+
+    video.addEventListener('canplay', () => {
+      log('✅ Video can play!');
+    });
+
+    video.addEventListener('playing', () => {
+      log('▶️ Video is playing!');
+      status.textContent = 'Video playing!';
+      status.style.color = '#0f0';
+    });
+
+    video.addEventListener('error', (e) => {
+      log('❌ ERROR: ' + (video.error ? video.error.message : 'Unknown error'));
+      log('Error code: ' + (video.error ? video.error.code : 'N/A'));
+      status.textContent = '❌ Video failed to load!';
+      status.style.color = '#f00';
+    });
+
+    video.addEventListener('waiting', () => {
+      log('⏸️ Video buffering...');
+    });
+
+    video.addEventListener('stalled', () => {
+      log('⚠️ Video loading stalled');
+    });
+
+    log('Browser can play MP4: ' + video.canPlayType('video/mp4'));
+    log('Video source: ' + video.currentSrc);
+  </script>
+</body>
+</html>

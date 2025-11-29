@@ -10,15 +10,8 @@
     <nav class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
       <a href="/" class="flex items-center gap-2 hover:scale-105 transition-transform">
         <svg width="30" height="30" viewBox="0 0 40 40">
-          <defs>
-            <linearGradient id="logoGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
-            </linearGradient>
-          </defs>
-          <circle cx="20" cy="20" r="18" fill="url(#logoGradient6)" opacity="0.2"/>
-          <path d="M15 12 L15 28 L28 20 Z" fill="url(#logoGradient6)"/>
-          <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient6)" stroke-width="2"/>
+          <circle cx="20" cy="20" r="18" fill="#EF4444"/>
+          <path d="M15 14 L15 26 L27 20 Z" fill="white"/>
         </svg>
         <span class="font-black bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">desiixvideo</span>
       </a>
@@ -43,14 +36,16 @@
       <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
         <h2 class="text-2xl font-semibold mb-6 text-indigo-400">Upload New Video</h2>
         <form id="uploadForm" class="space-y-6">
-          <div>
-            <label class="block mb-2 font-medium">Video Title *</label>
-            <input 
-              name="title" 
-              class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-indigo-500 focus:outline-none" 
-              placeholder="Enter video title"
-              required 
-            />
+          <div class="bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg p-4 mb-4">
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+              <div>
+                <h3 class="text-blue-300 font-semibold mb-1">Bulk Upload Mode</h3>
+                <p class="text-sm text-blue-200">Select multiple videos and titles will be auto-generated from filenames. You can edit each title before uploading.</p>
+              </div>
+            </div>
           </div>
           
           <div>
@@ -100,26 +95,43 @@
           </div>
           
           <div>
-            <label class="block mb-2 font-medium">Video File *</label>
+            <label class="block mb-2 font-medium flex items-center justify-between">
+              <span>Video Files *</span>
+              <span class="text-sm font-normal text-gray-400">Select multiple videos for bulk upload</span>
+            </label>
             <input 
               name="video" 
               type="file" 
               accept="video/*" 
+              multiple
               class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-indigo-500 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600" 
               required 
             />
-            <p class="text-sm text-gray-400 mt-1">Supported formats: MP4, WebM, MOV, etc.</p>
+            <p class="text-sm text-gray-400 mt-1">Supported formats: MP4, WebM, MOV, etc. | Select multiple files to upload in bulk</p>
+          </div>
+
+          <!-- Bulk Upload Preview Grid -->
+          <div id="bulkVideoGrid" class="hidden">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-semibold text-indigo-400">Selected Videos (<span id="videoCount">0</span>)</h3>
+              <button type="button" id="clearAllVideos" class="text-sm text-red-400 hover:underline">Clear All</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto p-2" id="videoPreviewContainer"></div>
           </div>
           
           <div>
-            <label class="block mb-2 font-medium">Thumbnail Image (Optional)</label>
-            <input 
-              name="thumbnail" 
-              type="file" 
-              accept="image/*" 
-              class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-indigo-500 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600" 
-            />
-            <p class="text-sm text-gray-400 mt-1">Recommended: 1280x720 or 16:9 aspect ratio</p>
+            <label class="block mb-2 font-medium flex items-center gap-2">
+              <span>Thumbnail Image</span>
+              <span class="text-xs text-green-400 bg-green-900 bg-opacity-30 px-2 py-1 rounded">Auto-generated from video</span>
+            </label>
+            <div class="bg-gray-700 bg-opacity-50 border border-gray-600 rounded-lg p-4">
+              <div class="flex items-center gap-3 text-sm text-gray-300">
+                <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Thumbnails will be automatically captured from each video during upload</span>
+              </div>
+            </div>
           </div>
           
           <button 
@@ -146,8 +158,22 @@
       </div>
     </main>
 
-    <script src="/js/app.js"></script>
     <script>
+      // JWT parser function
+      function parseJWT(token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          return JSON.parse(jsonPayload);
+        } catch (err) {
+          console.error('JWT parse error:', err);
+          return null;
+        }
+      }
+
       // Admin check on page load - STRICT SECURITY
       document.addEventListener('DOMContentLoaded', () => {
         const token = localStorage.getItem('token');
@@ -181,8 +207,138 @@
       const progressBar = document.getElementById('progressBar');
       const progressPercent = document.getElementById('progressPercent');
 
+      // Store video data with editable titles
+      let videosToUpload = [];
+
+      // Auto-generate title from filename
+      function generateTitle(filename) {
+        if (!filename) return 'Untitled Video';
+        
+        // Remove file extension
+        let title = filename.replace(/\.[^/.]+$/, '');
+        
+        // Replace underscores and hyphens with spaces
+        title = title.replace(/[_-]/g, ' ');
+        
+        // Remove common patterns like dates, resolutions, etc
+        title = title.replace(/\d{4}[-_]\d{2}[-_]\d{2}/g, ''); // Remove dates
+        title = title.replace(/\d{3,4}p|HD|FHD|4K|1080p|720p|480p/gi, ''); // Remove resolution
+        title = title.replace(/\bx264\b|\bx265\b|\bHEVC\b/gi, ''); // Remove codecs
+        title = title.replace(/\[\w+\]|\(\w+\)/g, ''); // Remove bracketed text
+        title = title.replace(/\(TG\s*-\s*@\w+\)/gi, ''); // Remove telegram channels
+        title = title.replace(/\bTG\b/gi, ''); // Remove TG
+        
+        // Capitalize first letter of each word
+        title = title.split(' ')
+          .filter(word => word.length > 0)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(' ');
+        
+        // Trim and limit length
+        title = title.trim().substring(0, 100);
+        
+        // If empty after cleanup, use filename
+        return title || filename.replace(/\.[^/.]+$/, '') || 'Untitled Video';
+      }
+
+      // Handle video file selection
+      const videoInput = document.querySelector('input[name="video"]');
+      const bulkVideoGrid = document.getElementById('bulkVideoGrid');
+      const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+      const videoCount = document.getElementById('videoCount');
+      const clearAllVideos = document.getElementById('clearAllVideos');
+
+      console.log('Video input element:', videoInput);
+      console.log('Bulk video grid:', bulkVideoGrid);
+
+      videoInput.addEventListener('change', (e) => {
+        console.log('File input changed! Files:', e.target.files.length);
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        // Clear previous selection
+        videosToUpload = [];
+        videoPreviewContainer.innerHTML = '';
+
+        // Generate preview for each video
+        files.forEach((file, index) => {
+          const generatedTitle = generateTitle(file.name);
+          console.log(`File ${index + 1}: "${file.name}" -> Title: "${generatedTitle}"`);
+          
+          const videoData = {
+            file: file,
+            title: generatedTitle,
+            filename: file.name,
+            size: file.size,
+            index: index
+          };
+          videosToUpload.push(videoData);
+
+          // Create preview card
+          const card = document.createElement('div');
+          card.className = 'bg-gray-700 rounded-lg p-4 border border-gray-600';
+          card.innerHTML = `
+            <div class="flex gap-3">
+              <div class="flex-shrink-0">
+                <div class="w-24 h-16 bg-gray-800 rounded flex items-center justify-center">
+                  <svg class="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="mb-2">
+                  <div class="text-sm font-medium text-white mb-1">Video #${index + 1}</div>
+                  <div class="text-sm text-indigo-300 mb-2">${videoData.title}</div>
+                </div>
+                <div class="flex items-center justify-between text-xs text-gray-400">
+                  <span class="truncate">${file.name}</span>
+                  <span class="ml-2 flex-shrink-0">${(file.size / (1024*1024)).toFixed(2)} MB</span>
+                </div>
+              </div>
+              <button type="button" class="remove-video flex-shrink-0 text-red-400 hover:text-red-300" data-index="${index}">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+          `;
+          videoPreviewContainer.appendChild(card);
+        });
+
+        // Show grid and update count
+        bulkVideoGrid.classList.remove('hidden');
+        videoCount.textContent = videosToUpload.length;
+
+        // Add event listeners for remove buttons
+        document.querySelectorAll('.remove-video').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.closest('.remove-video').dataset.index);
+            videosToUpload.splice(index, 1);
+            e.target.closest('.bg-gray-700').remove();
+            videoCount.textContent = videosToUpload.length;
+            
+            if (videosToUpload.length === 0) {
+              bulkVideoGrid.classList.add('hidden');
+              videoInput.value = '';
+            }
+          });
+        });
+      });
+
+      // Clear all videos
+      clearAllVideos.addEventListener('click', () => {
+        videosToUpload = [];
+        videoPreviewContainer.innerHTML = '';
+        bulkVideoGrid.classList.add('hidden');
+        videoInput.value = '';
+      });
+
       uploadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        console.log('Form submitted! Videos to upload:', videosToUpload.length);
+        console.log('Videos array:', videosToUpload);
         
         const token = localStorage.getItem('token');
         if (!token) {
@@ -191,69 +347,119 @@
           return;
         }
 
-        const formData = new FormData(uploadForm);
-        
+        if (videosToUpload.length === 0) {
+          uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
+          uploadStatus.textContent = '❌ Please select at least one video';
+          uploadStatus.classList.remove('hidden');
+          return;
+        }
+
+        // Get common fields from form
+        const description = uploadForm.querySelector('[name="description"]').value;
+        const category = uploadForm.querySelector('[name="category"]').value;
+        const tags = uploadForm.querySelector('[name="tags"]').value;
+
+        if (!category) {
+          uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
+          uploadStatus.textContent = '❌ Please select a category';
+          uploadStatus.classList.remove('hidden');
+          return;
+        }
+
         // Show progress
         uploadProgress.classList.remove('hidden');
         uploadStatus.classList.add('hidden');
         uploadBtn.disabled = true;
         uploadBtn.textContent = 'Uploading...';
 
-        try {
-          const xhr = new XMLHttpRequest();
-          
-          // Progress tracking
-          xhr.upload.addEventListener('progress', (e) => {
-            if (e.lengthComputable) {
-              const percent = Math.round((e.loaded / e.total) * 100);
-              progressBar.style.width = percent + '%';
-              progressPercent.textContent = percent + '%';
-            }
-          });
+        let successCount = 0;
+        let failCount = 0;
+        const totalVideos = videosToUpload.length;
 
-          // Response handling
-          xhr.addEventListener('load', () => {
-            uploadProgress.classList.add('hidden');
-            uploadBtn.disabled = false;
-            uploadBtn.textContent = 'Upload Video';
+        // Upload videos one by one
+        for (let i = 0; i < videosToUpload.length; i++) {
+          const videoData = videosToUpload[i];
+          
+          try {
+            const formData = new FormData();
+            const videoTitle = videoData.title || videoData.filename;
+            console.log('Uploading video with title:', videoTitle);
+            formData.append('title', videoTitle);
+            formData.append('description', description || '');
+            formData.append('category', category);
+            formData.append('tags', tags || '');
+            formData.append('video', videoData.file);
             
-            if (xhr.status === 200) {
-              uploadStatus.className = 'mt-4 p-4 rounded bg-green-900 border border-green-700 text-green-200';
-              uploadStatus.textContent = '✅ Video uploaded successfully!';
-              uploadStatus.classList.remove('hidden');
-              uploadForm.reset();
-              
-              setTimeout(() => {
-                window.location.href = '/admin.html';
-              }, 2000);
-            } else {
-              const error = JSON.parse(xhr.responseText);
-              uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
-              uploadStatus.textContent = '❌ Upload failed: ' + (error.message || 'Unknown error');
-              uploadStatus.classList.remove('hidden');
+            // Debug: log all form data
+            for (let pair of formData.entries()) {
+              console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
             }
-          });
 
-          xhr.addEventListener('error', () => {
-            uploadProgress.classList.add('hidden');
-            uploadBtn.disabled = false;
-            uploadBtn.textContent = 'Upload Video';
-            uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
-            uploadStatus.textContent = '❌ Network error occurred';
-            uploadStatus.classList.remove('hidden');
-          });
+            await new Promise((resolve, reject) => {
+              const xhr = new XMLHttpRequest();
+              
+              // Progress tracking
+              xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                  const videoProgress = Math.round((e.loaded / e.total) * 100);
+                  const overallProgress = Math.round(((i + (e.loaded / e.total)) / totalVideos) * 100);
+                  progressBar.style.width = overallProgress + '%';
+                  progressPercent.textContent = `${overallProgress}% (Video ${i + 1}/${totalVideos}: ${videoProgress}%)`;
+                }
+              });
 
-          xhr.open('POST', '/api/videos/upload');
-          xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-          xhr.send(formData);
-          
-        } catch (err) {
-          uploadProgress.classList.add('hidden');
-          uploadBtn.disabled = false;
-          uploadBtn.textContent = 'Upload Video';
+              xhr.addEventListener('load', () => {
+                if (xhr.status === 200) {
+                  successCount++;
+                  resolve();
+                } else {
+                  failCount++;
+                  console.error(`Failed to upload ${videoData.filename}:`, xhr.responseText);
+                  reject(new Error(xhr.responseText));
+                }
+              });
+
+              xhr.addEventListener('error', () => {
+                failCount++;
+                reject(new Error('Network error'));
+              });
+
+              xhr.open('POST', '/api/videos/upload');
+              xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+              xhr.send(formData);
+            });
+
+          } catch (err) {
+            console.error(`Error uploading ${videoData.filename}:`, err);
+          }
+        }
+
+        // Show final result
+        uploadProgress.classList.add('hidden');
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload Video';
+        
+        if (failCount === 0) {
+          uploadStatus.className = 'mt-4 p-4 rounded bg-green-900 border border-green-700 text-green-200';
+          uploadStatus.textContent = `✅ Successfully uploaded all ${successCount} videos!`;
+        } else if (successCount > 0) {
+          uploadStatus.className = 'mt-4 p-4 rounded bg-yellow-900 border border-yellow-700 text-yellow-200';
+          uploadStatus.textContent = `⚠️ Uploaded ${successCount} videos successfully, ${failCount} failed`;
+        } else {
           uploadStatus.className = 'mt-4 p-4 rounded bg-red-900 border border-red-700 text-red-200';
-          uploadStatus.textContent = '❌ Error: ' + err.message;
-          uploadStatus.classList.remove('hidden');
+          uploadStatus.textContent = `❌ All uploads failed`;
+        }
+        uploadStatus.classList.remove('hidden');
+        
+        if (successCount > 0) {
+          uploadForm.reset();
+          videosToUpload = [];
+          videoPreviewContainer.innerHTML = '';
+          bulkVideoGrid.classList.add('hidden');
+          
+          setTimeout(() => {
+            window.location.href = '/admin.html';
+          }, 3000);
         }
       });
 
