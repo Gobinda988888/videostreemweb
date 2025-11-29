@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Video = require('../models/Video');
 const { uploadStream, getSignedUrl } = require('./r2');
@@ -11,7 +12,7 @@ const http = require('http');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://gobinda:Gobinda1122@cluster0.trsyr.mongodb.net/videostream?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => {
     console.error('❌ MongoDB connection failed:', err);
@@ -20,6 +21,12 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://gobinda:Gobinda1122@clu
 
 async function downloadVideo(url, filepath) {
   return new Promise((resolve, reject) => {
+    // Ensure directory exists
+    const dir = path.dirname(filepath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    
     const client = url.startsWith('https') ? https : http;
     const file = fs.createWriteStream(filepath);
     
@@ -36,16 +43,20 @@ async function downloadVideo(url, filepath) {
 }
 
 async function generateThumbnail(videoUrl, videoId) {
-  const tempVideoPath = path.join(__dirname, '../uploads/temp_' + videoId + '.mp4');
   const tempThumbPath = path.join(__dirname, '../uploads/thumb_' + videoId + '.jpg');
   
   try {
-    console.log(`📥 Downloading video: ${videoId}`);
-    await downloadVideo(videoUrl, tempVideoPath);
+    console.log(`🎬 Generating thumbnail directly from URL: ${videoId}`);
     
-    console.log(`🎬 Generating thumbnail for: ${videoId}`);
+    // Ensure directory exists
+    const dir = path.dirname(tempThumbPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    
+    // Generate thumbnail directly from video URL (no download needed!)
     await new Promise((resolve, reject) => {
-      ffmpeg(tempVideoPath)
+      ffmpeg(videoUrl)
         .screenshots({
           timestamps: ['2'],
           filename: path.basename(tempThumbPath),
@@ -62,8 +73,7 @@ async function generateThumbnail(videoUrl, videoId) {
     await uploadStream(thumbKey, thumbBuffer, 'image/jpeg');
     console.log(`✅ Thumbnail uploaded: ${thumbKey}`);
     
-    // Clean up temp files
-    fs.unlinkSync(tempVideoPath);
+    // Clean up temp file
     fs.unlinkSync(tempThumbPath);
     
     return thumbKey;
@@ -71,7 +81,6 @@ async function generateThumbnail(videoUrl, videoId) {
   } catch (err) {
     console.error(`❌ Failed to generate thumbnail for ${videoId}:`, err.message);
     // Clean up on error
-    if (fs.existsSync(tempVideoPath)) fs.unlinkSync(tempVideoPath);
     if (fs.existsSync(tempThumbPath)) fs.unlinkSync(tempThumbPath);
     return null;
   }

@@ -34,34 +34,56 @@ const uploadVideo = async (req, res) => {
       const tempVideoPath = path.join(__dirname, '../uploads/temp_' + Date.now() + '.mp4');
       const tempThumbPath = path.join(__dirname, '../uploads/thumb_' + Date.now() + '.jpg');
       
+      // Ensure uploads directory exists
+      const uploadsDir = path.join(__dirname, '../uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      
       // Write video buffer to temp file
       fs.writeFileSync(tempVideoPath, videoFile.buffer);
       
-      // Extract thumbnail at 2 seconds
+      // Extract thumbnail at 5% of video duration (or 3 seconds)
       await new Promise((resolve, reject) => {
         ffmpeg(tempVideoPath)
           .screenshots({
-            timestamps: ['2'],
+            timestamps: ['3'],
             filename: path.basename(tempThumbPath),
             folder: path.dirname(tempThumbPath),
             size: '1280x720'
           })
-          .on('end', resolve)
-          .on('error', reject);
+          .on('end', () => {
+            console.log('✅ Thumbnail extracted successfully');
+            resolve();
+          })
+          .on('error', (err) => {
+            console.error('❌ FFmpeg error:', err.message);
+            reject(err);
+          });
       });
       
-      // Upload thumbnail to R2
-      const thumbBuffer = fs.readFileSync(tempThumbPath);
-      thumbKey = 'thumbnails/' + Date.now() + '_thumb.jpg';
-      await uploadStream(thumbKey, thumbBuffer, 'image/jpeg');
-      console.log('✅ Thumbnail generated and uploaded:', thumbKey);
+      // Check if thumbnail file was created
+      if (fs.existsSync(tempThumbPath)) {
+        // Upload thumbnail to R2
+        const thumbBuffer = fs.readFileSync(tempThumbPath);
+        thumbKey = 'thumbnails/' + Date.now() + '_thumb.jpg';
+        await uploadStream(thumbKey, thumbBuffer, 'image/jpeg');
+        console.log('✅ Thumbnail uploaded to R2:', thumbKey);
+        
+        // Clean up temp files
+        fs.unlinkSync(tempThumbPath);
+      } else {
+        console.error('⚠️ Thumbnail file was not created');
+      }
       
-      // Clean up temp files
-      fs.unlinkSync(tempVideoPath);
-      fs.unlinkSync(tempThumbPath);
+      // Clean up temp video file
+      if (fs.existsSync(tempVideoPath)) {
+        fs.unlinkSync(tempVideoPath);
+      }
       
     } catch (thumbErr) {
       console.error('⚠️ Thumbnail generation failed:', thumbErr.message);
+      console.error(thumbErr);
       // Continue without thumbnail
     }
     
