@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /watch.html
+Allow: /login.html
+Allow: /register.html
+
+# Sitemap
+Sitemap: https://desiixvideo.me/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Disallow admin pages
+Disallow: /admin.html
+Disallow: /upload.html
+Disallow: /edit-video.html

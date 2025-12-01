@@ -21,6 +21,25 @@
     <meta name="twitter:title" content="Free Indian Adult Videos - XXX Content" />
     <meta name="twitter:description" content="Watch free HD adult videos featuring Indian scenarios and roleplay." />
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://desiixvideo.me/" />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "desiixvideo",
+      "url": "https://desiixvideo.me",
+      "description": "Free Indian adult videos featuring bhabhi, devar, step family content in HD quality",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://desiixvideo.me/?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
     <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -52,15 +71,198 @@
         100% { background-position: 0% 50%; }
       }
       
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+      
+      @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+      
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes glitch {
+        0%, 100% {
+          text-shadow: 
+            2px 2px 0 rgba(251, 191, 36, 0.3),
+            -2px -2px 0 rgba(59, 130, 246, 0.3);
+        }
+        25% {
+          text-shadow: 
+            -2px -2px 0 rgba(251, 191, 36, 0.3),
+            2px 2px 0 rgba(59, 130, 246, 0.3);
+        }
+        50% {
+          text-shadow: 
+            2px -2px 0 rgba(251, 191, 36, 0.3),
+            -2px 2px 0 rgba(59, 130, 246, 0.3);
+        }
+        75% {
+          text-shadow: 
+            -2px 2px 0 rgba(251, 191, 36, 0.3),
+            2px -2px 0 rgba(59, 130, 246, 0.3);
+        }
+      }
+      
+      .cyber-border {
+        position: relative;
+        border: 2px solid rgba(251, 191, 36, 0.3);
+        background: rgba(10, 14, 39, 0.7);
+        backdrop-filter: blur(20px);
+      }
+      
+      .cyber-border::before,
+      .cyber-border::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(251, 191, 36, 0.8);
+        z-index: 1;
+      }
+      
+      .cyber-border::before {
+        top: -2px;
+        left: -2px;
+        border-right: none;
+        border-bottom: none;
+      }
+      
+      .cyber-border::after {
+        bottom: -2px;
+        right: -2px;
+        border-left: none;
+        border-top: none;
+      }
+      
       .gradient-bg {
-        background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
+        background: linear-gradient(-45deg, #0a0e27, #0f1535, #0a0e27, #1a1f3a);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
         will-change: background-position;
+        position: relative;
       }
       
-      .glow-red {
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+      .gradient-bg::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+          linear-gradient(180deg, transparent 0%, rgba(251, 191, 36, 0.02) 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      @keyframes glow {
+        0%, 100% {
+          box-shadow: 
+            0 0 20px rgba(251, 191, 36, 0.4),
+            0 0 40px rgba(251, 191, 36, 0.2),
+            inset 0 0 20px rgba(251, 191, 36, 0.05);
+        }
+        50% {
+          box-shadow: 
+            0 0 40px rgba(251, 191, 36, 0.6),
+            0 0 80px rgba(251, 191, 36, 0.3),
+            inset 0 0 30px rgba(251, 191, 36, 0.1);
+        }
+      }
+      
+      @keyframes neonPulse {
+        0%, 100% {
+          filter: brightness(1) drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
+        }
+        50% {
+          filter: brightness(1.2) drop-shadow(0 0 20px rgba(251, 191, 36, 0.8));
+        }
+      }
+      
+      .glow-gold {
+        box-shadow: 0 0 30px rgba(251, 191, 36, 0.4), 0 0 60px rgba(251, 191, 36, 0.2);
+        animation: glow 3s ease-in-out infinite;
+      }
+      
+      .glass-effect {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(251, 191, 36, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .glass-effect:hover {
+        border-color: rgba(251, 191, 36, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+      }
+      
+      .card-hover {
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: fadeInUp 0.6s ease-out;
+        position: relative;
+        background: rgba(10, 14, 39, 0.6);
+        border: 1px solid rgba(251, 191, 36, 0.2);
+        overflow: hidden;
+      }
+      
+      .card-hover::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, 
+          rgba(251, 191, 36, 0.3) 0%, 
+          rgba(59, 130, 246, 0.2) 50%, 
+          rgba(251, 191, 36, 0.3) 100%);
+        opacity: 0;
+        transition: opacity 0.5s;
+        z-index: -1;
+        filter: blur(10px);
+      }
+      
+      .card-hover:hover {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 
+          0 25px 50px rgba(251, 191, 36, 0.4),
+          0 0 100px rgba(251, 191, 36, 0.2),
+          inset 0 0 30px rgba(251, 191, 36, 0.1);
+        border-color: rgba(251, 191, 36, 0.6);
+      }
+      
+      .card-hover:hover::before {
+        opacity: 1;
       }
 
       /* Skeleton styles for loading state */
@@ -76,24 +278,30 @@
       }
       
       .hover-lift {
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
       @media (hover: hover) and (pointer: fine) {
         .hover-lift:hover {
           transform: translateY(-8px);
-          box-shadow: 0 12px 24px rgba(239, 68, 68, 0.4);
+          box-shadow: 0 12px 24px rgba(251, 191, 36, 0.5), 0 0 50px rgba(251, 191, 36, 0.2);
         }
       }
       
       /* Mobile touch feedback */
       .hover-lift:active {
-        transform: scale(0.98);
+        transform: scale(0.96);
       }
       
       /* Smooth transitions */
       button, a, input, select {
-        transition: all 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      @media (hover: hover) and (pointer: fine) {
+        button:hover, a:hover {
+          transform: translateY(-2px);
+        }
       }
       
       /* Image loading optimization */
@@ -107,17 +315,31 @@
       @media (max-width: 768px) {
         .gradient-bg {
           animation: none; /* Disable animation on mobile for performance */
-          background: #1a1a1a;
+          background: #0a0e27;
+        }
+        
+        .gradient-bg::before {
+          display: none;
+        }
+        
+        body.light-mode {
+          animation: none;
+          background: #e0f2fe;
         }
         
         .hover-lift:hover {
           transform: none;
         }
         
+        /* Disable heavy animations on mobile */
+        [style*="animation: float"],
+        [style*="animation: shimmer"] {
+          animation: none !important;
+        }
+        
         /* Better touch targets */
         button, a {
           min-height: 44px;
-          min-width: 44px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -136,6 +358,10 @@
         
         /* Reduce padding on mobile */
         main {
+          padding: 8px !important;
+        }
+        
+        main > div {
           padding: 12px !important;
         }
         
@@ -156,70 +382,86 @@
           grid-template-columns: repeat(1, 1fr) !important;
           gap: 12px !important;
         }
+        
+        nav {
+          padding: 6px 8px !important;
+        }
       }
       
       /* Light Mode Styles */
       body.light-mode {
-        background: linear-gradient(-45deg, #f5f5f5, #fce7e7, #f5f5f5, #fce7e7);
+        background: linear-gradient(-45deg, #e0f2fe, #dbeafe, #e0f2fe, #dbeafe);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
         color: #1a1a1a;
       }
       
+      body.light-mode::before {
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+      }
+      
       body.light-mode nav {
-        background: rgba(255, 255, 255, 0.8);
-        border-bottom-color: #fca5a5;
+        background: rgba(255, 255, 255, 0.95);
+        border-bottom-color: #fbbf24;
+        box-shadow: 0 4px 20px rgba(251, 191, 36, 0.15) !important;
       }
       
       body.light-mode .bg-gray-900 {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95) !important;
       }
       
       body.light-mode .bg-gray-800 {
-        background: rgba(249, 249, 249, 0.9);
-        border-color: #fca5a5;
+        background: rgba(254, 252, 232, 0.9) !important;
+        border-color: #fbbf24 !important;
       }
       
       body.light-mode .text-white {
-        color: #1a1a1a;
+        color: #1a1a1a !important;
       }
       
       body.light-mode .text-gray-400 {
-        color: #6b7280;
+        color: #6b7280 !important;
       }
       
       body.light-mode .text-gray-300 {
-        color: #4b5563;
+        color: #4b5563 !important;
       }
       
-      body.light-mode .border-red-900 {
-        border-color: #fca5a5;
+      body.light-mode .border-yellow-600 {
+        border-color: #fbbf24 !important;
       }
       
       body.light-mode .border-gray-700 {
-        border-color: #e5e7eb;
+        border-color: #e5e7eb !important;
       }
       
       body.light-mode #themeToggle {
-        background: #e5e7eb;
+        background: #fef3c7 !important;
       }
       
       body.light-mode #themeToggle:hover {
-        background: #d1d5db;
+        background: #fde68a !important;
+      }
+      
+      body.light-mode .bg-black {
+        background: rgba(255, 255, 255, 0.95) !important;
       }
     </style>
   </head>
   <body class="gradient-bg text-white min-h-screen">
-    <nav class="bg-black bg-opacity-60 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-red-900">
+    <nav class="sticky top-0 z-50 cyber-border" style="background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0.85) 100%); backdrop-filter: blur(20px); padding: 1rem; border-left: none; border-right: none; border-top: none; box-shadow: 0 4px 30px rgba(251, 191, 36, 0.2), inset 0 1px 0 rgba(251, 191, 36, 0.1); transition: all 0.3s ease;">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <a href="/" class="flex items-center gap-2 hover:scale-105 transition-transform group">
           <div class="relative">
-            <div class="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 blur-lg opacity-50 group-hover:opacity-75 transition"></div>
-            <svg width="40" height="40" viewBox="0 0 40 40" class="relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 blur-xl opacity-60 group-hover:opacity-90 transition-all duration-500" style="animation: neonPulse 2s ease-in-out infinite;"></div>
+            <svg width="35" height="35" viewBox="0 0 40 40" class="relative">
               <defs>
                 <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                  <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1" />
                 </linearGradient>
               </defs>
               <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" opacity="0.2"/>
@@ -228,7 +470,7 @@
             </svg>
           </div>
           <div class="flex flex-col">
-            <span class="text-2xl font-black bg-gradient-to-r from-red-500 via-pink-500 to-red-500 bg-clip-text text-transparent tracking-tight">
+            <span class="text-2xl font-black bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent tracking-tight" style="animation: shimmer 3s linear infinite; background-size: 200% auto; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5)); letter-spacing: 0.05em;">
               desiixvideo
             </span>
             <span class="text-xs text-gray-400 -mt-1">HD Content</span>
@@ -237,7 +479,7 @@
         
         <div class="flex items-center gap-3">
           <!-- Mobile Menu Button -->
-          <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+          <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-gray-800 hover:bg-yellow-600 transition-all duration-300 hover:shadow-lg" style="box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 12h18M3 6h18M3 18h18"/>
             </svg>
@@ -246,7 +488,7 @@
           <!-- Desktop Navigation -->
           <div class="hidden md:flex space-x-4 items-center">
           <!-- Theme Toggle -->
-          <button id="themeToggle" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Toggle theme">
+          <button id="themeToggle" class="p-2 rounded-lg bg-gray-800 hover:bg-yellow-600 transition-all duration-300 hover:shadow-lg" title="Toggle theme" style="box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);">
             <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="hidden">
               <path d="M12 17.5C9.5 17.5 7.5 15.5 7.5 13S9.5 8.5 12 8.5 16.5 10.5 16.5 13 14.5 17.5 12 17.5zM12 7C11.4 7 11 6.6 11 6V3c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1zm0 14c-.6 0-1-.4-1-1v-3c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1zM6 13c0-.6-.4-1-1-1H2c-.6 0-1 .4-1 1s.4 1 1 1h3c.6 0 1-.4 1-1zm17-1h-3c-.6 0-1 .4-1 1s.4 1 1 1h3c.6 0 1-.4 1-1s-.4-1-1-1zM7.05 18.36c-.4-.4-.4-1 0-1.41l2.12-2.12c.4-.4 1-.4 1.41 0 .4.4.4 1 0 1.41l-2.12 2.12c-.39.4-1.02.4-1.41 0zm8.49-8.49c-.4-.4-.4-1 0-1.41l2.12-2.12c.4-.4 1-.4 1.41 0 .4.4.4 1 0 1.41l-2.12 2.12c-.4.4-1.02.4-1.41 0zM8.46 7.05c.4-.4 1-.4 1.41 0 .4.4.4 1 0 1.41L7.76 10.6c-.4.4-1 .4-1.41 0-.4-.4-.4-1 0-1.41l2.11-2.14zm8.49 8.49c.4-.4 1-.4 1.41 0l2.12 2.12c.4.4.4 1 0 1.41-.4.4-1 .4-1.41 0l-2.12-2.12c-.4-.39-.4-1.02 0-1.41z"/>
             </svg>
@@ -255,29 +497,29 @@
             </svg>
           </button>
           
-          <a href="/desiixvideo.apk" download class="bg-green-600 hover:bg-green-700 px-3 py-2 rounded-lg transition flex items-center gap-1 text-sm">
+          <a href="/desiixvideo.apk" download class="bg-yellow-600 hover:bg-yellow-500 px-3 py-2 rounded-lg transition-all duration-300 flex items-center gap-1 text-sm font-semibold" style="box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);" onmouseover="this.style.boxShadow='0 6px 20px rgba(251, 191, 36, 0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(251, 191, 36, 0.3)'">
             📱 Download App
           </a>
-          <a href="/login.html" id="loginLink" class="hover:text-red-400 transition">Login</a>
-          <a href="/register.html" id="regLink" class="hover:text-red-400 transition">Register</a>
-          <a href="/dashboard.html" id="dashboardLink" class="hidden hover:text-red-400 transition">📊 Dashboard</a>
-          <a href="/history.html" id="historyLink" class="hidden hover:text-red-400 transition">📜 History</a>
-          <a href="/admin.html" id="adminLink" class="hidden hover:text-red-400 transition">🎯 Admin</a>
-          <a href="/upload.html" id="uploadLink" class="hidden bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">📤 Upload</a>
+          <a href="/login.html" id="loginLink" class="hover:text-yellow-400 transition-all duration-300">Login</a>
+          <a href="/register.html" id="regLink" class="hover:text-yellow-400 transition-all duration-300">Register</a>
+          <a href="/dashboard.html" id="dashboardLink" class="hidden hover:text-yellow-400 transition-all duration-300">📊 Dashboard</a>
+          <a href="/history.html" id="historyLink" class="hidden hover:text-yellow-400 transition-all duration-300">📜 History</a>
+          <a href="/admin.html" id="adminLink" class="hidden hover:text-yellow-400 transition-all duration-300">🎯 Admin</a>
+          <a href="/upload.html" id="uploadLink" class="hidden bg-yellow-600 hover:bg-yellow-500 px-4 py-2 rounded-lg transition-all duration-300" style="box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);">📤 Upload</a>
           
           <!-- Desktop User Avatar with Logout -->
           <div id="desktopUserAvatar" class="hidden flex items-center gap-3">
             <div class="relative cursor-pointer group">
-              <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-xl font-bold hover:scale-110 transition-transform" id="desktopAvatarIcon">
+              <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center text-xl font-bold hover:scale-110 transition-all duration-300" id="desktopAvatarIcon" style="box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); animation: float 3s ease-in-out infinite;">
                 👤
               </div>
               <!-- Dropdown Menu -->
-              <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-gray-900 border border-red-900 rounded-lg shadow-lg overflow-hidden z-50">
-                <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 transition">📊 Dashboard</a>
-                <button id="desktopChangeAvatar" class="block w-full text-left px-4 py-2 hover:bg-gray-800 transition">🎨 Change Avatar</button>
+              <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-gray-900 border border-yellow-600 rounded-lg overflow-hidden z-50 shadow-xl" style="box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);">
+                <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 hover:text-yellow-400 transition-all duration-300">📊 Dashboard</a>
+                <button id="desktopChangeAvatar" class="block w-full text-left px-4 py-2 hover:bg-gray-800 hover:text-yellow-400 transition-all duration-300">🎨 Change Avatar</button>
               </div>
             </div>
-            <button id="desktopLogout" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</button>
+            <button id="desktopLogout" class="bg-yellow-600 hover:bg-yellow-500 px-4 py-2 rounded-lg transition-all duration-300" style="box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);">Logout</button>
           </div>
           
           <button id="logoutBtn" class="hidden hover:text-red-400 transition">Logout</button>
@@ -290,8 +532,8 @@
         <div class="flex flex-col h-full p-6">
           <!-- Header -->
           <div class="flex justify-between items-center mb-6">
-            <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Menu</span>
-            <button id="closeMobileMenu" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+            <span class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent" style="animation: shimmer 3s linear infinite; background-size: 200% auto;">Menu</span>
+            <button id="closeMobileMenu" class="p-2 rounded-lg bg-gray-800 hover:bg-yellow-600 transition-all duration-300 hover:shadow-lg">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 6L6 18M6 6l12 12"/>
               </svg>
@@ -301,7 +543,7 @@
           <!-- User Profile Section (shown when logged in) -->
           <div id="mobileUserProfile" class="hidden mb-6 p-4 bg-gray-800 rounded-xl">
             <div class="flex items-center gap-4">
-              <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-3xl font-bold cursor-pointer" id="mobileUserAvatar">
+              <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center text-3xl font-bold cursor-pointer transition-all duration-300 hover:scale-110" id="mobileUserAvatar" style="box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); animation: float 3s ease-in-out infinite;">
                 👤
               </div>
               <div class="flex-1">
@@ -313,39 +555,39 @@
           
           <!-- Navigation Links -->
           <div class="flex flex-col space-y-3 text-lg overflow-y-auto flex-1">
-            <button id="mobileThemeToggle" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+            <button id="mobileThemeToggle" class="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-yellow-600 transition-all duration-300 hover:shadow-lg">
               <span id="mobileThemeIcon">🌙</span> Toggle Theme
             </button>
-            <a href="/desiixvideo.apk" download class="flex items-center gap-3 p-3 rounded-lg bg-green-600 hover:bg-green-700 transition">
+            <a href="/desiixvideo.apk" download class="flex items-center gap-3 p-3 rounded-lg bg-yellow-600 hover:bg-yellow-500 transition-all duration-300" style="box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);">
               📱 Download App
             </a>
             
             <!-- Guest Links -->
-            <a href="/login.html" id="mobileLoginLink" class="flex items-center gap-3 p-3 hover:text-red-400 transition">
+            <a href="/login.html" id="mobileLoginLink" class="flex items-center gap-3 p-3 hover:text-yellow-400 transition-all duration-300">
               🔐 Login
             </a>
-            <a href="/register.html" id="mobileRegLink" class="flex items-center gap-3 p-3 hover:text-red-400 transition">
+            <a href="/register.html" id="mobileRegLink" class="flex items-center gap-3 p-3 hover:text-yellow-400 transition-all duration-300">
               ✨ Register
             </a>
             
             <!-- User Links -->
-            <a href="/dashboard.html" id="mobileDashboardLink" class="hidden flex items-center gap-3 p-3 hover:text-red-400 transition">
+            <a href="/dashboard.html" id="mobileDashboardLink" class="hidden flex items-center gap-3 p-3 hover:text-yellow-400 transition-all duration-300">
               📊 Dashboard
             </a>
-            <a href="/history.html" id="mobileHistoryLink" class="hidden flex items-center gap-3 p-3 hover:text-red-400 transition">
+            <a href="/history.html" id="mobileHistoryLink" class="hidden flex items-center gap-3 p-3 hover:text-yellow-400 transition-all duration-300">
               📜 History
             </a>
             
             <!-- Admin Links -->
-            <a href="/admin.html" id="mobileAdminLink" class="hidden flex items-center gap-3 p-3 hover:text-red-400 transition">
+            <a href="/admin.html" id="mobileAdminLink" class="hidden flex items-center gap-3 p-3 hover:text-yellow-400 transition-all duration-300">
               🎯 Admin Panel
             </a>
-            <a href="/upload.html" id="mobileUploadLink" class="hidden flex items-center gap-3 p-3 bg-red-600 hover:bg-red-700 rounded-lg transition">
+            <a href="/upload.html" id="mobileUploadLink" class="hidden flex items-center gap-3 p-3 bg-yellow-600 hover:bg-yellow-500 rounded-lg transition-all duration-300" style="box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);">
               📤 Upload Video
             </a>
             
             <!-- Logout -->
-            <button id="mobileLogoutBtn" class="hidden flex items-center gap-3 p-3 text-left bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+            <button id="mobileLogoutBtn" class="hidden flex items-center gap-3 p-3 text-left bg-gray-800 hover:bg-yellow-600 rounded-lg transition-all duration-300 hover:shadow-lg">
               🚪 Logout
             </button>
           </div>
@@ -355,10 +597,10 @@
     
     <!-- Avatar Selection Modal -->
     <div id="avatarModal" class="hidden fixed inset-0 bg-black bg-opacity-90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div class="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-red-900">
+      <div class="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-yellow-600" style="box-shadow: 0 20px 60px rgba(251, 191, 36, 0.4); animation: fadeInUp 0.4s ease-out;">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Choose Avatar</h3>
-          <button id="closeAvatarModal" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+          <h3 class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent" style="animation: shimmer 3s linear infinite; background-size: 200% auto;">Choose Avatar</h3>
+          <button id="closeAvatarModal" class="p-2 rounded-lg bg-gray-800 hover:bg-yellow-600 transition-all duration-300 hover:shadow-lg">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
@@ -372,18 +614,21 @@
 
     <main class="max-w-7xl mx-auto">
       <!-- Search and Filters Section -->
-      <div class="p-6 border-b border-gray-700">
+      <div class="p-6 border-b border-gray-700 relative" style="background: linear-gradient(180deg, rgba(10, 14, 39, 0.3) 0%, transparent 100%);">
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
           <div class="flex-1 w-full md:w-auto">
             <input 
               type="text" 
               id="searchInput" 
               placeholder="🔍 Search videos..." 
-              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-red-500"
+              class="w-full px-4 py-3 text-white focus:outline-none transition-all duration-300"
+              style="background: rgba(10, 14, 39, 0.6); border: 2px solid rgba(251, 191, 36, 0.3); border-radius: 12px; box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(251, 191, 36, 0.1);"
+              onfocus="this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 25px rgba(251, 191, 36, 0.4), 0 0 50px rgba(251, 191, 36, 0.2)'"
+              onblur="this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(251, 191, 36, 0.1)'"
             />
           </div>
           <div class="flex gap-2 flex-wrap">
-            <select id="categoryFilter" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-red-500">
+            <select id="categoryFilter" class="px-4 py-3 text-white focus:outline-none transition-all duration-300" style="background: rgba(10, 14, 39, 0.6); border: 2px solid rgba(251, 191, 36, 0.3); border-radius: 12px; box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(251, 191, 36, 0.1);" onfocus="this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 25px rgba(251, 191, 36, 0.4)'" onblur="this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(251, 191, 36, 0.1)'">
               <option value="">All Categories</option>
               <option value="general">General</option>
               <option value="bhabhi">Bhabhi</option>
@@ -392,7 +637,7 @@
               <option value="desi">Desi</option>
               <option value="indian">Indian</option>
             </select>
-            <select id="sortFilter" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-red-500">
+            <select id="sortFilter" class="px-4 py-3 text-white focus:outline-none transition-all duration-300" style="background: rgba(10, 14, 39, 0.6); border: 2px solid rgba(251, 191, 36, 0.3); border-radius: 12px; box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(251, 191, 36, 0.1);" onfocus="this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 25px rgba(251, 191, 36, 0.4)'" onblur="this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(251, 191, 36, 0.1)'">
               <option value="date">Latest</option>
               <option value="views">Most Viewed</option>
               <option value="likes">Most Liked</option>
@@ -403,13 +648,13 @@
         <!-- Popular Tags -->
         <div class="mt-4 flex flex-wrap gap-2">
           <span class="text-sm text-gray-400">Popular:</span>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="bhabhi">Bhabhi</button>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="devar">Devar</button>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="step sister">Step Sister</button>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="step mom">Step Mom</button>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="desi">Desi</button>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="indian">Indian</button>
-          <button class="tag-btn bg-gray-800 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition" data-tag="hot">Hot</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="bhabhi" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Bhabhi</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="devar" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Devar</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="step sister" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Step Sister</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="step mom" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Step Mom</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="desi" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Desi</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="indian" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Indian</button>
+          <button class="tag-btn px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-110 relative overflow-hidden" data-tag="hot" style="background: rgba(10, 14, 39, 0.6); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);" onmouseover="this.style.background='rgba(251, 191, 36, 0.2)'; this.style.borderColor='rgba(251, 191, 36, 0.8)'; this.style.boxShadow='0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1)'" onmouseout="this.style.background='rgba(10, 14, 39, 0.6)'; this.style.borderColor='rgba(251, 191, 36, 0.3)'; this.style.boxShadow='0 0 10px rgba(251, 191, 36, 0.1)'">Hot</button>
         </div>
       </div>
       
@@ -432,10 +677,14 @@
       
       // Load saved theme
       const savedTheme = localStorage.getItem('theme') || 'dark';
+      const mobileThemeIcon = document.getElementById('mobileThemeIcon');
       if (savedTheme === 'light') {
         body.classList.add('light-mode');
         sunIcon.classList.remove('hidden');
         moonIcon.classList.add('hidden');
+        if (mobileThemeIcon) mobileThemeIcon.textContent = '☀️';
+      } else {
+        if (mobileThemeIcon) mobileThemeIcon.textContent = '🌙';
       }
       
       themeToggle.addEventListener('click', () => {
@@ -461,10 +710,12 @@
       
       mobileMenuBtn?.addEventListener('click', () => {
         mobileMenu.style.transform = 'translateX(0)';
+        document.body.style.overflow = 'hidden';
       });
       
       closeMobileMenu?.addEventListener('click', () => {
         mobileMenu.style.transform = 'translateX(100%)';
+        document.body.style.overflow = '';
       });
       
       // Close menu on link click
@@ -472,18 +723,27 @@
         item.addEventListener('click', () => {
           if (item.id !== 'closeMobileMenu' && item.id !== 'mobileThemeToggle') {
             mobileMenu.style.transform = 'translateX(100%)';
+            document.body.style.overflow = '';
           }
         });
       });
       
       // Mobile theme toggle
       mobileThemeToggle?.addEventListener('click', () => {
-        themeToggle.click();
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
         const mobileThemeIcon = document.getElementById('mobileThemeIcon');
-        if (body.classList.contains('light-mode')) {
+        
+        if (isLight) {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
           mobileThemeIcon.textContent = '☀️';
+          localStorage.setItem('theme', 'light');
         } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
           mobileThemeIcon.textContent = '🌙';
+          localStorage.setItem('theme', 'dark');
         }
       });
       
@@ -497,12 +757,16 @@
       // Populate avatar grid
       avatars.forEach(emoji => {
         const btn = document.createElement('button');
-        btn.className = 'w-16 h-16 text-3xl bg-gray-800 hover:bg-gray-700 rounded-lg transition transform hover:scale-110';
+        btn.className = 'w-16 h-16 text-3xl bg-gray-800 hover:bg-yellow-600 rounded-lg transition-all duration-300 transform hover:scale-110';
+        btn.style.boxShadow = '0 0 10px rgba(251, 191, 36, 0.2)';
+        btn.onmouseover = () => { btn.style.boxShadow = '0 0 20px rgba(251, 191, 36, 0.5)'; };
+        btn.onmouseout = () => { btn.style.boxShadow = '0 0 10px rgba(251, 191, 36, 0.2)'; };
         btn.textContent = emoji;
         btn.onclick = () => {
           localStorage.setItem('userAvatar', emoji);
           updateUserAvatar();
           avatarModal.classList.add('hidden');
+          document.body.style.overflow = '';
         };
         avatarGrid.appendChild(btn);
       });
@@ -510,11 +774,28 @@
       // Open avatar modal
       mobileUserAvatar?.addEventListener('click', () => {
         avatarModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      // Desktop avatar open modal
+      const desktopAvatarIcon = document.getElementById('desktopAvatarIcon');
+      desktopAvatarIcon?.addEventListener('click', () => {
+        avatarModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
       });
       
       // Close avatar modal
       closeAvatarModal?.addEventListener('click', () => {
         avatarModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+      
+      // Close modal on backdrop click
+      avatarModal?.addEventListener('click', (e) => {
+        if (e.target === avatarModal) {
+          avatarModal.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
       });
       
       // Update user avatar
@@ -534,8 +815,11 @@
       const desktopLogout = document.getElementById('desktopLogout');
       const desktopUserAvatar = document.getElementById('desktopUserAvatar');
       
-      desktopChangeAvatar?.addEventListener('click', () => {
+      desktopChangeAvatar?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         avatarModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
       });
       
       desktopLogout?.addEventListener('click', () => {

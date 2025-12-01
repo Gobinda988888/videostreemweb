@@ -8,9 +8,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       .gradient-bg {
-        background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
+        background: linear-gradient(-45deg, #0a0e27, #0f1535, #0a0e27, #1a1f3a);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
+        position: relative;
+      }
+      .gradient-bg::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        pointer-events: none;
       }
       @keyframes gradient {
         0% { background-position: 0% 50%; }
@@ -20,14 +33,15 @@
     </style>
   </head>
   <body class="gradient-bg text-white min-h-screen">
-    <nav class="bg-black bg-opacity-60 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-red-900">
+    <nav class="sticky top-0 z-50 p-4" style="background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0.85) 100%); backdrop-filter: blur(20px); border-bottom: 2px solid rgba(251, 191, 36, 0.3); box-shadow: 0 4px 30px rgba(251, 191, 36, 0.2), inset 0 1px 0 rgba(251, 191, 36, 0.1);">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-3">
           <svg width="35" height="35" viewBox="0 0 40 40">
             <defs>
               <linearGradient id="logoGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1" />
               </linearGradient>
             </defs>
             <circle cx="20" cy="20" r="18" fill="url(#logoGradient5)" opacity="0.2"/>
@@ -35,16 +49,16 @@
             <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient5)" stroke-width="2"/>
           </svg>
           <div>
-            <h1 class="text-xl font-black bg-gradient-to-r from-red-500 via-pink-500 to-red-500 bg-clip-text text-transparent tracking-tight">
+            <h1 class="text-xl font-black bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent tracking-tight" style="filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5)); letter-spacing: 0.05em;">
               desiixvideo
             </h1>
             <p class="text-xs text-gray-400 -mt-1">Admin Dashboard 🎯</p>
           </div>
         </div>
         <div class="space-x-4">
-          <a href="/" class="hover:text-red-400 transition">🏠 Home</a>
-          <a href="/upload.html" class="hover:text-red-400 transition">📤 Upload</a>
-          <button id="logoutBtn" class="hover:text-red-400 transition">Logout</button>
+          <a href="/" class="hover:text-yellow-400 transition-all duration-300">🏠 Home</a>
+          <a href="/upload.html" class="hover:text-yellow-400 transition-all duration-300">📤 Upload</a>
+          <button id="logoutBtn" class="hover:text-yellow-400 transition-all duration-300" style="text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);">Logout</button>
         </div>
       </div>
     </nav>
@@ -52,55 +66,55 @@
     <main class="p-6 max-w-7xl mx-auto">
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="bg-gray-900 bg-opacity-60 backdrop-blur-sm rounded-xl border border-red-900 p-6">
+        <div class="rounded-xl p-6" style="background: rgba(10, 14, 39, 0.7); backdrop-filter: blur(20px); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3);">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-400 text-sm">Total Visitors</p>
               <h3 class="text-3xl font-bold" id="totalVisitors">0</h3>
             </div>
-            <div class="text-red-500 text-4xl">👥</div>
+            <div class="text-yellow-400 text-4xl">👥</div>
           </div>
         </div>
 
-        <div class="bg-gray-900 bg-opacity-60 backdrop-blur-sm rounded-xl border border-red-900 p-6">
+        <div class="rounded-xl p-6" style="background: rgba(10, 14, 39, 0.7); backdrop-filter: blur(20px); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3);">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-400 text-sm">Page Views</p>
               <h3 class="text-3xl font-bold" id="pageViews">0</h3>
             </div>
-            <div class="text-blue-500 text-4xl">👁️</div>
+            <div class="text-blue-400 text-4xl">👁️</div>
           </div>
         </div>
 
-        <div class="bg-gray-900 bg-opacity-60 backdrop-blur-sm rounded-xl border border-red-900 p-6">
+        <div class="rounded-xl p-6" style="background: rgba(10, 14, 39, 0.7); backdrop-filter: blur(20px); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3);">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-400 text-sm">Total Videos</p>
               <h3 class="text-3xl font-bold" id="totalVideos">0</h3>
             </div>
-            <div class="text-purple-500 text-4xl">🎥</div>
+            <div class="text-purple-400 text-4xl">🎥</div>
           </div>
         </div>
 
-        <div class="bg-gray-900 bg-opacity-60 backdrop-blur-sm rounded-xl border border-red-900 p-6">
+        <div class="rounded-xl p-6" style="background: rgba(10, 14, 39, 0.7); backdrop-filter: blur(20px); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3);">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-gray-400 text-sm">Video Watches</p>
               <h3 class="text-3xl font-bold" id="videoWatches">0</h3>
             </div>
-            <div class="text-green-500 text-4xl">▶️</div>
+            <div class="text-green-400 text-4xl">▶️</div>
           </div>
         </div>
       </div>
 
       <!-- Chart -->
-      <div class="bg-gray-900 bg-opacity-60 backdrop-blur-sm rounded-xl border border-red-900 p-6 mb-8">
+      <div class="rounded-xl p-6 mb-8" style="background: rgba(10, 14, 39, 0.7); backdrop-filter: blur(20px); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3);">
         <h2 class="text-xl font-bold mb-4">Daily Traffic (Last 30 Days)</h2>
         <canvas id="trafficChart" height="80"></canvas>
       </div>
 
       <!-- Videos Management -->
-      <div class="bg-gray-900 bg-opacity-60 backdrop-blur-sm rounded-xl border border-red-900 p-6">
+      <div class="rounded-xl p-6" style="background: rgba(10, 14, 39, 0.7); backdrop-filter: blur(20px); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3);">
         <h2 class="text-xl font-bold mb-4">📊 Manage Video Stats</h2>
         <div id="videosList" class="space-y-4">
           <p class="text-gray-400">Loading videos...</p>

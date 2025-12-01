@@ -29,12 +29,26 @@
         100% { background-position: 0% 50%; }
       }
       .gradient-bg {
-        background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
+        background: linear-gradient(-45deg, #0a0e27, #0f1535, #0a0e27, #1a1f3a);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
+        position: relative;
+      }
+      .gradient-bg::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
       }
       .glow-red {
-        box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 0 30px rgba(251, 191, 36, 0.3), inset 0 0 20px rgba(251, 191, 36, 0.05);
       }
       
       @keyframes spin {
@@ -115,7 +129,10 @@
         }
         .gradient-bg {
           animation: none;
-          background: #1a1a1a;
+          background: #0a0e27;
+        }
+        .gradient-bg::before {
+          display: none;
         }
         main {
           padding: 0 !important;
@@ -175,7 +192,7 @@
       
       .progress-filled {
         height: 100%;
-        background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+        background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
         border-radius: 2px;
         transition: width 0.1s;
         position: relative;
@@ -189,9 +206,9 @@
         transform: translateY(-50%);
         width: 12px;
         height: 12px;
-        background: #ef4444;
+        background: #fbbf24;
         border-radius: 50%;
-        box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+        box-shadow: 0 0 12px rgba(251, 191, 36, 0.9);
         opacity: 0;
         transition: opacity 0.2s;
       }

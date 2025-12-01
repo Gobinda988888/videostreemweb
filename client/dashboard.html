@@ -13,16 +13,31 @@
         100% { background-position: 0% 50%; }
       }
       .gradient-bg {
-        background: linear-gradient(-45deg, #1a1a1a, #2d1b1b, #1a1a1a, #2d1b1b);
+        background: linear-gradient(-45deg, #0a0e27, #0f1535, #0a0e27, #1a1f3a);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
+        position: relative;
+      }
+      .gradient-bg::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        pointer-events: none;
       }
       .glow-red {
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 0 30px rgba(251, 191, 36, 0.3), inset 0 0 20px rgba(251, 191, 36, 0.05);
       }
       .tab-active {
-        background: linear-gradient(to right, #ef4444, #dc2626);
+        background: linear-gradient(to right, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3));
+        border-bottom: 3px solid #fbbf24;
         color: white;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.2), inset 0 0 10px rgba(251, 191, 36, 0.1);
       }
       /* Mobile optimizations */
       @media (max-width: 768px) {
@@ -34,10 +49,10 @@
     </style>
 </head>
 <body class="gradient-bg text-white min-h-screen">
-    <nav class="bg-black bg-opacity-60 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-red-900">
+    <nav class="sticky top-0 z-50 p-4" style="background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0.85) 100%); backdrop-filter: blur(20px); border-bottom: 2px solid rgba(251, 191, 36, 0.3); box-shadow: 0 4px 30px rgba(251, 191, 36, 0.2), inset 0 1px 0 rgba(251, 191, 36, 0.1);">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="/" class="flex items-center gap-2">
-                <span class="text-2xl font-black bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+                <span class="text-2xl font-black bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent" style="filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5)); letter-spacing: 0.05em;">
                     desiixvideo
                 </span>
             </a>
@@ -51,9 +66,9 @@
                 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex space-x-4 items-center">
-                <a href="/" class="hover:text-red-400 transition">Home</a>
-                <a href="/dashboard.html" class="text-red-400">Dashboard</a>
-                <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</button>
+                <a href="/" class="hover:text-yellow-400 transition-all duration-300">Home</a>
+                <a href="/dashboard.html" class="text-yellow-400" style="text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);">Dashboard</a>
+                <button id="logoutBtn" class="px-4 py-2 rounded-lg transition-all duration-300" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.8) 0%, rgba(245, 158, 11, 0.8) 100%); border: 2px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);">Logout</button>
                 </div>
             </div>
         </div>
@@ -62,7 +77,7 @@
         <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-90 backdrop-blur-md z-50 transform translate-x-full transition-transform duration-300 md:hidden">
             <div class="flex flex-col h-full p-6">
                 <div class="flex justify-between items-center mb-8">
-                    <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">Menu</span>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent" style="filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));">Menu</span>
                     <button id="closeMobileMenu" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M18 6L6 18M6 6l12 12"/>
@@ -81,9 +96,9 @@
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- User Profile Header -->
-        <div class="bg-gray-900 bg-opacity-80 backdrop-blur-lg rounded-xl p-6 mb-8 border border-red-900 glow-red">
+        <div class="rounded-xl p-6 mb-8 glow-red" style="background: rgba(10, 14, 39, 0.8); border: 2px solid rgba(251, 191, 36, 0.3); backdrop-filter: blur(20px);">
             <div class="flex items-center gap-6">
-                <div class="w-24 h-24 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-4xl font-bold">
+                <div class="w-24 h-24 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center text-4xl font-bold" style="box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 20px rgba(251, 191, 36, 0.2);">
                     <span id="userAvatar"></span>
                 </div>
                 <div class="flex-1">
@@ -101,7 +116,7 @@
 
         <!-- Stats Overview -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+            <div class="p-6 rounded-xl" style="background: rgba(10, 14, 39, 0.7); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-gray-400">Videos Watched</span>
                     <span class="text-2xl">🎬</span>
@@ -109,7 +124,7 @@
                 <div class="text-3xl font-bold" id="watchCount">0</div>
             </div>
             
-            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+            <div class="p-6 rounded-xl" style="background: rgba(10, 14, 39, 0.7); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-gray-400">Favorites</span>
                     <span class="text-2xl">❤️</span>
@@ -117,7 +132,7 @@
                 <div class="text-3xl font-bold" id="favoriteCount">0</div>
             </div>
             
-            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+            <div class="p-6 rounded-xl" style="background: rgba(10, 14, 39, 0.7); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-gray-400">Watch Time</span>
                     <span class="text-2xl">⏱️</span>
@@ -125,7 +140,7 @@
                 <div class="text-3xl font-bold" id="watchTime">0h</div>
             </div>
             
-            <div class="bg-gray-900 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+            <div class="p-6 rounded-xl" style="background: rgba(10, 14, 39, 0.7); border: 2px solid rgba(251, 191, 36, 0.2); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1), inset 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-gray-400">Last Active</span>
                     <span class="text-2xl">📅</span>
@@ -135,18 +150,18 @@
         </div>
 
         <!-- Tabs -->
-        <div class="bg-gray-900 bg-opacity-60 rounded-xl border border-gray-700 mb-6 overflow-hidden">
+        <div class="rounded-xl mb-6 overflow-hidden" style="background: rgba(10, 14, 39, 0.7); border: 2px solid rgba(251, 191, 36, 0.2); backdrop-filter: blur(10px);">
             <div class="flex border-b border-gray-700">
-                <button class="tab-btn tab-active flex-1 py-4 px-6 font-bold transition" data-tab="history">
+                <button class="tab-btn tab-active flex-1 py-4 px-6 font-bold transition-all duration-300" data-tab="history">
                     📜 Watch History
                 </button>
-                <button class="tab-btn flex-1 py-4 px-6 font-bold transition hover:bg-gray-800" data-tab="favorites">
+                <button class="tab-btn flex-1 py-4 px-6 font-bold transition-all duration-300 hover:bg-gray-800" data-tab="favorites">
                     ❤️ Favorites
                 </button>
-                <button class="tab-btn flex-1 py-4 px-6 font-bold transition hover:bg-gray-800" data-tab="activity">
+                <button class="tab-btn flex-1 py-4 px-6 font-bold transition-all duration-300 hover:bg-gray-800" data-tab="activity">
                     📊 Activity
                 </button>
-                <button class="tab-btn flex-1 py-4 px-6 font-bold transition hover:bg-gray-800" data-tab="settings">
+                <button class="tab-btn flex-1 py-4 px-6 font-bold transition-all duration-300 hover:bg-gray-800" data-tab="settings">
                     ⚙️ Settings
                 </button>
             </div>
@@ -158,7 +173,7 @@
             <div class="tab-content" id="history-content">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold">Watch History</h2>
-                    <button id="clearHistoryBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition text-sm">
+                    <button id="clearHistoryBtn" class="px-4 py-2 rounded-lg transition-all duration-300 text-sm" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.8) 0%, rgba(245, 158, 11, 0.8) 100%); border: 2px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);">
                         Clear All History
                     </button>
                 </div>
@@ -176,7 +191,7 @@
             <div class="tab-content hidden" id="favorites-content">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold">My Favorites</h2>
-                    <button id="clearFavoritesBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition text-sm">
+                    <button id="clearFavoritesBtn" class="px-4 py-2 rounded-lg transition-all duration-300 text-sm" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.8) 0%, rgba(245, 158, 11, 0.8) 100%); border: 2px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);">
                         Clear All Favorites
                     </button>
                 </div>
