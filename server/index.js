@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   // CSP that allows inline scripts, eval, and R2 media sources
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://desiixvideo.me https://*.r2.cloudflarestorage.com https://*.r2.dev; media-src 'self' https://*.r2.cloudflarestorage.com https://*.r2.dev;"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' data: https://cdnjs.cloudflare.com; connect-src 'self' https://desiixvideo.me https://*.r2.cloudflarestorage.com https://*.r2.dev; media-src 'self' https://*.r2.cloudflarestorage.com https://*.r2.dev;"
   );
   next();
 });

@@ -582,6 +582,9 @@ if (videoContainer) {
                 class="w-full aspect-video"
                 preload="auto"
                 crossorigin="anonymous"
+                controlslist="nodownload"
+                disablePictureInPicture
+                oncontextmenu="return false;"
               >
                 <source src="${data.url}" type="video/mp4" />
                 Your browser does not support video playback.
@@ -600,59 +603,41 @@ if (videoContainer) {
               </div>
               
               <div class="custom-controls" id="videoControls">
-            <div class="progress-bar" id="progressBar">
-              <div class="progress-filled" id="progressFilled" style="width: 0%"></div>
-            </div>
-            
-            <div class="control-buttons">
-              <button class="control-btn" id="playPauseBtn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="playIcon">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" style="display: none;">
-                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-                </svg>
-              </button>
-              
-              <div class="volume-control">
-                <button class="control-btn" id="muteBtn">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="volumeIcon">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-                  </svg>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="muteIcon" style="display: none;">
-                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                  </svg>
-                </button>
-                <input type="range" min="0" max="100" value="100" class="volume-slider" id="volumeSlider">
-              </div>
-              
-              <button class="control-btn" id="fullscreenBtn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                </svg>
-              </button>
-              
-              <button class="control-btn" id="pipBtn" title="Picture-in-Picture">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 7H5c-1.1 0-2 .9-2 2v6h2V9h14V7zM21 11v6c0 1.1-.9 2-2 2H9v-2h10v-6h2z"></path></svg>
-              </button>
+                <div class="control-buttons w-full">
+                  <button class="control-btn" id="playPauseBtn" aria-label="Play/Pause">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" style="display: none;">
+                      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                    </svg>
+                  </button>
 
-              <select id="speedSelect" class="bg-gray-800 text-white px-2 py-1 rounded ml-2">
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
-                <option value="1" selected>1x</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2">2x</option>
-              </select>
+                  <button class="control-btn" id="muteBtn" aria-label="Mute">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="volumeIcon">
+                      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="muteIcon" style="display: none;">
+                      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                  </button>
 
-              <!-- Download button removed to prevent direct video downloads -->
-              
-              <div class="time-display">
-                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                  <input type="range" min="0" max="1" step="0.05" value="0.8" class="volume-slider" id="volumeSlider" aria-label="Volume" />
+
+                  <div class="time-display" aria-label="Time">
+                    <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                  </div>
+
+                  <button class="control-btn" id="fullscreenBtn" aria-label="Fullscreen">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <input type="range" id="progressRange" class="progress-range" min="0" max="100" value="0" aria-label="Seek" />
               </div>
             </div>
-          </div>
-        </div>
             
             <!-- Video Info Below Player -->
             <div class="bg-gray-800 bg-opacity-60 rounded-xl p-4 md:p-6 mt-4 backdrop-blur-sm border border-red-900">
@@ -735,13 +720,13 @@ if (videoContainer) {
 
 function initializeVideoPlayer() {
   const video = document.getElementById('mainVideo');
+  const videoWrapper = video ? video.closest('.video-wrapper') : null;
   const bigPlayBtn = document.getElementById('bigPlayBtn');
   const bigPlayButton = document.getElementById('bigPlayButton');
   const playPauseBtn = document.getElementById('playPauseBtn');
   const playIcon = document.getElementById('playIcon');
   const pauseIcon = document.getElementById('pauseIcon');
-  const progressBar = document.getElementById('progressBar');
-  const progressFilled = document.getElementById('progressFilled');
+  const progressRange = document.getElementById('progressRange');
   const currentTimeEl = document.getElementById('currentTime');
   const durationEl = document.getElementById('duration');
   const muteBtn = document.getElementById('muteBtn');
@@ -750,8 +735,6 @@ function initializeVideoPlayer() {
   const volumeSlider = document.getElementById('volumeSlider');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
   const loadingOverlay = document.getElementById('loadingOverlay');
-  const pipBtn = document.getElementById('pipBtn');
-  const speedSelect = document.getElementById('speedSelect');
   const relatedContainer = document.getElementById('relatedVideos');
   
   if (!video) return;
@@ -761,6 +744,63 @@ function initializeVideoPlayer() {
     // Autoplay blocked - show big play button
     if (bigPlayBtn) bigPlayBtn.style.display = 'flex';
   });
+
+  // Auto-hide controls with proper state management
+  const controls = document.getElementById('videoControls');
+  let hideControlsTimeout;
+  let isInteracting = false;
+  
+  const showControls = () => {
+    if (!controls) return;
+    controls.classList.add('show');
+    clearTimeout(hideControlsTimeout);
+    if (!video.paused && !isInteracting) {
+      hideControlsTimeout = setTimeout(() => {
+        controls.classList.remove('show');
+      }, 3000);
+    }
+  };
+  
+  const hideControls = () => {
+    if (!controls || video.paused || isInteracting) return;
+    controls.classList.remove('show');
+  };
+  
+  if (videoWrapper) {
+    videoWrapper.addEventListener('mousemove', showControls);
+    videoWrapper.addEventListener('touchstart', showControls);
+    videoWrapper.addEventListener('mouseleave', () => {
+      if (!video.paused && !isInteracting) {
+        hideControlsTimeout = setTimeout(hideControls, 1000);
+      }
+    });
+  }
+  
+  if (controls) {
+    controls.addEventListener('mouseenter', () => {
+      isInteracting = true;
+      clearTimeout(hideControlsTimeout);
+    });
+    controls.addEventListener('mouseleave', () => {
+      isInteracting = false;
+      if (!video.paused) {
+        hideControlsTimeout = setTimeout(hideControls, 1000);
+      }
+    });
+  }
+  
+  // Show controls when paused
+  video.addEventListener('pause', () => {
+    showControls();
+    clearTimeout(hideControlsTimeout);
+  });
+  
+  video.addEventListener('play', () => {
+    hideControlsTimeout = setTimeout(hideControls, 3000);
+  });
+
+  // Show controls initially
+  showControls();
 
   // Big play overlay handlers
   function showBigPlay() {
@@ -808,49 +848,58 @@ function initializeVideoPlayer() {
     });
   }
   
-  // Progress bar
+  // Progress handling with visual feedback
   video.addEventListener('timeupdate', () => {
-    const percent = (video.currentTime / video.duration) * 100;
-    progressFilled.style.width = percent + '%';
+    if (video.duration && progressRange) {
+      const progress = (video.currentTime / video.duration) * 100;
+      progressRange.value = progress;
+      progressRange.style.setProperty('--progress', progress + '%');
+    }
     currentTimeEl.textContent = formatTime(video.currentTime);
   });
   
   video.addEventListener('loadedmetadata', () => {
     durationEl.textContent = formatTime(video.duration);
   });
-  
-  // Progress bar - support both click and touch
-  const seekVideo = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    const rect = progressBar.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const percent = (clientX - rect.left) / rect.width;
-    video.currentTime = Math.max(0, Math.min(1, percent)) * video.duration;
-  };
-  
-  progressBar.addEventListener('click', seekVideo);
-  progressBar.addEventListener('touchstart', seekVideo);
-  
-  // Touch drag on progress bar
-  let isSeeking = false;
-  progressBar.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
+
+  if (progressRange) {
+    let isSeeking = false;
+    
+    progressRange.addEventListener('mousedown', () => {
       isSeeking = true;
-      seekVideo(e);
-    }
-  });
-  
-  progressBar.addEventListener('touchend', () => {
-    isSeeking = false;
-  });
+      isInteracting = true;
+    });
+    
+    progressRange.addEventListener('mouseup', () => {
+      isSeeking = false;
+      isInteracting = false;
+    });
+    
+    progressRange.addEventListener('input', (e) => {
+      const percent = parseFloat(e.target.value) / 100;
+      if (video.duration) {
+        video.currentTime = percent * video.duration;
+        progressRange.style.setProperty('--progress', e.target.value + '%');
+      }
+    });
+    
+    progressRange.addEventListener('change', (e) => {
+      const percent = parseFloat(e.target.value) / 100;
+      if (video.duration) {
+        video.currentTime = percent * video.duration;
+      }
+    });
+  }
   
   // Volume
   if (volumeSlider) {
+    // default volume
+    video.volume = parseFloat(volumeSlider.value);
     volumeSlider.addEventListener('input', (e) => {
       e.stopPropagation();
-      video.volume = e.target.value / 100;
-      if (video.volume === 0) {
+      video.volume = parseFloat(e.target.value);
+      video.muted = video.volume === 0;
+      if (video.muted) {
         volumeIcon.style.display = 'none';
         muteIcon.style.display = 'block';
       } else {
@@ -865,9 +914,14 @@ function initializeVideoPlayer() {
       e.stopPropagation();
       video.muted = !video.muted;
       if (video.muted) {
+        volumeSlider.value = 0;
         volumeIcon.style.display = 'none';
         muteIcon.style.display = 'block';
       } else {
+        if (video.volume === 0) {
+          video.volume = 0.5;
+          volumeSlider.value = 0.5;
+        }
         volumeIcon.style.display = 'block';
         muteIcon.style.display = 'none';
       }
@@ -878,36 +932,18 @@ function initializeVideoPlayer() {
   if (fullscreenBtn) {
     fullscreenBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      const target = video;
       if (!document.fullscreenElement) {
-        video.parentElement.requestFullscreen();
+        if (target.requestFullscreen) target.requestFullscreen();
+        else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
+        else if (target.mozRequestFullScreen) target.mozRequestFullScreen();
+        else if (target.msRequestFullscreen) target.msRequestFullscreen();
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
       }
-    });
-  }
-
-  // Picture-in-Picture
-  if (pipBtn) {
-    pipBtn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      try {
-        if (document.pictureInPictureElement) {
-          await document.exitPictureInPicture();
-        } else if (video.requestPictureInPicture) {
-          await video.requestPictureInPicture();
-        }
-      } catch (err) {
-        console.error('PIP error', err);
-      }
-    });
-  }
-
-  // Speed control
-  if (speedSelect) {
-    speedSelect.addEventListener('change', (e) => {
-      e.stopPropagation();
-      const rate = parseFloat(e.target.value);
-      video.playbackRate = rate;
     });
   }
 

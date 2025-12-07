@@ -4,17 +4,15 @@ const accountId = 'e526688de8d8a36339e56f7b461e74b7';
 const bucketName = 'videov3';
 const apiToken = 'OP5k8bHmRgfpTghhUD88YBObf5H8pw-abVU3CQes';
 
-const corsConfig = JSON.stringify({
-  cors_rules: [
-    {
-      allowed_origins: ['*'],
-      allowed_methods: ['GET', 'HEAD'],
-      allowed_headers: ['*'],
-      expose_headers: ['Content-Length', 'Content-Type', 'Content-Range', 'Accept-Ranges', 'ETag'],
-      max_age_seconds: 3600
-    }
-  ]
-});
+const corsConfig = JSON.stringify([
+  {
+    AllowedOrigins: ['*'],
+    AllowedMethods: ['GET', 'HEAD'],
+    AllowedHeaders: ['*'],
+    ExposeHeaders: ['Content-Length', 'Content-Type', 'Content-Range', 'Accept-Ranges', 'ETag'],
+    MaxAgeSeconds: 3600
+  }
+]);
 
 const options = {
   hostname: 'api.cloudflare.com',
